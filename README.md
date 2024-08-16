@@ -1,4 +1,4 @@
-##Projeto Sistema WEB
+# Projeto Sistema WEB
 
 Alunos:
 + Matheus Daminelli
@@ -6,6 +6,6 @@ Alunos:
 + Jean Guichard
 + Lucas da Silva
 
-#Sobre
+# Sobre
 
 Ainda estamos brigando para saber o que vai ser...
