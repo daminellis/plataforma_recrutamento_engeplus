@@ -4,17 +4,16 @@
 1. **Matheus Daminelli** - Gerente de Projetos
 2. **Gabriel Morona** - Desenvolvedora Frontend
 3. **Jean Guichard** - Desenvolvedor Backend
-4. **Lucas da Silva** - Database Admin
+4. **Lucas Silva** - Database Admin
 
 ## Visão do Projeto:
 
-- **Produto Alvo:** Plataforma Web para Gestão de RH com interface para enviar curriculos
+- **Produto Alvo:** Plataforma Web para Gestão de RH com interface para enviar currículos
 - **Entidade Alvo:** Engeplus 
 - **Objetivos:**
   - Facilitar o acesso de pessoas que tem interesse em ingressar na empresa.
-  - Fazer o sistema de RH para a empresa engeplus.
-  - Fazer com que quem tem interesse em ingressar na empresa tenha facilidade em enviar seu currículo
-
+  - Refazer o sistema de RH para a empresa Engeplus.
+  - Melhorias no sistema e no gerenciamento de funcionarios.
 ## Entidades Alternativas:
 1. ** Engeplus ** - Provedora de internet e dona de um canal de notícias.
 
