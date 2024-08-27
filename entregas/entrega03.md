@@ -2,14 +2,17 @@
 
 ## Repositório de Código
 
-[GitHub](https://github.com/daminellis/projetosweb-2024)
++ [GitHub](https://github.com/daminellis/projetosweb-2024)
+
+## Repositorio de front-end
++ [Figma](https://www.figma.com/design/LZ578KKeR8TDL7o4Q92o1h/%F0%9F%A7%91%E2%80%8D%F0%9F%92%BC-Plataforma-de-Recrutamento---Engeplus?node-id=15-2192&t=WgDzdek8R5S9crbt-1)
 
 ## Ferramenta de Gerenciamento de Projetos
 
 Uutilizaremos duas formas de gerenciamento, trello e issues do github
 
-[Trello](https://trello.com/b/bqQLby8h/projeto-sistemas-web)
-[Github](https://github.com/daminellis/projetosweb-2024/issues)
++ [Trello](https://trello.com/b/bqQLby8h/projeto-sistemas-web)
++ [Github](https://github.com/daminellis/projetosweb-2024/issues)
 
 ## Principais Tecnologias a Serem Utilizadas
 
