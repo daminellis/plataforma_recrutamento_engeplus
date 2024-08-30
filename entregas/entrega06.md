@@ -1,6 +1,7 @@
 # Wireframes e Mockups
 
 A modelagem feita foi desenvolvida para telas de computadores, pois são normalmente mais usadas para nosso site.
+Não criamos wireframes e utilizamos somente mockups, utilizamos alguns materiais da internet para manter um padrão em nosso app.
 
 ## Componentes feitos
 
