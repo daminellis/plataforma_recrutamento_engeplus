@@ -1,7 +1,7 @@
-import { Input } from "@/components/form/Input";
 import Image from "next/image";
 import { CompanyNumbers } from "./components/CompanyNumbers";
 import { BackpackIcon, GlobeIcon, PersonIcon } from "@radix-ui/react-icons";
+import { LoginForm } from "./components/LoginForm";
 
 export default function Login() {
   return (
@@ -15,19 +15,11 @@ export default function Login() {
         />
       </header>
 
-      <section className="w-1/2 flex items-center justify-center">
-        <article>
-          <h1>Vagas Engeplus</h1>
+      <section className="p-8 w-1/2 flex items-center justify-center">
+        <article className="max-w-lg w-full">
+          <h1 className="text-2xl font-semibold">Login</h1>
 
-          <form>
-            <label htmlFor="email">E-mail</label>
-            <Input type="email" id="email" name="email" />
-
-            <label htmlFor="password">Senha</label>
-            <Input type="password" id="password" name="password" />
-
-            <button type="submit">Login</button>
-          </form>
+          <LoginForm />
         </article>
       </section>
       <section className="p-6 pb-20 w-1/2 flex items-end justify-center bg-auth bg-no-repeat bg-cover bg-center">
