@@ -5,8 +5,8 @@ import { LoginForm } from "./components/LoginForm";
 
 export default function Login() {
   return (
-    <main className="w-full h-full flex relative">
-      <header className="absolute w-full px-32 py-5">
+    <main className="w-full h-full flex relative max-md:flex-col">
+      <header className="absolute w-full px-32 py-5 max-md:px-0 max-md:flex max-md:justify-center max-md:relative">
         <Image
           alt="Logo"
           src="/static/images/logos/LogoAzul.png"
@@ -15,14 +15,14 @@ export default function Login() {
         />
       </header>
 
-      <section className="p-8 w-1/2 flex items-center justify-center">
+      <section className="p-8 w-1/2 flex items-center justify-center max-md:w-full">
         <article className="max-w-lg w-full">
           <h1 className="text-2xl font-semibold">Login</h1>
 
           <LoginForm />
         </article>
       </section>
-      <section className="p-6 pb-20 w-1/2 flex items-end justify-center bg-auth bg-no-repeat bg-cover bg-center">
+      <section className="p-6 pb-20 w-1/2 flex items-end justify-center bg-auth bg-no-repeat bg-cover bg-center max-md:w-full">
         <article>
           <h2 className="text-gray-300 font-semibold text-2xl">
             Junte-se a Nós!
