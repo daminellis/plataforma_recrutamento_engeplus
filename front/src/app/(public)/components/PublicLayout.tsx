@@ -29,7 +29,9 @@ export const PublicLayout = ({
         )}
       </section>
 
-      <main>{children}</main>
+      <main className="p-5 flex flex-col items-center">
+        <div className="w-full max-w-screen-xl">{children}</div>
+      </main>
     </>
   );
 };

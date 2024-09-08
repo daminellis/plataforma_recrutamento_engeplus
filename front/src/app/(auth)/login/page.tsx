@@ -2,7 +2,7 @@
 
 import { LabelControl } from "@/components/form/LabelControl";
 import { PasswordField } from "@/components/form/PasswordField";
-import { PrimaryButton } from "@/components/ui/button/PrimaryButton";
+import { AppButton } from "@/components/ui/button/AppButton";
 import { Checkbox, TextField } from "@mui/material";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 
@@ -20,9 +20,9 @@ export default function LoginPage() {
 
         <LabelControl control={<Checkbox />} label="Lembrar-me" />
 
-        <PrimaryButton type="submit">
+        <AppButton type="submit">
           Login <ArrowRightIcon className="size-6" />
-        </PrimaryButton>
+        </AppButton>
       </form>
     </>
   );
