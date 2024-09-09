@@ -1,10 +1,16 @@
 "use client";
 import { useState } from "react";
-import { PrimaryButton } from "@/components/ui/button/PrimaryButton";
+import { AppButton } from "@/components/ui/button/AppButton";
 import { Breadcrumb } from "@/components/ui/nav/Breadcrumb";
-import { Box, FormControl, InputLabel, MenuItem, Select, Stack, TextField } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { MagnifyingGlassIcon, RowsIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
 
 interface PublicLayoutProps {
   title: String;
@@ -17,7 +23,7 @@ export const PublicLayout = ({
   showSearch,
   children,
 }: PublicLayoutProps) => {
-  const [typejob, setTypejob] = useState('');
+  const [typejob, setTypejob] = useState("");
   return (
     <>
       <section className="bg-gray-200 p-5 flex flex-col items-center">
@@ -55,7 +61,7 @@ export const PublicLayout = ({
                   </Select>
                 </FormControl>
               </Box>
-              <PrimaryButton>Procurar</PrimaryButton>
+              <AppButton>Procurar</AppButton>
             </form>
           </div>
         )}
