@@ -1,16 +1,5 @@
-"use client";
-import { useState } from "react";
-import { AppButton } from "@/components/ui/button/AppButton";
 import { Breadcrumb } from "@/components/ui/nav/Breadcrumb";
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
-import { MagnifyingGlassIcon, RowsIcon } from "@radix-ui/react-icons";
+import { PublicSearch } from "./ui/PublicSearch";
 
 interface PublicLayoutProps {
   title: String;
@@ -23,7 +12,6 @@ export const PublicLayout = ({
   showSearch,
   children,
 }: PublicLayoutProps) => {
-  const [typejob, setTypejob] = useState("");
   return (
     <>
       <section className="bg-gray-200 p-5 flex flex-col items-center">
@@ -33,38 +21,7 @@ export const PublicLayout = ({
           <Breadcrumb initialText="Vagas" initialIndex="/" />
         </header>
 
-        {showSearch && (
-          <div className="bg-white shadow-md rounded-lg p-4">
-            <form className="flex gap-2 items-center">
-              <MagnifyingGlassIcon className="w-5 h-5 text-blue-500" />
-              <TextField
-                variant="standard"
-                placeholder="Cargo, palavra-chave..."
-                type="search"
-                className="flex-1"
-              />
-              <RowsIcon className="w-5 h-5 text-blue-500" />
-              <Box sx={{ minWidth: 170 }}>
-                <FormControl fullWidth>
-                  <InputLabel id="filtro">Área de atuação</InputLabel>
-                  <Select
-                    labelId="filtro"
-                    id="selecionar-filtro"
-                    value={typejob}
-                    label="Área de atuação"
-                    variant="standard"
-                    onChange={(e) => setTypejob(e.target.value)}
-                  >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-              <AppButton>Procurar</AppButton>
-            </form>
-          </div>
-        )}
+        {showSearch && <PublicSearch />}
       </section>
 
       <main className="p-5 flex flex-col items-center">
