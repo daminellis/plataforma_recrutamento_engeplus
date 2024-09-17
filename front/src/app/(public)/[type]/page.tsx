@@ -1,5 +1,5 @@
+import { PublicJobs } from "../components/PublicJobs";
 import { PublicLayout } from "../components/PublicLayout";
-import { CardJob } from "../components/ui/CardJob";
 
 interface JobTypePageProps {
   params: {
@@ -9,8 +9,8 @@ interface JobTypePageProps {
 
 export default function JobTypePage({ params }: JobTypePageProps) {
   return (
-    <PublicLayout title={`Vagas de ${params.type}`}>
-      <CardJob />
+    <PublicLayout title={`Vagas de ${params.type}`} showSearch>
+      <PublicJobs />
     </PublicLayout>
   );
 }

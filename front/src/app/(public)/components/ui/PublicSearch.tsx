@@ -18,7 +18,7 @@ export const PublicSearch = () => {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-4 w-full h-20 mt-5">
-      <form className="flex gap-2 items-center" onSubmit={handleSubmit}>
+      <form className="flex gap-4 items-center" onSubmit={handleSubmit}>
         <MagnifyingGlassIcon className="w-5 h-5 text-blue-500" />
         <input
           className="flex-1 h-full border-none outline-none"
@@ -27,8 +27,8 @@ export const PublicSearch = () => {
           required
         />
         <Divider orientation="vertical" flexItem />
-        <div className="flex justify-center items-center gap-2 m-2">
-          <LayersIcon className="size-5 text-blue-500" />
+        <div className="flex justify-center items-center gap-2">
+          <LayersIcon className="size-5 text-blue-500 mx-2" />
           <Select
             id="filtro"
             value={typejob}
