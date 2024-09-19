@@ -1,12 +1,33 @@
-import { Controller, Get } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { UsuarioService } from "../service/usuario.service";
+import { CreateUsuarioDto } from "../dto/usuarios/create-usuario.dto";
+import{ UpdateUsuarioDto } from "../dto/usuarios/update-usuario.dto";
+import Usuario from "src/model/usuario.entity";
 
-@Controller('users')
+@Controller('usuarios')
 export class UsuarioController{
     constructor(private usuarioService: UsuarioService) {}
-    @Get()
+    @Get('/all')
     findAll() {
-        return this.usuarioService.getUsuarios();
+        return this.usuarioService.findAll();
+    }
+    @Get('/find/:id')
+    async find(@Param('id') id: number): Promise<Usuario | null> {
+        return await this.usuarioService.findOne(id);
+    }
+
+    @Post('/create')
+    async create(@Body() createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
+        return await this.usuarioService.create(createUsuarioDto);
+    }
+
+    @Put('/update/:id')
+    async update(@Param("id") id: number, @Body() updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
+        return await this.usuarioService.update(id, updateUsuarioDto);
+    }
+
+    @Delete('/delete')
+    async delete(@Param('id') id: number): Promise<void> {
+        return await this.usuarioService.delete(id);
     }
 }
-   

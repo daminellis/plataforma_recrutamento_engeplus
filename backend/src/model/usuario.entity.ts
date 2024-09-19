@@ -3,18 +3,19 @@ import { Cargo } from './cargo.entity';
 import { Setor } from './setor.entity'; 
 import {Vaga} from './vaga.entity';
 
+//TO DO: Definir not null em tudo que precisar.
 @Entity()
 export class Usuario {
-  @PrimaryGeneratedColumn({type: 'int', name: 'id'})
+  @PrimaryGeneratedColumn({type: 'int', name: 'id', })
   id: number;
 
-  @Column({ length: 50, name: 'username', unique: true })
+  @Column({ length: 50, name: 'username', unique: true, nullable: false })
   username: string;
 
   @Column({ length: 100, name: 'nome_completo' })
   nomeCompleto: string;
 
-  @Column({ length: 50, name: 'email', unique: true })
+  @Column({ length: 100, name: 'email', unique: true, nullable: false })
   email: string;
 
   @Column({ length: 8, name: 'senha_hash' })
