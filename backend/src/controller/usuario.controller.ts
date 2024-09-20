@@ -26,7 +26,7 @@ export class UsuarioController{
         return await this.usuarioService.update(id, updateUsuarioDto);
     }
 
-    @Delete('/delete')
+    @Delete('/delete/:id')
     async delete(@Param('id') id: number): Promise<void> {
         return await this.usuarioService.delete(id);
     }

@@ -34,10 +34,10 @@ export class UsuarioService {
       throw new NotFoundException('Usuário não encontrado');
     }
 
-    // Verificação de campos nulos ou inválidos
-    if (updateUsuarioDto.username && updateUsuarioDto.username.trim() === '') {
-      throw new BadRequestException('Username não pode ser vazio');
-    }
+    // // Verificação de campos nulos ou inválidos
+    // if (updateUsuarioDto.username && updateUsuarioDto.username.trim() === '') {
+    //   throw new BadRequestException('Username não pode ser vazio');
+    // }
     if (updateUsuarioDto.email && !this.isValidEmail(updateUsuarioDto.email)) {
       throw new BadRequestException('Email inválido');
     }
@@ -47,10 +47,11 @@ export class UsuarioService {
   }
 
   async delete(id: number): Promise<void> {
-    const result = await this.usuariosRepository.delete(id); // DELETE FROM usuarios WHERE id = ...
-    if (result.affected === 0) {
+    const usuario = await this.usuariosRepository.findOneBy({ id });
+    if (!usuario) {
       throw new NotFoundException('Usuário não encontrado');
     }
+    await this.usuariosRepository.delete(id); 
   }
 
   private isValidEmail(email: string): boolean {

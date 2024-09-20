@@ -9,6 +9,7 @@ import {Usuario} from '../model/usuario.entity';
 import {Setor} from '../model/setor.entity';
 import {Cargo}from '../model/cargo.entity';
 import { UsuarioModule } from 'src/module/usuario.module';
+import { VagaModule } from 'src/module/vaga.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UsuarioModule } from 'src/module/usuario.module';
       synchronize: true, //Disable on production
     }),
     UsuarioModule,
+    VagaModule
   ],
 })
 export class DatabaseModule {}
