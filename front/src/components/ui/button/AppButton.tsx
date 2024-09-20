@@ -28,9 +28,13 @@ interface AppButtonProps
   children: React.ReactNode;
 }
 
-export const AppButton = ({ children, ...props }: AppButtonProps) => {
+export const AppButton = ({
+  children,
+  className,
+  ...props
+}: AppButtonProps) => {
   return (
-    <button className={buttonClass({ ...props })} {...props}>
+    <button className={buttonClass({ ...props, className })} {...props}>
       {children}
     </button>
   );

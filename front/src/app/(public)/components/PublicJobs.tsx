@@ -24,7 +24,7 @@ export const PublicJobs = () => {
         </div>
       </div>
 
-      <div className="mt-5 flex flex-wrap gap-6">
+      <div className="mt-5 flex flex-wrap gap-6 max-md:justify-center">
         <CardJob isListGrid={isListGrid} />
         <CardJob isListGrid={isListGrid} />
         <CardJob isListGrid={isListGrid} />

@@ -15,7 +15,7 @@ export const Breadcrumb = ({ initialText, initialIndex }: BreadcrumbProps) => {
   const pathNames = paths.split("/").filter((path) => path);
 
   return (
-    <nav className="flex gap-2">
+    <nav className="flex gap-2 flex-wrap">
       <Link
         className={
           classLink +

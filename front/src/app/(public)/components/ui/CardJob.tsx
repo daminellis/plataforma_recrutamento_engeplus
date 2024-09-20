@@ -55,7 +55,9 @@ const CardJobContentList = () => {
       </h2>
 
       <div className="flex-1 flex justify-end">
-        <AppButton color="secondary">Aplicar agora</AppButton>
+        <AppButton className="max-md:hidden" color="secondary">
+          Aplicar agora
+        </AppButton>
       </div>
 
       <div className="flex items-center gap-4 text-gray-500 text-sm">
