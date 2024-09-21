@@ -20,13 +20,13 @@ export enum TempoDeExperiencia {
 export enum NivelDeExperiencia {
   JUNIOR = 'Júnior',
   PLENO = 'Pleno',
-  SENIOR = 'Senior',
+  SENIOR = 'Sênior',
 }
 
 export enum Modalidade {
   PRESENCIAL = 'Presencial',
   REMOTO = 'Remoto',
-  HIBRIDO = 'Hibrido',
+  HIBRIDO = 'Híbrido',
 }
 
 @Entity()
@@ -37,10 +37,10 @@ export class Vaga {
   @Column({ length: 100, name: 'titulo' })
   titulo: string;
 
-  @Column({ type: 'decimal', name:"salario_minimo", precision: 10, scale: 2 })
+  @Column({ type: 'numeric', name:"salario_minimo", precision: 10, scale: 2 })
   salarioMinimo: number;
 
-  @Column({ type: 'decimal', name: "salario_maximo", precision: 10, scale: 2 })
+  @Column({ type: 'numeric', name: "salario_maximo", precision: 10, scale: 2 })
   salarioMaximo: number;
 
   @Column({ type: 'enum', enum: NivelDeEducacao, name: 'educacao' })

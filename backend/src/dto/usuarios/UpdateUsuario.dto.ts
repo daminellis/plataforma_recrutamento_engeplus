@@ -1,4 +1,4 @@
-import { IsString, IsEmail,IsNumber, IsNotEmpty, IsOptional, Length } from 'class-validator';
+import { IsString, IsEmail,IsNumber, IsNotEmpty, IsOptional, Length, IsArray } from 'class-validator';
 
 export class UpdateUsuarioDto { 
   @IsOptional()
@@ -24,4 +24,16 @@ export class UpdateUsuarioDto {
   @IsString()
   @Length(4, 8)
   senhaHash?: string;
+
+  @IsOptional()
+  @IsNumber()
+  cargoId?: number;
+
+  @IsOptional()
+  @IsNumber()
+  setorId?: number;
+
+  @IsOptional()
+  @IsArray()
+  vagaIds?: number[];
 }

@@ -1,4 +1,4 @@
-import {IsEmail, IsNotEmpty, IsString, Length  } from 'class-validator';
+import {IsEmail, IsNotEmpty, IsString, Length, IsNumber, IsArray, IsOptional  } from 'class-validator';
 
 export class CreateUsuarioDto {
   @IsString()
@@ -20,4 +20,16 @@ export class CreateUsuarioDto {
   @IsNotEmpty()
   @Length(4, 16)
   senhaHash: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  cargoId: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  setorId: number;
+
+  @IsArray()
+  @IsOptional()
+  vagaIds: number[];
 }
