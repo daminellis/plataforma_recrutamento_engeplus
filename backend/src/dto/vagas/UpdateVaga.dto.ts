@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsInt, IsNumber, IsEnum, IsBoolean, IsOptional, IsDate } from 'class-validator';
+import { IsNotEmpty, IsString, IsInt, IsNumber, IsEnum, IsBoolean, IsOptional, IsDate, Max, Min } from 'class-validator';
 import { NivelDeEducacao, TempoDeExperiencia, NivelDeExperiencia, Modalidade } from '../../model/vaga.entity';
 
 export class UpdateVagaDto {
@@ -8,10 +8,14 @@ export class UpdateVagaDto {
 
   @IsOptional()
   @IsNumber()
+  @Min(0)
+  @Max(99999999.99)
   salarioMinimo?: number;
 
   @IsOptional()
   @IsNumber()
+  @Min(0)
+  @Max(99999999.99)
   salarioMaximo?: number;
 
   @IsOptional()

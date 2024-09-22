@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
-import { Setor } from './setor.entity'; 
-import {Usuario} from './usuario.entity';
+import { Setor } from './setor.entity';
+import { Usuario } from './usuario.entity';
 import { Candidatura } from './candidatura.entity';
 import { VagaTag } from './vagatag.entity';
 
@@ -31,13 +31,13 @@ export enum Modalidade {
 
 @Entity()
 export class Vaga {
-  @PrimaryGeneratedColumn({type: 'int'})
+  @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
   @Column({ length: 100, name: 'titulo' })
   titulo: string;
 
-  @Column({ type: 'numeric', name:"salario_minimo", precision: 10, scale: 2 })
+  @Column({ type: 'numeric', name: "salario_minimo", precision: 10, scale: 2 })
   salarioMinimo: number;
 
   @Column({ type: 'numeric', name: "salario_maximo", precision: 10, scale: 2 })
@@ -58,7 +58,7 @@ export class Vaga {
   @Column({ type: 'int', name: 'qtd_vagas' })
   quantidadeVagas: number;
 
-  @Column({ type: 'date', name: 'data_expiracao', nullable: false})
+  @Column({ type: 'date', name: 'data_expiracao', nullable: false })
   dataExpiracao: Date;
 
   @Column({ type: 'text', name: 'descricao' })
@@ -71,15 +71,15 @@ export class Vaga {
   disponivel: boolean;
 
   @ManyToOne(() => Usuario, usuario => usuario.vagas)
-  recruiter: Usuario[];
+  recrutador: Usuario;
 
   @ManyToOne(() => Setor, setor => setor.vagas)
-  setor: Setor[];
-  
+  setor: Setor;
+
   @OneToMany(() => Candidatura, candidatura => candidatura.vaga)
   candidatura: Candidatura[];
 
-  @OneToMany (() => VagaTag, vagatag => vagatag.vaga)
+  @OneToMany(() => VagaTag, vagatag => vagatag.vaga)
   vagatag: VagaTag[];
 }
 export default Vaga;

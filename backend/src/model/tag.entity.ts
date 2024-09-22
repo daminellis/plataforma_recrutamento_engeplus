@@ -3,7 +3,7 @@ import { VagaTag } from "./vagatag.entity";
 
 @Entity()
 export class Tag {
-    @PrimaryGeneratedColumn({type: 'int', name: 'id' })
+    @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
     @Column({ length: 50, unique: true, name: 'nome' })

@@ -1,12 +1,12 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Cargo } from './cargo.entity';
-import { Setor } from './setor.entity'; 
-import {Vaga} from './vaga.entity';
+import { Setor } from './setor.entity';
+import { Vaga } from './vaga.entity';
 
 //TO DO: Definir not null em tudo que precisar.
 @Entity()
 export class Usuario {
-  @PrimaryGeneratedColumn({type: 'int', name: 'id', })
+  @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
   @Column({ length: 50, name: 'username', unique: true, nullable: false })
@@ -18,16 +18,16 @@ export class Usuario {
   @Column({ length: 100, name: 'email', unique: true, nullable: false })
   email: string;
 
-  @Column({ length: 8, name: 'senha_hash' })
+  @Column({ length: 80, name: 'senha_hash' })
   senhaHash: string;
 
   @ManyToOne(() => Cargo, cargo => cargo.usuarios)
-  cargo: Cargo[];
+  cargo: Cargo;
 
   @ManyToOne(() => Setor, setor => setor.usuarios)
-  setor: Setor[];
+  setor: Setor;
 
-  @OneToMany(() => Vaga, vaga => vaga.recruiter)
+  @OneToMany(() => Vaga, vaga => vaga.recrutador)
   vagas: Vaga[];
 }
 export default Usuario;

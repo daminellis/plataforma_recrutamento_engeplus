@@ -1,15 +1,15 @@
-import { Length ,IsString, IsEmail, IsBoolean, IsOptional, IsInt, IsUrl, IsNotEmpty, Max } from 'class-validator';
+import { Length, IsString, IsEmail, IsBoolean, IsOptional, IsInt, IsUrl, IsNotEmpty, Max } from 'class-validator';
 
 export class CreateCandidaturaDto {
 
     @IsString()
     @IsNotEmpty()
-    @Length(4, 100)
+    @Length(4, 50)
     nomeCompleto: string;
 
     @IsNotEmpty()
     @IsEmail()
-    @Length(8, 255)
+    @Length(8, 50)
     email: string;
 
     @IsNotEmpty()

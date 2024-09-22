@@ -1,4 +1,4 @@
-import {IsEmail, IsNotEmpty, IsString, Length, IsNumber, IsArray, IsOptional  } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Length, IsNumber, IsArray, IsOptional } from 'class-validator';
 
 export class CreateUsuarioDto {
   @IsString()
@@ -12,13 +12,13 @@ export class CreateUsuarioDto {
   nomeCompleto: string;
 
   @IsEmail()
-  @Length(8, 100)
+  @Length(8, 50)
   @IsNotEmpty()
   email: string;
 
   @IsString()
   @IsNotEmpty()
-  @Length(4, 16)
+  @Length(12, 60)
   senhaHash: string;
 
   @IsNumber()

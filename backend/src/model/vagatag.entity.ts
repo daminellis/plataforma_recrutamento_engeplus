@@ -4,13 +4,13 @@ import { Vaga } from './vaga.entity';
 
 @Entity()
 export class VagaTag {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
-    
+
     @ManyToOne(() => Vaga, vaga => vaga.vagatag)
-    vaga: Vaga[];
+    vaga: Vaga;
 
     @ManyToOne(() => Tag, tag => tag.vagatag)
-    tag: Tag[];
+    tag: Tag;
 }
 export default VagaTag;

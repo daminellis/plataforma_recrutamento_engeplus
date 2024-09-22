@@ -1,6 +1,6 @@
-import { IsString, IsEmail,IsNumber, IsNotEmpty, IsOptional, Length, IsArray } from 'class-validator';
+import { IsString, IsEmail, IsNumber, IsNotEmpty, IsOptional, Length, IsArray } from 'class-validator';
 
-export class UpdateUsuarioDto { 
+export class UpdateUsuarioDto {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
@@ -22,7 +22,7 @@ export class UpdateUsuarioDto {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  @Length(4, 8)
+  @Length(12, 60)
   senhaHash?: string;
 
   @IsOptional()

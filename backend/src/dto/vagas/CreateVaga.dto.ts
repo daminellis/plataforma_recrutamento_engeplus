@@ -1,5 +1,22 @@
-import { IsNotEmpty,IsString, IsNumber, IsEnum, Length, Min, Max, IsDate, IsBoolean, IsArray, IsOptional } from 'class-validator';
-import { NivelDeEducacao, TempoDeExperiencia, NivelDeExperiencia, Modalidade  } from '../../model/vaga.entity';
+import {
+  IsNotEmpty,
+  IsString,
+  IsNumber,
+  IsEnum,
+  Length,
+  Min,
+  Max,
+  IsDate,
+  IsBoolean,
+  IsArray,
+  IsOptional,
+} from 'class-validator';
+import {
+  NivelDeEducacao,
+  TempoDeExperiencia,
+  NivelDeExperiencia,
+  Modalidade,
+} from '../../model/vaga.entity';
 import { Type } from 'class-transformer';
 import { DateTransformer } from '../../components/functions/DateTransformer';
 export class CreateVagaDto {
@@ -8,72 +25,70 @@ export class CreateVagaDto {
   @Length(1, 100)
   titulo: string;
 
-  @IsNotEmpty()  
-  @IsNumber({maxDecimalPlaces: 2})
+  @IsNotEmpty()
+  @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
-  @Max(9999999999.99)
+  @Max(99999999.99)
   salarioMinimo: number;
 
-  @IsNotEmpty()  
-  @IsNumber({maxDecimalPlaces: 2})
+  @IsNotEmpty()
+  @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
-  @Max(9999999999.99)
+  @Max(99999999.99)
   salarioMaximo: number;
 
-  @IsNotEmpty()  
+  @IsNotEmpty()
   @IsEnum(NivelDeEducacao)
   educacao: NivelDeEducacao;
 
-  @IsNotEmpty()  
+  @IsNotEmpty()
   @IsEnum(TempoDeExperiencia)
   tempoExperiencia: TempoDeExperiencia;
 
-  @IsNotEmpty()  
+  @IsNotEmpty()
   @IsEnum(NivelDeExperiencia)
   nivelExperiencia: NivelDeExperiencia;
 
-  @IsNotEmpty()  
+  @IsNotEmpty()
   @IsEnum(Modalidade)
   modalidade: Modalidade;
 
-  @IsNotEmpty()  
+  @IsNotEmpty()
   @IsNumber()
   @Min(1)
   quantidadeVagas: number;
 
-  @IsNotEmpty()  
+  @IsNotEmpty()
   @IsDate()
   @Type(() => Date)
   @DateTransformer()
   dataExpiracao: Date;
 
-  @IsNotEmpty()  
+  @IsNotEmpty()
   @IsString()
   descricao: string;
 
-  @IsNotEmpty()  
+  @IsNotEmpty()
   @IsString()
   responsabilidades: string;
 
-  @IsNotEmpty()  
+  @IsNotEmpty()
   @IsBoolean()
   disponivel: boolean;
 
-  @IsNotEmpty()  
+  @IsNotEmpty()
   @IsArray()
-  @IsOptional()
   recruiterIds: number[];
 
-  @IsNotEmpty()  
+  @IsNotEmpty()
   @IsNumber()
   setorId: number;
 
-  @IsNotEmpty()  
+  @IsNotEmpty()
   @IsArray()
-  @IsOptional()
   candidaturaIds: number[];
 
-  @IsNotEmpty()  
+  @IsNotEmpty()
   @IsArray()
   @IsOptional()
   vagatagIds: number[];
