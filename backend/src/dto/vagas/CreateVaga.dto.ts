@@ -1,6 +1,7 @@
 import { IsNotEmpty,IsString, IsNumber, IsEnum, Length, Min, Max, IsDate, IsBoolean, IsArray, IsOptional } from 'class-validator';
 import { NivelDeEducacao, TempoDeExperiencia, NivelDeExperiencia, Modalidade  } from '../../model/vaga.entity';
-
+import { Type } from 'class-transformer';
+import { DateTransformer } from '../../components/functions/DateTransformer';
 export class CreateVagaDto {
   @IsNotEmpty()
   @IsString()
@@ -42,6 +43,8 @@ export class CreateVagaDto {
 
   @IsNotEmpty()  
   @IsDate()
+  @Type(() => Date)
+  @DateTransformer()
   dataExpiracao: Date;
 
   @IsNotEmpty()  

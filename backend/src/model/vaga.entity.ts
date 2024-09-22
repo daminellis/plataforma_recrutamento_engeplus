@@ -44,7 +44,7 @@ export class Vaga {
   salarioMaximo: number;
 
   @Column({ type: 'enum', enum: NivelDeEducacao, name: 'educacao' })
-  educacao: NivelDeEducacao ;
+  educacao: NivelDeEducacao;
 
   @Column({ type: 'enum', enum: TempoDeExperiencia, name: 'tempo_experiencia' })
   tempoExperiencia: TempoDeExperiencia;
@@ -58,8 +58,8 @@ export class Vaga {
   @Column({ type: 'int', name: 'qtd_vagas' })
   quantidadeVagas: number;
 
-  @Column({ type: 'date', name: 'data_expiracao' })
-  dataExperiacao: Date;
+  @Column({ type: 'date', name: 'data_expiracao', nullable: false})
+  dataExpiracao: Date;
 
   @Column({ type: 'text', name: 'descricao' })
   descricao: string;

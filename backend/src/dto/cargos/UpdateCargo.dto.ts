@@ -1,6 +1,6 @@
 import {IsInt, IsOptional, IsString } from "class-validator";
 
-export class CreateCargoDto {
+export class UpdateCargoDto {
     @IsOptional()
     @IsInt()
     id: number;

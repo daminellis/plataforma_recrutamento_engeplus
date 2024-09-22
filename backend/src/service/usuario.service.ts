@@ -13,11 +13,11 @@ export class UsuarioService {
   ) { }
 
   // FUNÇÕES PARA O CRUD DE USUÁRIOS
-  //Get all usuários
+  //Econtra todos os usuários
   findAll(): Promise<Usuario[]> {
     return this.usuariosRepository.find(); // SELECT * FROM usuarios
   }
-  //Get one usuário
+  //Encontra um usuário
   findOne(id: number): Promise<Usuario | null> {
     return this.usuariosRepository.findOneBy({ id }); // SELECT * FROM usuarios WHERE id = ...
   }

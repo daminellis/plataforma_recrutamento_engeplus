@@ -10,6 +10,11 @@ import {Setor} from '../model/setor.entity';
 import {Cargo}from '../model/cargo.entity';
 import { UsuarioModule } from 'src/module/usuario.module';
 import { VagaModule } from 'src/module/vaga.module';
+import { SetorModule } from 'src/module/setor.module';
+import { CargoModule } from 'src/module/cargo.module';
+import { TagModule } from 'src/module/tag.module';
+import { VagaTagModule } from 'src/module/vagatag.module';
+import { CandidaturaModule } from 'src/module/candidatura.module';
 
 @Module({
   imports: [
@@ -21,10 +26,15 @@ import { VagaModule } from 'src/module/vaga.module';
       password: 'passphrasethatidkforwhat',
       database: 'nestjs',
       entities: [Tag, VagaTag, Vaga, Usuario, Candidatura, Setor, Cargo],
-      synchronize: true, //Disable on production
+      synchronize: true, //TIRA ISSO EM PRODUÇÃO PELO AMOR DE DEUS!!!
     }),
     UsuarioModule,
-    VagaModule
+    VagaModule,
+    SetorModule,
+    CargoModule,
+    TagModule,
+    VagaTagModule,
+    CandidaturaModule,
   ],
 })
 export class DatabaseModule {}
