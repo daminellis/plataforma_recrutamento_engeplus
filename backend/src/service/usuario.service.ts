@@ -60,4 +60,3 @@ export class UsuarioService {
   }
 
 }
-export default UsuarioService;
