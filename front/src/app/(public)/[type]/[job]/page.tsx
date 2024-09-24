@@ -2,7 +2,11 @@ import { AppButton } from "@/components/ui/button/AppButton";
 import { PublicLayout } from "../../components/PublicLayout";
 import { formatTextUrl } from "@/app/utils/textTransform";
 import { AppBadge } from "@/components/ui/AppBadge";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
+import {
+  ArrowRightIcon,
+  CopyIcon,
+  LinkedInLogoIcon,
+} from "@radix-ui/react-icons";
 import { SummaryItem } from "./components/SummaryItem";
 import {
   EventOutlined,
@@ -11,7 +15,9 @@ import {
   PaymentsOutlined,
   PermContactCalendarOutlined,
   SchoolOutlined,
+  WhatsApp,
 } from "@mui/icons-material";
+import { SocialNetworkLink } from "./components/SocialNetworkLink";
 
 interface JobPageProps {
   params: {
@@ -42,7 +48,7 @@ export default function JobPage({ params }: JobPageProps) {
       </section>
 
       <section className="flex mt-5 gap-10 max-md:flex-col-reverse">
-        <article className="md:flex-1 max-md:min-h-80">
+        <article className="md:flex-1 md:min-w-80 max-md:min-h-80">
           <h2 className="font-medium text-lg">Descrição da vaga</h2>
           <p className="text-base text-gray-500">
             Integer aliquet pretium consequat. Donec et sapien id leo accumsan
@@ -80,41 +86,69 @@ export default function JobPage({ params }: JobPageProps) {
           </AppButton>
         </article>
 
-        <article className="w-[32.5rem] max-md:w-full h-80 p-8 border border-gray-400 rounded-lg flex flex-col gap-6">
-          <h2 className="font-medium text-xl">Resumo</h2>
+        <article className="max-w-[32.5rem] w-full flex flex-col gap-5">
+          <div className="h-fit p-8 border border-gray-400 rounded-lg flex flex-col gap-6">
+            <h2 className="font-medium text-xl">Resumo</h2>
 
-          <div className="flex">
-            <SummaryItem
-              Icon={EventOutlined}
-              title="Vaga postada"
-              value="22/12/2024"
-            />
-            <SummaryItem
-              Icon={SchoolOutlined}
-              title="Escolaridade"
-              value="Graduação"
-            />
-            <SummaryItem
-              Icon={PaymentsOutlined}
-              title="Salário"
-              value="R$ 3k - 5k"
-            />
+            <div className="flex flex-wrap space-y-5 items-end">
+              <SummaryItem
+                Icon={EventOutlined}
+                title="Vaga postada"
+                value="22/12/2024"
+              />
+              <SummaryItem
+                Icon={SchoolOutlined}
+                title="Escolaridade"
+                value="Graduação"
+              />
+              <SummaryItem
+                Icon={PaymentsOutlined}
+                title="Salário"
+                value="R$ 3k - 5k"
+              />
+              <SummaryItem
+                Icon={LocationOnOutlined}
+                title="Localização"
+                value="Criciuma - SC"
+              />
+              <SummaryItem
+                Icon={HomeWorkOutlined}
+                title="Modalidade"
+                value="Tempo integral"
+              />
+              <SummaryItem
+                Icon={PermContactCalendarOutlined}
+                title="Tempo de experiência"
+                value="2-5 anos"
+              />
+            </div>
           </div>
-          <div className="flex">
-            <SummaryItem
-              Icon={LocationOnOutlined}
-              title="Localização"
-              value="Criciuma - SC"
+
+          <h2 className="font-medium text-xl">Compartilhar vaga</h2>
+
+          {/* Todo: Continuar a implementação do compartilhamento da vaga */}
+          <div className="flex gap-2">
+            <SocialNetworkLink
+              className="text-gray-500 hover:bg-gray-500 hover:text-white"
+              Icon={CopyIcon}
+              name="Copiar"
+              link={
+                "https://www.linkedin.com/shareArticle?mini=true&url={URL_DA_VAGA}&title={TITULO_DA_VAGA}&summary={DESCRICAO_DA_VAGA}&source={FONTE}"
+              }
             />
-            <SummaryItem
-              Icon={HomeWorkOutlined}
-              title="Modalidade"
-              value="Tempo integral"
+            <SocialNetworkLink
+              className="text-blue-500 hover:bg-blue-500 hover:text-white"
+              Icon={LinkedInLogoIcon}
+              name="LinkedIn"
+              link={`https://www.linkedin.com/shareArticle?mini=true&url={URL_DA_VAGA}&title=${jobTitle}&summary=${jobTitle}`}
             />
-            <SummaryItem
-              Icon={PermContactCalendarOutlined}
-              title="Tempo de experiência"
-              value="2-5 anos"
+            <SocialNetworkLink
+              className="text-green-500 hover:bg-green-500 hover:text-white"
+              Icon={WhatsApp}
+              name="Whatsapp"
+              link={
+                "https://wa.me/text=Olá!%20Encontrei%20uma%20vaga%20interessante%20que%20acho%20que%20pode%20ser%20do%20seu%20interesse:%20https://www.seusite.com/vaga123%20-%20Desenvolvedor%20Full-Stack.%20Confira!"
+              }
             />
           </div>
         </article>

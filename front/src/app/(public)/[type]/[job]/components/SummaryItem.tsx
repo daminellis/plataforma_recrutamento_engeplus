@@ -1,19 +1,14 @@
-import { SvgIconTypeMap } from "@mui/material";
-import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { IconProps } from "@radix-ui/react-icons/dist/types";
-import { ForwardRefExoticComponent, RefAttributes } from "react";
+import { IconType } from "@/app/types/Icon";
 
 interface SummaryItemProps {
-  Icon:
-    | ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
-    | OverridableComponent<SvgIconTypeMap<{}, "svg">>;
+  Icon: IconType;
   title: string;
   value: string;
 }
 
 export const SummaryItem = ({ Icon, title, value }: SummaryItemProps) => {
   return (
-    <div className="flex-1">
+    <div className="w-[9.472rem]">
       <Icon className="text-blue-500 size-8" />
 
       <div className="mt-4 flex flex-col gap-1">

@@ -1,8 +1,7 @@
-import { IconProps } from "@radix-ui/react-icons/dist/types";
-import { ForwardRefExoticComponent, RefAttributes } from "react";
+import { IconType } from "@/app/types/Icon";
 
 interface CompanyNumbersProps {
-  Icon: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>;
+  Icon: IconType;
   number: number;
   description: string;
 }
