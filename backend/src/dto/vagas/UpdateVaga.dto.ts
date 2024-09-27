@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsString, IsInt, IsNumber, IsEnum, IsBoolean, IsOptional, IsDate, Max, Min } from 'class-validator';
 import { NivelDeEducacao, TempoDeExperiencia, NivelDeExperiencia, Modalidade } from '../../model/vaga.entity';
+import { Type } from 'class-transformer';
 
 export class UpdateVagaDto {
   @IsOptional()
@@ -39,8 +40,8 @@ export class UpdateVagaDto {
   quantidadeVagas?: number;
 
   @IsOptional()
-  @IsDate()
-  dataExperiacao?: Date;
+  // @Type(() => Date)
+  dataExpiracao?: string;
 
   @IsOptional()
   @IsString()

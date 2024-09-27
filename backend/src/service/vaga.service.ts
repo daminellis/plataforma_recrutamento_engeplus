@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateVagaDto } from '../dto/vagas/CreateVaga.dto';
 import { UpdateVagaDto } from '../dto/vagas/UpdateVaga.dto';
 import Vaga from '../model/vaga.entity';
-
+import { dateFormater } from '../utils/functions/dateFormater';
 @Injectable()
 export class VagaService {
     constructor(
@@ -27,7 +27,9 @@ export class VagaService {
     //Cria uma vaga
     async createVaga(createVagaDto: CreateVagaDto): Promise<Vaga> {
         const newVaga = this.vagasRepository.create(createVagaDto); // Prepara o objeto para ser inserido no banco
-        // newVaga.dataExpiracao = new Date();
+        if (newVaga.dataExpiracao) {
+            newVaga.dataExpiracao = new Date(dateFormater(createVagaDto.dataExpiracao));
+        }
         return this.vagasRepository.save(newVaga); // INSERT INTO vagas
     }
 
@@ -36,6 +38,10 @@ export class VagaService {
         const vaga = await this.vagasRepository.findOneBy({id});
         if (!vaga) {
             throw new NotFoundException('Vaga não encontrada');
+        }
+        if (updateVagaDto.dataExpiracao) {
+            updateVagaDto.dataExpiracao = dateFormater(updateVagaDto.dataExpiracao);
+
         }
 
         Object.assign(vaga, updateVagaDto);
