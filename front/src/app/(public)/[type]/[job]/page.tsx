@@ -2,11 +2,7 @@ import { AppButton } from "@/components/ui/button/AppButton";
 import { PublicLayout } from "../../components/PublicLayout";
 import { formatTextUrl } from "@/app/utils/textTransform";
 import { AppBadge } from "@/components/ui/AppBadge";
-import {
-  ArrowRightIcon,
-  CopyIcon,
-  LinkedInLogoIcon,
-} from "@radix-ui/react-icons";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { SummaryItem } from "./components/SummaryItem";
 import {
   EventOutlined,
@@ -15,9 +11,9 @@ import {
   PaymentsOutlined,
   PermContactCalendarOutlined,
   SchoolOutlined,
-  WhatsApp,
 } from "@mui/icons-material";
-import { SocialNetworkLink } from "./components/SocialNetworkLink";
+import { SocialMedias } from "./components/SocialMedias";
+import { PublicJobs } from "../../components/PublicJobs";
 
 interface JobPageProps {
   params: {
@@ -126,32 +122,15 @@ export default function JobPage({ params }: JobPageProps) {
 
           <h2 className="font-medium text-xl">Compartilhar vaga</h2>
 
-          {/* Todo: Continuar a implementação do compartilhamento da vaga */}
-          <div className="flex gap-2">
-            <SocialNetworkLink
-              className="text-gray-500 hover:bg-gray-500 hover:text-white"
-              Icon={CopyIcon}
-              name="Copiar"
-              link={
-                "https://www.linkedin.com/shareArticle?mini=true&url={URL_DA_VAGA}&title={TITULO_DA_VAGA}&summary={DESCRICAO_DA_VAGA}&source={FONTE}"
-              }
-            />
-            <SocialNetworkLink
-              className="text-blue-500 hover:bg-blue-500 hover:text-white"
-              Icon={LinkedInLogoIcon}
-              name="LinkedIn"
-              link={`https://www.linkedin.com/shareArticle?mini=true&url={URL_DA_VAGA}&title=${jobTitle}&summary=${jobTitle}`}
-            />
-            <SocialNetworkLink
-              className="text-green-500 hover:bg-green-500 hover:text-white"
-              Icon={WhatsApp}
-              name="Whatsapp"
-              link={
-                "https://wa.me/text=Olá!%20Encontrei%20uma%20vaga%20interessante%20que%20acho%20que%20pode%20ser%20do%20seu%20interesse:%20https://www.seusite.com/vaga123%20-%20Desenvolvedor%20Full-Stack.%20Confira!"
-              }
-            />
-          </div>
+          <SocialMedias jobTitle={jobTitle} />
         </article>
+      </section>
+
+      <section>
+        <h1 className="font-medium text-4xl mt-24 mb-5">
+          Empregos relacionados
+        </h1>
+        <PublicJobs />
       </section>
     </PublicLayout>
   );
