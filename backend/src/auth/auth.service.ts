@@ -24,27 +24,20 @@ export class AuthService {
     }
   }
 
-  // async comparePasswords(myPlaintextPassword: string, hash: string): Promise<boolean> {
-  //   try {
-  //     const result = await bcrypt.compare(myPlaintextPassword, hash);
-  //     return result;
-  //   } catch (err) {
-  //     throw new Error('Erro ao comparar as senhas');
-  //   }
-  // }
+  async comparePasswords(myPlaintextPassword: string, hash: string): Promise<boolean> {
+    try {
+      const result = await bcrypt.compare(myPlaintextPassword, hash);
+      return result;
+    } catch (err) {
+      throw new Error('Erro ao comparar as senhas');
+    }
+  }
 
   async fetchUserFromDb(username: string): Promise<Usuario | null> {
     const users: Usuario[] = await this.usuarioService.findAll();
     return users.find(user => user.username === username) || null;
   }
-  // async validateUser(username: string, password: string): Promise<Usuario | null> {
-  //   const user = await this.usuarioRepository.findOne({ where: { username } });
-  //   if (user && await this.comparePasswords(password, user.senhaHash)) {
-  //     return user;
-  //   }
-  //   return null;
-  // }
-
+ 
   async checkUser(username: string, password: string): Promise<boolean> {
     const user: Usuario | null = await this.fetchUserFromDb(username);
   
@@ -52,7 +45,7 @@ export class AuthService {
       throw new Error('Usuário não encontrado');
     }
   
-    const match = await bcrypt.compare(password, user.senhaHash);
+    const match = await this.comparePasswords(password, user.senhaHash);
   
     if (match) {
       // login

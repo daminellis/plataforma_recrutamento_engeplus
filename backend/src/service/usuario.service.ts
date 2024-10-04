@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUsuarioDto } from '../dto/usuarios/CreateUsuario.dto';
@@ -41,15 +41,6 @@ export class UsuarioService {
     if (!usuario) {
       throw new NotFoundException('Usuário não encontrado');
     }
-
-    // // Verificação de campos nulos ou inválidos
-    // if (updateUsuarioDto.username && updateUsuarioDto.username.trim() === '') {
-    //   throw new BadRequestException('Username não pode ser vazio');
-    // }
-    if (updateUsuarioDto.email && !this.isValidEmail(updateUsuarioDto.email)) {
-      throw new BadRequestException('Email inválido');
-    }
-
     Object.assign(usuario, updateUsuarioDto);
     return this.usuariosRepository.save(usuario); // UPDATE usuarios SET ...
   }
@@ -60,11 +51,6 @@ export class UsuarioService {
       throw new NotFoundException('Usuário não encontrado');
     }
     await this.usuariosRepository.delete(id); 
-  }
-
-  private isValidEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
   }
 
 }
