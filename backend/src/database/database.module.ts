@@ -32,7 +32,7 @@ import { CandidaturaModule } from 'src/module/candidatura.module';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
         entities: [Tag, VagaTag, Vaga, Usuario, Candidatura, Setor, Cargo],
-        synchronize: true, //TIRA ISSO EM PRODUÇÃO PELO AMOR DE DEUS!!!
+        synchronize: false,
       }),
       inject: [ConfigService],
     }),
