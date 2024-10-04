@@ -3,6 +3,7 @@ import { UsuarioService } from "../service/usuario.service";
 import { CreateUsuarioDto } from "../dto/usuarios/CreateUsuario.dto";
 import{ UpdateUsuarioDto } from "../dto/usuarios/UpdateUsuario.dto";
 import Usuario from "src/model/usuario.entity";
+import { LoginDto } from "src/dto/autenticacao/Login.dto";
 
 @Controller('usuarios')
 export class UsuarioController{
@@ -19,6 +20,11 @@ export class UsuarioController{
     @Post('/create')
     async createUsuario(@Body() createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
         return await this.usuarioService.create(createUsuarioDto);
+    }
+
+    @Post('/login')
+    async login(@Body() loginDto: LoginDto): Promise<{success: any, access_token: string}> {
+        return await this.usuarioService.login(loginDto);
     }
 
     @Put('/update/:id')

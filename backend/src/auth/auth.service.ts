@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Usuario } from '../model/usuario.entity';
 import { UsuarioService } from '../service/usuario.service';
 import { Repository } from 'typeorm';
+import { JwtService } from '@nestjs/jwt';
 
 const saltRounds = 10;
 
@@ -12,6 +13,7 @@ export class AuthService {
   constructor(
     @InjectRepository(Usuario)
     private usuarioService: UsuarioService,
+    private jwtService: JwtService
   ) {}
 
   async hashPassword(myPlaintextPassword: string): Promise<string> {
@@ -38,7 +40,7 @@ export class AuthService {
     return users.find(user => user.username === username) || null;
   }
  
-  async checkUser(username: string, password: string): Promise<boolean> {
+  async checkUser(username: string, password: string): Promise<{boolean: any, access_token: string}> {
     const user: Usuario | null = await this.fetchUserFromDb(username);
   
     if (!user) {
@@ -48,10 +50,11 @@ export class AuthService {
     const match = await this.comparePasswords(password, user.senhaHash);
   
     if (match) {
+      const payload= { username: user.username, sub: user.id };
       // login
-      return true;
+      return { boolean: true, access_token:  await this.jwtService.signAsync(payload) };
     }
   
-    return false;
+    return { boolean: false, access_token: '' };
   }
 }
