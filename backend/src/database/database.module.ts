@@ -1,6 +1,7 @@
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import {Tag} from '../model/tag.entity';
 import {VagaTag} from '../model/vagatag.entity';
 import {Vaga} from '../model/vaga.entity';
@@ -18,15 +19,22 @@ import { CandidaturaModule } from 'src/module/candidatura.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'passphrasethatidkforwhat',
-      database: 'nestjs',
-      entities: [Tag, VagaTag, Vaga, Usuario, Candidatura, Setor, Cargo],
-      synchronize: true, //TIRA ISSO EM PRODUÇÃO PELO AMOR DE DEUS!!!
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_DATABASE'),
+        entities: [Tag, VagaTag, Vaga, Usuario, Candidatura, Setor, Cargo],
+        synchronize: true, //TIRA ISSO EM PRODUÇÃO PELO AMOR DE DEUS!!!
+      }),
+      inject: [ConfigService],
     }),
     UsuarioModule,
     VagaModule,
