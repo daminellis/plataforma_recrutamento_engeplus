@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateUsuarioDto } from '../dto/usuarios/CreateUsuario.dto';
 import { UpdateUsuarioDto } from '../dto/usuarios/UpdateUsuario.dto';
 import Usuario from '../model/usuario.entity';
+import { AuthService } from 'src/auth/auth.service';
 
 export type User = any;
 @Injectable()
@@ -11,6 +12,7 @@ export class UsuarioService {
   constructor(
     @InjectRepository(Usuario)
     private usuariosRepository: Repository<Usuario>, // Permite acessar os métodos do Repository
+    private authService: AuthService,
   ) { }
 
   // FUNÇÕES PARA O CRUD DE USUÁRIOS
@@ -29,6 +31,7 @@ export class UsuarioService {
   //Cria um usuário
   async create(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
     const newUser = this.usuariosRepository.create(createUsuarioDto);
+    newUser.senhaHash = await this.authService.hashPassword(createUsuarioDto.senhaHash);
     return this.usuariosRepository.save(newUser); // INSERT INTO usuarios
   }
 
