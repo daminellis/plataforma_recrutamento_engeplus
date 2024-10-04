@@ -5,10 +5,7 @@
   "compilerOptions": {
     "builder": {
       "type": "swc",
-      "typeCheck": true,
-      "options": {
-        "swcrcPath": "infrastructure/.swcrc"
-      }
+      "typeCheck": true
     }
   }
 
