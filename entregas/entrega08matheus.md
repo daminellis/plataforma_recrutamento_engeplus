@@ -14,60 +14,62 @@ O que cada tarefa deve conter:
 ## Exemplo
 ````
 Tarefa 1
-Pesquisa de tecnologias para a criação do front-end
+Verificar as entregas e caso algum aluno precise de ajuda, fornecer auxilio 
 Data de início: 26/08/2023
 Data de término: 02/09/2023
-Área de conhecimento: Front-end
+Área de conhecimento: Product Manager
 Status: Concluída
-Observações: Pesquisa resultou em 5 tecnologias recomendadas. A escolha, feita em conjunto com o time, foi pelo Next.js pois é uma das mais populares e tem uma comunidade ativa.
+Observações: Criei trello, issues, comecamos a decidir as roles
 
 Tarefa 2
-Desenvolvimento da tela de cadastro de sementes
+Ajudar caso algum dos participantes estejam com pendencias ou atrasos 
 Data de início: 03/09/2023
 Data de término: 09/09/2023
-Área de conhecimento: Front-end
+Área de conhecimento: Product Manager
 Status: Concluída
-Observações: A tela de cadastro foi desenvolvida utilizando o Next.js e o Tailwind CSS.
+Observações: Fui dando ajuda para comecarmos o projeto, quando possuiam duvidas sobre como fazer funcionar os frameworks... 
 
 Tarefa 3
-Integração da tela de cadastro com o backend da aplicação
+Ajudar no front por conta de serem as partes mais extensas
 Data de início: 10/09/2023
 Data de término: 16/09/2023
-Área de conhecimento: Front-end
+Área de conhecimento: Product Manager
 Status: Concluída
-Observações: A integração foi feita utilizando a biblioteca Axios para fazer as requisições HTTP.
+Observações: Comecei a ajudar o morona com o frontend, criei um componente de pesquisa e comecei meu contato com ts
 
 Tarefa 4
-Desenvolvimento da tela de alteração de sementes
+Ajudar o morona no front-end para facilitar o trabalho do morona
 Data de início: 17/09/2023
 Data de término: 23/10/2023
-Área de conhecimento: Front-end
-Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Área de conhecimento: Product Manager
+Status: Concluída
+Observações: Ajudei o morona em algumas coisas no front, e fiz algumas coisas do trello e issues 
 
 Tarefa 5
-Desenvolvimento da tela de alteração de sementes
+Conferir as entregar e ajudar no front
 Data de início: 24/09/2023
 Data de término: 30/09/2023
-Área de conhecimento: Front-end
-Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Área de conhecimento: Product Manager
+Status: Concluída
+Observações: Fiz as entregas que o professor pediu e arrumei o trello
 
 Tarefa 6
-Desenvolvimento da tela de alteração de sementes
+Fazer os slides do mvp e tambem preparar as entregas faltantes ao professor
 Data de início: 01/10/2023
 Data de término: 07/10/2023
-Área de conhecimento: Front-end
-Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Área de conhecimento: Product Manager
+Status: Concluída
+Observações: Fiz os slides do mvp e tentei criar uma request do axios do front (nao consegui)
 
 Tarefa 7
-Desenvolvimento da tela de alteração de sementes
+Ajudar o morona com o frontend
 Data de início: 08/10/2023
 Data de término: 14/10/2023
-Área de conhecimento: Front-end
-Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Área de conhecimento: Product Manager
+Status: Concluída
+Observações: Ajudar no front end e passar aos integrantes do grupo para fazerem a entrega 08
+
+''''
 
 Tarefa 8
 Desenvolvimento da tela de alteração de sementes
