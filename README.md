@@ -5,8 +5,6 @@
 + Gabriel Morona
 + Jean Guichard
 + Lucas da Silva
-## Aluno responsavel pelo front-end
-+ Jean Guichard²
 
 ## Sobre
 
