@@ -5,6 +5,8 @@ import { Usuario } from '../model/usuario.entity';
 import { UsuarioService } from '../service/usuario.service';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { LoginDto } from 'src/dto/autenticacao/Login.dto';
+import { CreateUsuarioDto } from 'src/dto/usuarios/CreateUsuario.dto';
 
 const saltRounds = 10;
 
@@ -12,6 +14,7 @@ const saltRounds = 10;
 export class AuthService {
   constructor(
     @InjectRepository(Usuario)
+    private usuariosRepository: Repository<Usuario>,
     private usuarioService: UsuarioService,
     private jwtService: JwtService
   ) {}
@@ -36,25 +39,48 @@ export class AuthService {
   }
 
   async fetchUserFromDb(username: string): Promise<Usuario | null> {
-    const users: Usuario[] = await this.usuarioService.findAll();
-    return users.find(user => user.username === username) || null;
+    return this.usuariosRepository.findOneBy({username});
   }
  
-  async checkUser(username: string, password: string): Promise<{boolean: any, access_token: string}> {
-    const user: Usuario | null = await this.fetchUserFromDb(username);
+  async register(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
+    const newUser = this.usuariosRepository.create(createUsuarioDto);
+    newUser.senhaHash = await this.hashPassword(newUser.senhaHash);
+    return this.usuariosRepository.save(newUser);
+  }
+
+  async login(loginDto: LoginDto):Promise<{success: any, access_token: string, user?: Usuario}> {
+    try{
+      const user = await this.fetchUserFromDb(loginDto.username);
+      
+        if (!user) {
+          throw new Error('Usuário não encontrado');
+        }
+      
+        const match = await this.comparePasswords(loginDto.password, user.senhaHash);
+      
+        if (match) {
+          // login
+          const payload= { username: user.username, sub: user.id, email: user.email, nomeCompleto: user.nomeCompleto, cargo: user.cargo, setor: user.setor, vagas: user.vagas };
+          const access_token = await this.jwtService.signAsync(payload);
   
-    if (!user) {
-      throw new Error('Usuário não encontrado');
+          return { 
+            success: true, 
+            access_token: access_token, 
+            user: {
+              id: user.id,
+              username: user.username,
+              nomeCompleto: user.nomeCompleto,
+              email: user.email,
+              senhaHash: user.senhaHash,
+              cargo: user.cargo,
+              setor: user.setor,
+              vagas: user.vagas
+            }
+          };
+        }
+        return { success: false, access_token: '' }
+    }catch(err){
+      throw new Error(err.message);
     }
-  
-    const match = await this.comparePasswords(password, user.senhaHash);
-  
-    if (match) {
-      const payload= { username: user.username, sub: user.id };
-      // login
-      return { boolean: true, access_token:  await this.jwtService.signAsync(payload) };
-    }
-  
-    return { boolean: false, access_token: '' };
   }
 }
