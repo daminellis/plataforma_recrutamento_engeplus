@@ -1,6 +1,6 @@
 # Projeto Sistema WEB
 
-## Aluno responsavel pelo front-end
+## Aluno responsavel pelo back-end
 + Jean Guichard²
 
 ## Sobre
