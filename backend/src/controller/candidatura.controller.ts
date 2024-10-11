@@ -11,7 +11,7 @@ export class CandidaturaController {
         return this.candidaturaService.findAllCandidaturas();
     }
 
-    @Get('find.:id')
+    @Get('find/:id')
     async findOneCandidatura(@Param('id') id: number) {
         return this.candidaturaService.findOneCandidatura(id);
     }
