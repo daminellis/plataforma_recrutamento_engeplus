@@ -19,9 +19,10 @@ Data de início: 26/08/2023
 Data de término: 02/09/2023
 Área de conhecimento: Back-end
 Status: Concluída
-Observações: A pesquisa resultou em 5 tecnologias e 2 principais recomendadas. A escolha feita em conjunto com o time,
-foi pelo framework NestJS junto do framework web Fastify, pois são duas ferramentas sólidas no mercado.
-Também foram considerados os meios de segurança, como autenticações e proteção de rotas utilizando JWT, Auth Guard e Bcrypt.
+Observações: A pesquisa resultou em 5 tecnologias e 2 principais recomendadas. A escolha feita em conjunto
+com o time, foi pelo framework NestJS junto do framework web Fastify, pois são duas ferramentas sólidas
+no mercado. Também foram considerados os meios de segurança, como autenticações e proteção de rotas
+utilizando JWT, Auth Guard e Bcrypt.
 
 Tarefa 2
 Desenvolvimento das entidades do projeto
