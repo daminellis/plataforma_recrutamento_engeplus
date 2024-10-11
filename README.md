@@ -1,15 +1,13 @@
 # Projeto Sistema WEB
 
-<<<<<<< HEAD
-## Aluno responsavel pelo back-end
-+ Jean Guichard²
+Plataforma RH engeplus
 =======
 ## Alunos
 + Matheus Daminelli
 + Gabriel Morona
 + Jean Guichard
 + Lucas da Silva
->>>>>>> 66f644b78ae6beeafdcfa847d37272e747d333e2
+
 
 ## Sobre
 
