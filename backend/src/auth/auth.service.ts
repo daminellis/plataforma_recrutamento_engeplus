@@ -8,10 +8,11 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from 'src/dto/autenticacao/Login.dto';
 import { CreateUsuarioDto } from 'src/dto/usuarios/CreateUsuario.dto';
 
-const saltRounds = 10;
 
 @Injectable()
 export class AuthService {
+  
+  private saltRounds: number  = 10;
   constructor(
     @InjectRepository(Usuario)
     private usuariosRepository: Repository<Usuario>,
@@ -21,8 +22,7 @@ export class AuthService {
 
   async hashPassword(myPlaintextPassword: string): Promise<string> {
     try {
-      const hash = await bcrypt.hash(myPlaintextPassword, saltRounds);
-      console.log(hash);
+      const hash = await bcrypt.hash(myPlaintextPassword, this.saltRounds);
       return hash;
     } catch (err) {
       throw new Error('Erro ao gerar o hash da senha');

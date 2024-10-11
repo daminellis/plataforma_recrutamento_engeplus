@@ -8,5 +8,6 @@ import { CandidaturaService } from "src/service/candidatura.service";
     imports: [TypeOrmModule.forFeature([Candidatura])],
     controllers: [CandidaturaController],
     providers: [CandidaturaService],
+    exports: [CandidaturaService]
 })
 export class CandidaturaModule {}
