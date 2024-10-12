@@ -19,10 +19,6 @@
 
 ## Contatos e Previsão de Reuniões:
 - **Reunião com empresa "Engeplus":** 
-  - **Previsão:** até 20 de Agosto de 2024
-  - **Contato:** João Silva
-  - **Estudante Responsável:** Maria Oliveira
-- **Reunião com Instituto Esperança (alternativa):**
   - **Previsão:** 19 de Agosto de 2024
   - **Contato:** Gerente de desenvolvimento-Gerente de tecnologias 
   - **Estudante Responsável:** Gabriel Morona

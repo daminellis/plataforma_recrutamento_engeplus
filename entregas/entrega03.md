@@ -2,14 +2,17 @@
 
 ## Repositório de Código
 
-[GitHub](https://github.com/daminellis/projetosweb-2024)
++ [GitHub](https://github.com/daminellis/projetosweb-2024)
+
+## Repositorio de front-end
++ [Figma](https://www.figma.com/design/LZ578KKeR8TDL7o4Q92o1h/%F0%9F%A7%91%E2%80%8D%F0%9F%92%BC-Plataforma-de-Recrutamento---Engeplus?node-id=15-2192&t=WgDzdek8R5S9crbt-1)
 
 ## Ferramenta de Gerenciamento de Projetos
 
 Uutilizaremos duas formas de gerenciamento, trello e issues do github
 
-[Trello](https://trello.com/b/bqQLby8h/projeto-sistemas-web)
-[Github](https://github.com/daminellis/projetosweb-2024/issues)
++ [Trello](https://trello.com/b/bqQLby8h/projeto-sistemas-web)
++ [Github](https://github.com/daminellis/projetosweb-2024/issues)
 
 ## Principais Tecnologias a Serem Utilizadas
 
@@ -41,12 +44,17 @@ Uutilizaremos duas formas de gerenciamento, trello e issues do github
 |Semana 4|17/09 a 23/09|Ajudar o jean no back-end por conta do banco já estar estruturado                                          | Lucas | 
 |Semana 4|17/09 a 23/09|Ajudar o morona no front-end para facilitar o trabalho do morona                                           | Matheus | 
 |||||
-|Semana 5|24/09 a 30/09|A verificar com o tempo                                                                                    | Jean | 
-|Semana 5|24/09 a 30/09|A verificar com o tempo                                                                                    | Morona | 
-|Semana 5|24/09 a 30/09|A verificar com o tempo                                                                                    | Lucas | 
-|Semana 5|24/09 a 30/09|A verificar com o tempo                                                                                    | Matheus | 
+|Semana 5|24/09 a 30/09|Fazer o back do login                                                                                      | Jean | 
+|Semana 5|24/09 a 30/09|Começar a integrar o back no front                                                                         | Morona | 
+|Semana 5|24/09 a 30/09|Ajudar o jean no backend                                                                                   | Lucas | 
+|Semana 5|24/09 a 30/09|Conferir as entregar e ajudar no front                                                                     | Matheus | 
 |||||
-|Semana 6|01/10 a 07/10|A verificar com o tempo                                                                                    | Jean | 
-|Semana 6|01/10 a 07/10|A verificar com o tempo                                                                                    | Morona | 
-|Semana 6|01/10 a 07/10|A verificar com o tempo                                                                                    | Lucas | 
-|Semana 6|01/10 a 07/10|A verificar com o tempo                                                                                    | Matheus | 
+|Semana 6|01/10 a 07/10|Verificar com o postman se o log está retornando certo                                                     | Jean | 
+|Semana 6|01/10 a 07/10|Fazer as integrações do backend caso tenha faltado algo                                                    | Morona | 
+|Semana 6|01/10 a 07/10|Ajudar o jean a fazer o backend                                                                            | Lucas | 
+|Semana 6|01/10 a 07/10|Fazer os slides do mvp e tambem preparar as entregas faltantes ao professor                                | Matheus | 
+|||||
+|Semana 7|08/10 a 14/10|Começar o back da parte do RH                                                                              | Jean | 
+|Semana 7|08/10 a 14/10|Terminar os componentes das telas do rh                                                                    | Morona | 
+|Semana 7|08/10 a 14/10|Ajudar o jean a fazer o backend                                                                            | Lucas | 
+|Semana 7|08/10 a 14/10|Ajudar o morona com o frontend                                                                             | Matheus | 
