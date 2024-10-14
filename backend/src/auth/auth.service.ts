@@ -7,8 +7,6 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from 'src/dto/autenticacao/Login.dto';
 import { CreateUsuarioDto } from 'src/dto/usuarios/CreateUsuario.dto';
-
-
 @Injectable()
 export class AuthService {
   
@@ -39,7 +37,7 @@ export class AuthService {
   }
 
   async fetchUserFromDb(username: string): Promise<Usuario | null> {
-    return this.usuariosRepository.findOneBy({username});
+    return this.usuarioService.findOneByName(username);
   }
  
   async register(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {

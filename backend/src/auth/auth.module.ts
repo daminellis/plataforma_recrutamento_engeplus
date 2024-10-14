@@ -13,7 +13,7 @@ import { UsuarioService } from 'src/service/usuario.service';
   JwtModule.register({
     global: true,
     secret: jwtConstants.secret,
-    signOptions: { expiresIn: '60s' },
+    signOptions: { expiresIn: '40m' },
   }),],
   providers: [AuthService, UsuarioService],
   controllers: [AuthController],

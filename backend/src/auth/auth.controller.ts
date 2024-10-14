@@ -22,9 +22,5 @@ export class AuthController {
     return await this.authService.login(loginDto);
   }
 
-  // @UseGuards(AuthGuard)
-  // @Get('profile')
-  // getProfile(@Request() req: FastifyRequest): Promise<Usuario> {
-  //   return this.authService.getProfile(req.user.id);
-  // }
+  
 }
