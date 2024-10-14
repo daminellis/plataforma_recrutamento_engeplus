@@ -11,6 +11,7 @@ import {
   IsArray,
   IsOptional,
   isDate,
+  Matches,
 } from 'class-validator';
 import {
   NivelDeEducacao,
@@ -78,10 +79,23 @@ export class CreateVagaDto {
   @IsString()
   descricao: string;
 
+  @ApiProperty({type: [String]})
+  @IsNotEmpty()
+  @IsArray()
+  responsabilidades: string[];
+
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  responsabilidades: string;
+  @Matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+ - [A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
+  regiao: string;
+
+  @ApiProperty()
+  tempoPostado: string;
+
+  @ApiProperty()
+  @Type(() => Date)
+  dataPostagem: Date;
 
   @ApiProperty()
   @IsNotEmpty()

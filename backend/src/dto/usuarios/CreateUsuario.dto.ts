@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateUsuarioDto {
 
   @ApiProperty()
+  @IsNotEmpty()
   @IsString()
   @Length(4, 50)
   @IsNotEmpty()
@@ -23,7 +24,7 @@ export class CreateUsuarioDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @Length(12, 60)
+  @Length(6, 60)
   senhaHash: string;
 
   @ApiProperty()

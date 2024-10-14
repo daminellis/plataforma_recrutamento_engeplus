@@ -1,10 +1,11 @@
-import { Body, Controller, Post, HttpCode, HttpStatus, Request, UseGuards, Get } from '@nestjs/common';
+import { Body, Controller, Post, HttpCode, HttpStatus, Request, UseGuards, Get, Put, Param } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { LoginDto } from 'src/dto/autenticacao/Login.dto';
 import { CreateUsuarioDto } from 'src/dto/usuarios/CreateUsuario.dto';
 import Usuario from 'src/model/usuario.entity';
+import { UpdateUsuarioDto } from 'src/dto/usuarios/UpdateUsuario.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -12,7 +13,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post('/register')
-  async register(@Body() createUsuarioDto:CreateUsuarioDto): Promise<Usuario> {
+  async register(@Body() createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
     return await this.authService.register(createUsuarioDto);
   }
 
@@ -22,5 +23,9 @@ export class AuthController {
     return await this.authService.login(loginDto);
   }
 
-  
+  @Put('/update-usuario/:id')
+  async update(@Param("id") id: number, @Body() updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
+    return await this.authService.updateUsuario(id, updateUsuarioDto);
+  }
+
 }

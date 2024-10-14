@@ -64,8 +64,17 @@ export class Vaga {
   @Column({ type: 'text', name: 'descricao' })
   descricao: string;
 
-  @Column({ type: 'text', name: 'responsabilidades' })
-  responsabilidades: string;
+  @Column({ type: 'simple-array', name: 'responsabilidades' })
+  responsabilidades: string[];
+
+  @Column({ type: 'varchar', name: 'regiao' })
+  regiao: string;
+
+  @Column({ type: 'varchar', name: 'tempo_postado' })
+  tempoPostado: string;
+
+  @Column({ type: 'date', name: 'data_postagem', nullable: false })
+  dataPostagem: Date;
 
   @Column({ default: true, name: 'disponivel' })
   disponivel: boolean;
