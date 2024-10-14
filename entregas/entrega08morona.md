@@ -12,109 +12,110 @@ O que cada tarefa deve conter:
 - Observações adicionais
 
 ## Exemplo
-````
+
+```
 Tarefa 1
 Pesquisa de tecnologias para a criação do front-end
 Data de início: 26/08/2023
 Data de término: 02/09/2023
 Área de conhecimento: Front-end
 Status: Concluída
-Observações: Pesquisa resultou em 5 tecnologias recomendadas. A escolha, feita em conjunto com o time, foi pelo Next.js pois é uma das mais populares e tem uma comunidade ativa.
+Observações: Foi escolhido o next.js e estilizaçao principal em tailwind css
 
 Tarefa 2
-Desenvolvimento da tela de cadastro de sementes
+Desenvolvimento do figma para estruturar o que será feito
 Data de início: 03/09/2023
 Data de término: 09/09/2023
 Área de conhecimento: Front-end
 Status: Concluída
-Observações: A tela de cadastro foi desenvolvida utilizando o Next.js e o Tailwind CSS.
+Observações: Feito no figma para saber como iria ficar e dar um norte ao projeto
 
 Tarefa 3
-Integração da tela de cadastro com o backend da aplicação
+Desenvolvimento da tela de login e cadastro
 Data de início: 10/09/2023
 Data de término: 16/09/2023
 Área de conhecimento: Front-end
 Status: Concluída
-Observações: A integração foi feita utilizando a biblioteca Axios para fazer as requisições HTTP.
+Observações: Criada as primeiras telas do projeto, sem integração com backend
 
 Tarefa 4
-Desenvolvimento da tela de alteração de sementes
+Criacao da tela de home e catalogo de vagas
 Data de início: 17/09/2023
 Data de término: 23/10/2023
 Área de conhecimento: Front-end
-Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Status: Conluída
+Observações: Tela home foi demorada de fazer por conta de ser a primeira criaçao de componentes estruturais do projeto. Catalogo de vagas nao terminado
 
 Tarefa 5
-Desenvolvimento da tela de alteração de sementes
+Terminar catalogo de vagas e começar a tela das vagas especificas
 Data de início: 24/09/2023
 Data de término: 30/09/2023
 Área de conhecimento: Front-end
-Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Status: Concluída
+Observações: Terminado o catalogo de vagas mas poucas coisas foram feitas para a tela de vagas especificas
 
 Tarefa 6
-Desenvolvimento da tela de alteração de sementes
+Terminar tela de vagas especificas
 Data de início: 01/10/2023
 Data de término: 07/10/2023
 Área de conhecimento: Front-end
-Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Status: Concluída
+Observações: Tela de vagas especificas concluida
 
 Tarefa 7
-Desenvolvimento da tela de alteração de sementes
+Começar a fazer as integrações do backend com frontend
 Data de início: 08/10/2023
 Data de término: 14/10/2023
 Área de conhecimento: Front-end
-Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Status: Concluido
+Observações: Ainda nao foi possivel por conta de um erro no cors(ja resolvido, somente falta implementar)
 
 Tarefa 8
-Desenvolvimento da tela de alteração de sementes
+Começar a fazer a dashboard do RH
 Data de início: 15/10/2023
 Data de término: 21/10/2023
 Área de conhecimento: Front-end
 Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Observações: Tera que fazer os componentes principais igual a primeira tela de home do usuario, irá demorar um pouco.
 
 Tarefa 9
-Desenvolvimento da tela de alteração de sementes
+Fazer o employer profiler
 Data de início: 22/10/2023
 Data de término: 28/10/2023
 Área de conhecimento: Front-end
-Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Status: Não começada
+Observações: Fazer uma tela com alguns dados do rh, principais pessoas a serem contratadas, vagas urgentes...
 
 Tarefa 10
-Desenvolvimento da tela de alteração de sementes
+Fazer a tela post a job
 Data de início: 29/10/2023
 Data de término: 04/11/2023
 Área de conhecimento: Front-end
-Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Status: Não começada
+Observações: Tela para postar um trabalho
 
 Tarefa 11
-Desenvolvimento da tela de alteração de sementes
+Fazer a tela my jobs
 Data de início: 05/11/2023
 Data de término: 11/11/2023
 Área de conhecimento: Front-end
-Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Status: Não começada
+Observações: Fazer a tela a onde mostra todos os trabalhos que ainda podem ser preenchidos
 
 Tarefa 12
-Desenvolvimento da tela de alteração de sementes
+Fazer a tela Saved Candidates
 Data de início: 12/11/2023
 Data de término: 18/11/2023
 Área de conhecimento: Front-end
-Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Status: Não começada
+Observações: Tela a onde tera todas os candidatos salvos pelo usuario do rh
 
 Tarefa 13
-Desenvolvimento da tela de alteração de sementes
+Fazer a tela single aplication
 Data de início: 19/11/2023
 Data de término: 25/11/2023
 Área de conhecimento: Front-end
-Status: Em andamento
-Observações: A tela de alteração de sementes é um modal apresentado quando clicado no botão de edição de uma semente e deve permitir a alteração do nome, descrição e imagem da semente.
+Status: Não começada
+Observações: A tela a onde o rh conseguirá ver os dados de quem cadastrou para cada vaga
 
-````
+```
