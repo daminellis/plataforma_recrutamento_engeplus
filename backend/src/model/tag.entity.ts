@@ -9,6 +9,9 @@ export class Tag {
     @Column({ length: 50, unique: true, name: 'nome' })
     nome: string;
 
+    @Column({name: 'cor_tag'})
+    corTag: string
+
     @OneToMany(() => VagaTag, vagatag => vagatag.tag)
     vagatag: VagaTag[];
 }

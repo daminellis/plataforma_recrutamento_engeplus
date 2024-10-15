@@ -12,6 +12,11 @@ export class VagaController {
         return this.vagaService.findAllVagas();
     }
 
+    @Get('/disponiveis')
+    async findDisponiveis(): Promise<Vaga[] | null> {
+        return this.vagaService.findVagasDisponiveis();
+    }
+
     @Get('/find/:id')
     async findOne(@Param('id') id: number): Promise<Vaga | null> {
         return this.vagaService.findOneVaga(id);
