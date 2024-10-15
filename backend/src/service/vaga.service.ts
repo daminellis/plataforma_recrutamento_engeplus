@@ -23,8 +23,8 @@ export class VagaService {
   //Get all vagas
   async findAllVagas(): Promise<Vaga[]> {
     const vagas = await this.vagasRepository.find({
-      select: ['id', 'titulo', 'salarioMinimo', 'salarioMaximo', 'nivelExperiencia', 'modalidade', 'regiao', 'dataPostagem'],
-      relations: ['setor'],
+      select: ['id', 'titulo', 'salarioMinimo', 'salarioMaximo', 'regiao', 'dataPostagem'],
+      relations: ['setor, vagatag'],
     }); // SELECT * FROM vagas
     
     return vagas;

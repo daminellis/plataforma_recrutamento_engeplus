@@ -70,9 +70,6 @@ export class Vaga {
   @Column({ type: 'varchar', name: 'regiao' })
   regiao: string;
 
-  // @Column({ type: 'varchar', name: 'tempo_postado'})
-  // tempoPostado: string;
-
   @Column({ type: 'timestamp', name: 'data_postagem', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
   dataPostagem: Timestamp;
 
@@ -90,6 +87,5 @@ export class Vaga {
 
   @OneToMany(() => VagaTag, vagatag => vagatag.vaga)
   vagatag: VagaTag[];
-  newVaga: Date;
 }
 export default Vaga;
