@@ -11,6 +11,7 @@ import {
   IsArray,
   IsOptional,
   isDate,
+  Matches,
 } from 'class-validator';
 import {
   NivelDeEducacao,
@@ -21,7 +22,6 @@ import {
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 export class CreateVagaDto {
-  
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -78,17 +78,30 @@ export class CreateVagaDto {
   @IsString()
   descricao: string;
 
+  @ApiProperty({ type: [String] })
+  @IsNotEmpty()
+  @IsArray()
+  responsabilidades: string[];
+
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  responsabilidades: string;
+  @Matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+ - [A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
+  regiao: string;
+
+  @ApiProperty()
+  tempoPostado: string;
+
+  @ApiProperty()
+  @Type(() => Date)
+  dataPostagem: Date;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsBoolean()
   disponivel: boolean;
 
-  @ApiProperty({type: [Number]})
+  @ApiProperty({ type: [Number] })
   @IsNotEmpty()
   @IsArray()
   recruiterIds: number[];
@@ -98,12 +111,12 @@ export class CreateVagaDto {
   @IsNumber()
   setorId: number;
 
-  @ApiProperty({type: [Number]})
+  @ApiProperty({ type: [Number] })
   @IsNotEmpty()
   @IsArray()
   candidaturaIds: number[];
 
-  @ApiProperty({type: [Number]})
+  @ApiProperty({ type: [Number] })
   @IsNotEmpty()
   @IsArray()
   @IsOptional()

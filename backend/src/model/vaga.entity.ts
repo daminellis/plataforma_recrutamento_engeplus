@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, Timestamp } from 'typeorm';
 import { Setor } from './setor.entity';
 import { Usuario } from './usuario.entity';
 import { Candidatura } from './candidatura.entity';
@@ -64,8 +64,14 @@ export class Vaga {
   @Column({ type: 'text', name: 'descricao' })
   descricao: string;
 
-  @Column({ type: 'text', name: 'responsabilidades' })
-  responsabilidades: string;
+  @Column({ type: 'simple-array', name: 'responsabilidades' })
+  responsabilidades: string[];
+
+  @Column({ type: 'varchar', name: 'regiao' })
+  regiao: string;
+
+  @Column({ type: 'timestamp', name: 'data_postagem', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
+  dataPostagem: Timestamp;
 
   @Column({ default: true, name: 'disponivel' })
   disponivel: boolean;

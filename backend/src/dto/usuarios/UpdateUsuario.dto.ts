@@ -27,7 +27,7 @@ export class UpdateUsuarioDto {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  @Length(12, 60)
+  @Length(6, 60)
   senhaHash?: string;
 
   @ApiProperty()

@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from 'src/dto/autenticacao/Login.dto';
 import { CreateUsuarioDto } from 'src/dto/usuarios/CreateUsuario.dto';
+import { UpdateUsuarioDto } from 'src/dto/usuarios/UpdateUsuario.dto';
 @Injectable()
 export class AuthService {
   
@@ -80,5 +81,17 @@ export class AuthService {
     }catch(err){
       throw new Error(err.message);
     }
+  }
+
+  async updateUsuario(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
+    const usuario= await this.usuarioService.findOne(id);
+    if(!usuario){
+      throw new UnauthorizedException('Usuário não encontrado');
+    }
+    if (updateUsuarioDto.senhaHash) {
+      updateUsuarioDto.senhaHash = await this.hashPassword(updateUsuarioDto.senhaHash);
+    }
+    Object.assign(usuario, updateUsuarioDto);
+    return this.usuariosRepository.save(usuario);
   }
 }
