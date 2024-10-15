@@ -4,7 +4,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Timestamp } from 'typeorm';
 import { CreateVagaDto } from '../dto/vagas/CreateVaga.dto';
 import { UpdateVagaDto } from '../dto/vagas/UpdateVaga.dto';
 import Vaga from '../model/vaga.entity';
@@ -15,18 +15,29 @@ export class VagaService {
   constructor(
     @InjectRepository(Vaga)
     private vagasRepository: Repository<Vaga>, // Permite acessar os métodos do Repository
-  ) {}
+  ) { 
+  }
 
   // FUNÇÕES PARA O CRUD DE VAGAS
 
   //Get all vagas
-  findAllVagas(): Promise<Vaga[]> {
-    return this.vagasRepository.find(); // SELECT * FROM vagas
+  async findAllVagas(): Promise<Vaga[]> {
+    const vagas = await this.vagasRepository.find({
+      select: ['id', 'titulo', 'salarioMinimo', 'salarioMaximo', 'nivelExperiencia', 'modalidade', 'regiao', 'dataPostagem'],
+      relations: ['setor'],
+    }); // SELECT * FROM vagas
+    
+    return vagas;
   }
 
   //Get one vaga
-  findOneVaga(id: number): Promise<Vaga | null> {
-    return this.vagasRepository.findOneBy({ id }); // SELECT * FROM vagas WHERE id = ...
+  async findOneVaga(id: number): Promise<Vaga | null> {
+    const vaga = await this.vagasRepository.findOne({
+      where: { id },
+      relations: ['recrutador', 'setor', 'candidatura', 'vagatag'],
+    }); // SELECT * FROM vagas WHERE id = ...
+
+    return vaga;
   }
 
   //Cria uma vaga
@@ -37,15 +48,6 @@ export class VagaService {
         dateFormater(createVagaDto.dataExpiracao),
       );
     }
-    newVaga.dataPostagem = new Date();
-    // Ensure dataPostagem is set before calling tempoPostado
-    if (newVaga.dataPostagem) {
-      newVaga.tempoPostado = tempoPostado(newVaga.dataPostagem);
-    }
-
-    // if (newVaga.dataPostagem){
-    //     newVaga.dataPostagem = new Date(dateFormater(createVagaDto.dataPostagem));
-    // }
 
     return this.vagasRepository.save(newVaga); // INSERT INTO vagas
   }

@@ -89,8 +89,8 @@ export class CreateVagaDto {
   @Matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+ - [A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
   regiao: string;
 
-  // @ApiProperty()
-  // tempoPostado: string;
+  @ApiProperty()
+  tempoPostado: string;
 
   @ApiProperty()
   @Type(() => Date)
