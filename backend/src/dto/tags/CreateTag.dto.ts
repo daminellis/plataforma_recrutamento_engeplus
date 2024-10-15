@@ -7,4 +7,8 @@ export class CreateTagDto {
   @IsNotEmpty()
   @IsString()
   nome: string;
+
+  @ApiProperty()
+  @IsString()
+  corTag: string;
 }

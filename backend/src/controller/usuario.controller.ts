@@ -22,21 +22,6 @@ export class UsuarioController{
         return await this.usuarioService.findOneByName(username);
     }
 
-    // @Post('/create')
-    // async createUsuario(@Body() createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
-    //     return await this.usuarioService.create(createUsuarioDto);
-    // }
-
-    // @Post('/login')
-    // async login(@Body() loginDto: LoginDto): Promise<{success: any, access_token: string}> {
-    //     return await this.usuarioService.login(loginDto);
-    // }
-
-    // @Put('/update/:id')
-    // async update(@Param("id") id: number, @Body() updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
-    //     return await this.usuarioService.update(id, updateUsuarioDto);
-    // }
-
     @Delete('/delete/:id')
     async delete(@Param('id') id: number): Promise<void> {
         return await this.usuarioService.delete(id);

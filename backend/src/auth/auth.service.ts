@@ -59,7 +59,7 @@ export class AuthService {
       
         if (match) {
           // login
-          const payload= { username: user.username, sub: user.id, email: user.email, nomeCompleto: user.nomeCompleto, cargo: user.cargo, setor: user.setor, vagas: user.vagas };
+          const payload= { username: user.username, sub: user.id, email: user.email, nomeCompleto: user.nomeCompleto, cargo: user.cargo, setor: user.setor, vagas: user.vagas, tipoUsuario: user.tipoUsuario };
           const access_token = await this.jwtService.signAsync(payload);
   
           return { 
@@ -73,7 +73,8 @@ export class AuthService {
               senhaHash: user.senhaHash,
               cargo: user.cargo,
               setor: user.setor,
-              vagas: user.vagas
+              vagas: user.vagas,
+              tipoUsuario: user.tipoUsuario
             }
           };
         }

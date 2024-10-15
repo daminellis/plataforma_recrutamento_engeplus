@@ -4,12 +4,11 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Timestamp } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateVagaDto } from '../dto/vagas/CreateVaga.dto';
 import { UpdateVagaDto } from '../dto/vagas/UpdateVaga.dto';
 import Vaga from '../model/vaga.entity';
 import { dateFormater } from '../utils/functions/dateFormater';
-import { tempoPostado } from 'src/utils/functions/dateCounter';
 @Injectable()
 export class VagaService {
   constructor(
@@ -30,6 +29,13 @@ export class VagaService {
     return vagas;
   }
 
+  async findVagasDisponiveis(): Promise<Vaga[] | null> {
+    const vagas = await this.vagasRepository.find(); // SELECT * FROM vagas
+  
+    const vagasDisponiveis = vagas.filter(vaga => vaga.disponivel === true);
+  
+    return vagasDisponiveis.length > 0 ? vagasDisponiveis : null;
+  }
   //Get one vaga
   async findOneVaga(id: number): Promise<Vaga | null> {
     const vaga = await this.vagasRepository.findOne({

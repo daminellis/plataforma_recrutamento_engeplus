@@ -1,5 +1,6 @@
-import { IsEmail, IsNotEmpty, IsString, Length, IsNumber, IsArray, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Length, IsNumber, IsArray, IsOptional, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { TipoUsuarioEnum } from '../../model/usuario.entity';
 export class CreateUsuarioDto {
 
   @ApiProperty()
@@ -41,4 +42,10 @@ export class CreateUsuarioDto {
   @IsArray()
   @IsOptional()
   vagaIds: number[];
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @IsEnum(TipoUsuarioEnum)
+  tipoUsuario: TipoUsuarioEnum;
 }

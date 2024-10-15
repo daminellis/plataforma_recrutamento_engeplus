@@ -1,10 +1,14 @@
-import { IsNotEmpty, IsOptional, IsString, IsNumber, IsInt } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 export class UpdateTagDto {
 
     @ApiProperty()
-    @IsNotEmpty()
     @IsOptional()
     @IsString()
     nome: string;
+
+    @ApiProperty()
+    @IsOptional()
+    @IsString()
+    corTag: string;
 }

@@ -3,7 +3,12 @@ import { Cargo } from './cargo.entity';
 import { Setor } from './setor.entity';
 import { Vaga } from './vaga.entity';
 
-//TO DO: Definir not null em tudo que precisar.
+export enum TipoUsuarioEnum {
+  ADMIN = 'Administrador',
+  RH = 'Recusos Humanos',
+  LIDER = 'Lider',
+}
+
 @Entity()
 export class Usuario {
   @PrimaryGeneratedColumn({ type: 'int' })
@@ -18,8 +23,11 @@ export class Usuario {
   @Column({ length: 100, name: 'email', unique: true, nullable: false })
   email: string;
 
-  @Column({ length: 80, name: 'senha_hash' })
+  @Column({ length: 70, name: 'senha_hash' })
   senhaHash: string;
+
+  @Column({ type:'enum', name: 'tipo_usuario', enum: TipoUsuarioEnum })
+  tipoUsuario: TipoUsuarioEnum;
 
   @ManyToOne(() => Cargo, cargo => cargo.usuarios)
   cargo: Cargo;
