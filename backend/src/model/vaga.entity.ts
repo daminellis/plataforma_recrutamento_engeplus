@@ -70,10 +70,10 @@ export class Vaga {
   @Column({ type: 'varchar', name: 'regiao' })
   regiao: string;
 
-  @Column({ type: 'varchar', name: 'tempo_postado' })
+  @Column({ type: 'varchar', name: 'tempo_postado', default: () => '' })
   tempoPostado: string;
 
-  @Column({ type: 'date', name: 'data_postagem', nullable: false })
+  @Column({ type: 'datetime', name: 'data_postagem', nullable: false })
   dataPostagem: Date;
 
   @Column({ default: true, name: 'disponivel' })
