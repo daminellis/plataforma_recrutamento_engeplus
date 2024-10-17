@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator'; 
+import { IsArray, IsNotEmpty, IsString } from 'class-validator'; 
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTagDto {
@@ -11,4 +11,9 @@ export class CreateTagDto {
   @ApiProperty()
   @IsString()
   corTag: string;
+
+  @ApiProperty({ type: [Number] })
+  @IsNotEmpty()
+  @IsArray()
+  vagatagIds: number[];
 }

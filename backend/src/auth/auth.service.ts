@@ -8,6 +8,9 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from 'src/dto/autenticacao/Login.dto';
 import { CreateUsuarioDto } from 'src/dto/usuarios/CreateUsuario.dto';
 import { UpdateUsuarioDto } from 'src/dto/usuarios/UpdateUsuario.dto';
+import { SetorService } from 'src/service/setor.service';
+import { VagaService } from 'src/service/vaga.service';
+import { CargoService } from 'src/service/cargo.service';
 @Injectable()
 export class AuthService {
   
@@ -16,6 +19,9 @@ export class AuthService {
     @InjectRepository(Usuario)
     private usuariosRepository: Repository<Usuario>,
     private usuarioService: UsuarioService,
+    private setorService: SetorService,
+    private vagaService: VagaService,
+    private cargoService: CargoService,
     private jwtService: JwtService
   ) {}
 
@@ -44,6 +50,36 @@ export class AuthService {
   async register(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
     const newUser = this.usuariosRepository.create(createUsuarioDto);
     newUser.senhaHash = await this.hashPassword(newUser.senhaHash);
+    
+    if (createUsuarioDto.cargoId){
+      const cargo= await this.cargoService.findOne(createUsuarioDto.cargoId);
+      if(cargo){
+        newUser.cargo = cargo;
+      }else{
+        throw new Error(`Cargo ${createUsuarioDto.cargoId} não encontrado. Favor atribuir um cargo válido.`);
+      }
+    }
+    
+    if (createUsuarioDto.setorId) {
+      const setor = await this.setorService.findOneSetor(createUsuarioDto.setorId);
+      if (setor){
+        newUser.setor = setor;
+      }else{
+        throw new Error(`Setor ${createUsuarioDto.setorId} não encontrado. Favor atribuir um setor válido.`);
+      }
+    }
+
+    if (createUsuarioDto.vagaIds) {
+      newUser.vagas = [];
+      for (let i = 0; i < createUsuarioDto.vagaIds.length; i++) {
+        const vaga = await this.vagaService.findOneVaga(createUsuarioDto.vagaIds[i]);
+        if (vaga) {
+          newUser.vagas.push(vaga);
+        } else {
+          throw new Error(`Vaga ${createUsuarioDto.vagaIds[i]} não encontrada. Favor atribuir uma vaga válida.`);
+        }
+      }
+    } 
     return this.usuariosRepository.save(newUser);
   }
 
