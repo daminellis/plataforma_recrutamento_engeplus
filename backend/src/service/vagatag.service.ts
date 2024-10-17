@@ -11,11 +11,16 @@ export class VagaTagService {
     private vagatagsRepository: Repository<VagaTag>) { }
 
     async findAllVagaTags(): Promise<VagaTag[]> {
-        return this.vagatagsRepository.find();
+        return this.vagatagsRepository.find({
+            relations: ['vaga', 'tag']
+        });
     }
 
     async findOneVagaTag(id: number): Promise<VagaTag | null> {
-        return this.vagatagsRepository.findOneBy({ id });
+        return this.vagatagsRepository.findOne({
+            where: { id },
+            relations: ['vaga', 'tag']
+        });
     }
 
     async create(createVagaTagDto: CreateVagaTagDto): Promise<VagaTag> {

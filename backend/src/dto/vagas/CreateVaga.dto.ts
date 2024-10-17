@@ -101,10 +101,10 @@ export class CreateVagaDto {
   @IsBoolean()
   disponivel: boolean;
 
-  @ApiProperty({ type: [Number] })
+  @ApiProperty()
   @IsNotEmpty()
-  @IsArray()
-  recruiterIds: number[];
+  @IsNumber()
+  recruiterId: number;
 
   @ApiProperty()
   @IsNotEmpty()
