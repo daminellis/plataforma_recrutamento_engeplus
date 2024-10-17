@@ -8,7 +8,8 @@ import { UpdateVagaTagDto } from "../dto/vagatags/UpdateVagaTag.dto";
 @Injectable()
 export class VagaTagService {
     constructor(@InjectRepository(VagaTag)
-    private vagatagsRepository: Repository<VagaTag>) { }
+    private vagatagsRepository: Repository<VagaTag>,
+) { }
 
     async findAllVagaTags(): Promise<VagaTag[]> {
         return this.vagatagsRepository.find({

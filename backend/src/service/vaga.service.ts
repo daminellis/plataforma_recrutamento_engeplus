@@ -131,4 +131,16 @@ export class VagaService {
     }
     await this.vagasRepository.delete(id);
   }
+
+  async deleteAllNullVagas(): Promise<void> {
+
+    const vagas = await this.vagasRepository.find({ relations: ["setor"] });
+
+    const vagasNull = vagas.filter(vaga => vaga.setor === null);
+
+    for (let i = 0; i < vagasNull.length; i++) {
+        await this.vagasRepository.delete(vagasNull[i].id);
+        console.log(`Vaga com id ${vagasNull[i].id} excluída`);
+    }
+}
 }

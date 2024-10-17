@@ -36,4 +36,9 @@ export class VagaController {
     async deleteVaga(@Param('id') id: number): Promise<void> {
         return this.vagaService.deleteVaga(id);
     }
+
+    @Delete('/delete/allNull')
+    async deleteAllNull(): Promise<void> {
+        return this.vagaService.deleteAllNullVagas();
+    }
 };
