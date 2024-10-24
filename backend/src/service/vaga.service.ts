@@ -48,7 +48,8 @@ export class VagaService {
   async findOneVaga(id: number): Promise<Vaga | null> {
     const vaga = await this.vagasRepository.findOne({
       where: { id },
-      relations: ['recrutador', 'setor', 'candidatura', 'vagatag'],
+      select: ['id', 'titulo', 'salarioMinimo', 'salarioMaximo','educacao', 'tempoExperiencia', 'nivelExperiencia', 'modalidade', 'quantidadeVagas', 'dataExpiracao', 'descricao', 'responsabilidades', 'regiao', 'dataPostagem'],
+      relations: ['recrutador', 'setor', 'vagatag'],
     }); // SELECT * FROM vagas WHERE id = ...
 
     return vaga;
