@@ -4,24 +4,41 @@ import { Repository } from "typeorm";
 import { Candidatura } from "../model/candidatura.entity";
 import {CreateCandidaturaDto} from "../dto/candidaturas/CreateCandidatura.dto";
 import {UpdateCandidaturaDto} from "../dto/candidaturas/UpdateCandidatura.dto";
+import { VagaService } from "./vaga.service";
+import Vaga from "src/model/vaga.entity";
 
 @Injectable()
 export class CandidaturaService {
     constructor(
         @InjectRepository(Candidatura)
-        private candidaturaRepository: Repository<Candidatura>
+        private candidaturaRepository: Repository<Candidatura>,
     ) {}
 
     async findAllCandidaturas(): Promise<Candidatura[]> {
-        return this.candidaturaRepository.find();
+        return this.candidaturaRepository.find({
+            select: ['id', 'nomeCompleto', 'email', 'telefone', 'descricao', 'favorito' ],
+            relations: ['vaga']
+        });
     }
 
     async findOneCandidatura(id: number): Promise<Candidatura | null> {
-        return this.candidaturaRepository.findOneBy({id});
+        return this.candidaturaRepository.findOne({
+            where: { id },
+            relations: ['vaga']
+        });
     }
 
     async create(createCandidaturaDto: CreateCandidaturaDto): Promise<Candidatura> {
         const newCandidatura = this.candidaturaRepository.create(createCandidaturaDto);
+        
+        // if (createCandidaturaDto.vagaId) {
+        //     const vaga = await this.vagaService.findOneVaga(createCandidaturaDto.vagaId);
+        //     if (!vaga) {
+        //         throw new NotFoundException('Vaga não encontrada');
+        //     }
+        //     newCandidatura.vaga = vaga;
+        // }
+
         return this.candidaturaRepository.save(newCandidatura);
     }
 
@@ -30,6 +47,8 @@ export class CandidaturaService {
         if (!candidatura) {
             throw new NotFoundException('Candidatura não encontrada');
         }
+
+        
         Object.assign(candidatura, updateCandidaturaDto);
         return this.candidaturaRepository.save(candidatura);
     }

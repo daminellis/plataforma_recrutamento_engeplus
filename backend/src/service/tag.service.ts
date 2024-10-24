@@ -10,22 +10,22 @@ import { VagaTagService } from "./vagatag.service";
 export class TagService {
     constructor(
         @InjectRepository(Tag)
-        private candidaturaRepository: Repository<Tag>,
+        private tagRepository: Repository<Tag>,
         private vagaTagService: VagaTagService
     ) { }
 
     async findAllTags(): Promise<Tag[]> {
-        return this.candidaturaRepository.find({
+        return this.tagRepository.find({
             relations: ['vagatag']
         });
     }
 
     async findOneTag(id: number): Promise<Tag | null> {
-        return this.candidaturaRepository.findOneBy({ id });
+        return this.tagRepository.findOneBy({ id });
     }
 
     async create(createTagDto: CreateTagDto): Promise<Tag> {
-        const newTag = this.candidaturaRepository.create(createTagDto);
+        const newTag = this.tagRepository.create(createTagDto);
 
         if (createTagDto.vagatagIds) {
             newTag.vagatag = [];
@@ -38,23 +38,23 @@ export class TagService {
                 }
             }
         }
-        return this.candidaturaRepository.save(newTag);
+        return this.tagRepository.save(newTag);
     }
 
     async update(id: number, updateTagDto: UpdateTagDto): Promise<Tag> {
-        const tag = await this.candidaturaRepository.findOneBy({ id });
+        const tag = await this.tagRepository.findOneBy({ id });
         if (!tag) {
             throw new NotFoundException('Tag não encontrada');
         }
         Object.assign(tag, updateTagDto);
-        return this.candidaturaRepository.save(tag);
+        return this.tagRepository.save(tag);
     }
 
     async delete(id: number): Promise<void> {
-        const tag = await this.candidaturaRepository.findOneBy({ id });
+        const tag = await this.tagRepository.findOneBy({ id });
         if (!tag) {
             throw new NotFoundException('Tag não encontrada');
         }
-        await this.candidaturaRepository.delete(id);
+        await this.tagRepository.delete(id);
     }
 }
