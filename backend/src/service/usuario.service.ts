@@ -22,6 +22,7 @@ export class UsuarioService {
   async findOne(id: number): Promise<Usuario | null> {
     return this.usuariosRepository.findOne({
       where: { id },
+      select: ['id', 'username', 'nomeCompleto', 'email', 'tipoUsuario'],
       relations: ['cargo', 'setor', 'vagas']
     });
   }

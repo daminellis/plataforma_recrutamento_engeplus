@@ -11,11 +11,16 @@ export class CargoService{
     private cargosRepository: Repository<Cargo>,){}
     
     findAll(): Promise<Cargo[]>{
-        return this.cargosRepository.find();
+        return this.cargosRepository.find({
+            relations: ['usuarios']
+        });
     }
 
     findOne(id: number): Promise<Cargo | null>{
-        return this.cargosRepository.findOneBy({id});
+        return this.cargosRepository.findOne({
+            where: { id },
+            relations: ['usuarios']
+        });
     }
 
     async create(createCargoDto: CreateCargoDto): Promise<Cargo>{

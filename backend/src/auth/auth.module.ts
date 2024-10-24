@@ -6,26 +6,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
-import { UsuarioService } from 'src/service/usuario.service';
-import { SetorService } from 'src/service/setor.service';
-import { VagaService } from 'src/service/vaga.service';
-import Setor from 'src/model/setor.entity';
-import Vaga from 'src/model/vaga.entity';
-import Cargo from 'src/model/cargo.entity';
-import { CargoService } from 'src/service/cargo.service';
-import Candidatura from 'src/model/candidatura.entity';
-import { CandidaturaService } from 'src/service/candidatura.service';
-import { VagaTagService } from 'src/service/vagatag.service';
-import VagaTag from 'src/model/vagatag.entity';
+import { SetorModule } from 'src/module/setor.module';
+import { VagaModule } from 'src/module/vaga.module';
+import { VagaTagModule } from 'src/module/vagatag.module';
+import { CargoModule } from 'src/module/cargo.module';
+import { CandidaturaModule } from 'src/module/candidatura.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Usuario, Setor, Vaga, VagaTag, Cargo, Candidatura]), UsuarioModule,
+  imports: [TypeOrmModule.forFeature([Usuario]), UsuarioModule, SetorModule, VagaModule, VagaTagModule, CargoModule, CandidaturaModule,
   JwtModule.register({
     global: true,
     secret: jwtConstants.secret,
     signOptions: { expiresIn: '40m' },
   }),],
-  providers: [AuthService, UsuarioService, SetorService, VagaService, CargoService, CandidaturaService, VagaTagService],
+  providers: [AuthService],
   controllers: [AuthController],
   exports: [AuthService],
 })

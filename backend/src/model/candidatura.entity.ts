@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   ManyToOne,
+  OneToOne,
 } from 'typeorm';
 import { Vaga } from './vaga.entity';
 
@@ -24,8 +25,8 @@ export class Candidatura {
   @Column({ type: 'text', name: 'descricao' })
   descricao: string;
 
-  @Column({ length: 512, name: 'cv_url' })
-  cvUrl: string;
+  @Column({ type: 'blob', name: 'cv' })
+  cvData: Buffer;
 
   @Column({ type: 'boolean', name: 'favorito', default: false })
   favorito: boolean;
