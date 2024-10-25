@@ -3,7 +3,6 @@ import { CandidaturaService } from "../service/candidatura.service";
 import { CreateCandidaturaDto } from "src/dto/candidaturas/CreateCandidatura.dto";
 import { UpdateCandidaturaDto } from "src/dto/candidaturas/UpdateCandidatura.dto";
 import { FileInterceptor, File } from '@nest-lab/fastify-multer';
-import { FileUploadDto } from "src/dto/candidaturas/FileUpload.dto";
 @Controller('candidaturas')
 export class CandidaturaController {
     constructor(private candidaturaService: CandidaturaService) {}

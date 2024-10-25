@@ -125,9 +125,40 @@ export class AuthService {
     if(!usuario){
       throw new UnauthorizedException('Usuário não encontrado');
     }
+
     if (updateUsuarioDto.senhaHash) {
       updateUsuarioDto.senhaHash = await this.hashPassword(updateUsuarioDto.senhaHash);
     }
+
+    if (updateUsuarioDto.cargoId){
+      const cargo= await this.cargoService.findOne(updateUsuarioDto.cargoId);
+      if(cargo){
+        usuario.cargo = cargo;
+      }else{
+        throw new Error(`Cargo ${updateUsuarioDto.cargoId} não encontrado. Favor atribuir um cargo válido.`);
+      }
+    }
+    
+    if (updateUsuarioDto.setorId) {
+      const setor = await this.setorService.findOneSetor(updateUsuarioDto.setorId);
+      if (setor){
+        usuario.setor = setor;
+      }else{
+        throw new Error(`Setor ${updateUsuarioDto.setorId} não encontrado. Favor atribuir um setor válido.`);
+      }
+    }
+
+    if (updateUsuarioDto.vagaIds) {
+      usuario.vagas = [];
+      for (let i = 0; i < updateUsuarioDto.vagaIds.length; i++) {
+        const vaga = await this.vagaService.findOneVaga(updateUsuarioDto.vagaIds[i]);
+        if (vaga) {
+          usuario.vagas.push(vaga);
+        } else {
+          throw new Error(`Vaga ${updateUsuarioDto.vagaIds[i]} não encontrada. Favor atribuir uma vaga válida.`);
+        }
+      }
+    } 
     Object.assign(usuario, updateUsuarioDto);
     return this.usuariosRepository.save(usuario);
   }

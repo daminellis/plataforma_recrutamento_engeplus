@@ -6,5 +6,5 @@ export class UpdateSetorDto {
     @ApiProperty()
     @IsOptional()
     @IsString()
-    nome: string;
+    nome?: string;
 }

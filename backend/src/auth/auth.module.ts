@@ -8,12 +8,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { SetorModule } from 'src/module/setor.module';
 import { VagaModule } from 'src/module/vaga.module';
-import { VagaTagModule } from 'src/module/vagatag.module';
 import { CargoModule } from 'src/module/cargo.module';
 import { CandidaturaModule } from 'src/module/candidatura.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Usuario]), UsuarioModule, SetorModule, VagaModule, VagaTagModule, CargoModule, CandidaturaModule,
+  imports: [TypeOrmModule.forFeature([Usuario]), UsuarioModule, SetorModule, VagaModule, CargoModule, CandidaturaModule,
   JwtModule.register({
     global: true,
     secret: jwtConstants.secret,

@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
-import { VagaTag } from "./vagatag.entity";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinTable, ManyToMany } from "typeorm";
+import {Vaga} from "./vaga.entity";
 
 @Entity()
 export class Tag {
@@ -12,7 +12,7 @@ export class Tag {
     @Column({name: 'cor_tag'})
     corTag: string
 
-    @OneToMany(() => VagaTag, vagatag => vagatag.tag)
-    vagatag: VagaTag[];
+    @ManyToMany(() => Vaga, vaga => vaga.tags)
+    vagas: Vaga[];
 }
 export default Tag;

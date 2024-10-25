@@ -1,44 +1,52 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { forwardRef, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Candidatura } from "../model/candidatura.entity";
 import {CreateCandidaturaDto} from "../dto/candidaturas/CreateCandidatura.dto";
 import {UpdateCandidaturaDto} from "../dto/candidaturas/UpdateCandidatura.dto";
 import { VagaService } from "./vaga.service";
-import Vaga from "src/model/vaga.entity";
+import { CandidaturaTagService } from "./candidaturatag.service";
 
 @Injectable()
 export class CandidaturaService {
     constructor(
         @InjectRepository(Candidatura)
         private candidaturaRepository: Repository<Candidatura>,
+        private candidaturaTagService: CandidaturaTagService,
+        @Inject(forwardRef(() => VagaService)) private readonly vagaService: VagaService
     ) {}
 
     async findAllCandidaturas(): Promise<Candidatura[]> {
         return this.candidaturaRepository.find({
-            select: ['id', 'nomeCompleto', 'email', 'telefone', 'descricao', 'favorito' ],
-            relations: ['vaga']
+            select: ['id', 'nomeCompleto', 'email', 'telefone', 'descricao', 'favorito', 'dataCandidatura' ],
+            relations: ['vaga', 'candidaturaTags']
         });
     }
 
     async findOneCandidatura(id: number): Promise<Candidatura | null> {
         return this.candidaturaRepository.findOne({
             where: { id },
-            relations: ['vaga']
+            relations: ['vaga', 'candidaturaTags']
         });
     }
+
+    // async findAllByCandidature(id: number): Promise<Candidatura[] | null>{
+    //     const candidatosPorVaga: Candidatura[] = this.vagaService.findAllVagas()
+
+    //     return {}
+    // }
 
     async create(createCandidaturaDto: CreateCandidaturaDto): Promise<Candidatura> {
         const newCandidatura = this.candidaturaRepository.create(createCandidaturaDto);
         
-        // if (createCandidaturaDto.vagaId) {
-        //     const vaga = await this.vagaService.findOneVaga(createCandidaturaDto.vagaId);
-        //     if (!vaga) {
-        //         throw new NotFoundException('Vaga não encontrada');
-        //     }
-        //     newCandidatura.vaga = vaga;
-        // }
-
+        if (createCandidaturaDto.vagaId){
+            const vaga = await this.vagaService.findOneVaga(createCandidaturaDto.vagaId);
+            if (!vaga) {
+                throw new NotFoundException('Vaga não encontrada');
+            }
+            newCandidatura.vaga = vaga;
+        }
+        
         return this.candidaturaRepository.save(newCandidatura);
     }
 
@@ -48,7 +56,16 @@ export class CandidaturaService {
             throw new NotFoundException('Candidatura não encontrada');
         }
 
-        
+        if (updateCandidaturaDto.statusId){
+            const status = await this.candidaturaTagService.findOne(updateCandidaturaDto.statusId);
+
+            if (!status){
+                throw new Error(`Status com id ${updateCandidaturaDto.statusId} não encontrado!`)
+            }else{
+                candidatura.status= status
+            }
+        }
+
         Object.assign(candidatura, updateCandidaturaDto);
         return this.candidaturaRepository.save(candidatura);
     }

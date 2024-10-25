@@ -1,4 +1,4 @@
-import { Length, IsString, IsEmail, IsBoolean, IsOptional, IsInt, IsUrl, IsNotEmpty, Max, IsNumber } from 'class-validator';
+import { Length, IsString, IsEmail, IsInt, IsNotEmpty, IsOptional, IsArray } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 export class CreateCandidaturaDto {
 
@@ -33,4 +33,5 @@ export class CreateCandidaturaDto {
     @IsNotEmpty()
     @IsInt()
     vagaId: number;
+
 }
