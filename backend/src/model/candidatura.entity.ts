@@ -39,6 +39,6 @@ export class Candidatura {
   vaga: Vaga;
 
   @ManyToOne(() => CandidaturaTag, candidaturaTag => candidaturaTag.candidaturas)
-  candidaturaTags: CandidaturaTag;
+  status: CandidaturaTag;
 }
 export default Candidatura;

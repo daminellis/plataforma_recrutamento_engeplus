@@ -12,7 +12,7 @@ export class CandidaturaTag {
     @Column({name: 'cor_tag'})
     corTag: string
 
-    @OneToMany(() => Candidatura, candidatura => candidatura.candidaturaTags)
+    @OneToMany(() => Candidatura, candidatura => candidatura.status)
     candidaturas: Candidatura[];
 }
 export default CandidaturaTag;
