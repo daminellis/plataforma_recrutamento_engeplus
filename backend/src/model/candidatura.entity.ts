@@ -2,11 +2,12 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToMany,
   ManyToOne,
+  Timestamp,
   OneToOne,
 } from 'typeorm';
 import { Vaga } from './vaga.entity';
+import {CandidaturaTag} from './candidaturatag.entity';
 
 @Entity()
 export class Candidatura {
@@ -28,10 +29,16 @@ export class Candidatura {
   @Column({ type: 'blob', name: 'cv' })
   cvData: Buffer;
 
+  @Column({ type: 'timestamp', name: 'data_candidatura', nullable: false, default: () => 'CURRENT_TIMESTAMP'})
+  dataCandidatura: Timestamp;
+
   @Column({ type: 'boolean', name: 'favorito', default: false })
   favorito: boolean;
 
   @ManyToOne(() => Vaga, (vaga) => vaga.candidatura)
   vaga: Vaga;
+
+  @ManyToOne(() => CandidaturaTag, candidaturaTag => candidaturaTag.candidaturas)
+  candidaturaTags: CandidaturaTag;
 }
 export default Candidatura;

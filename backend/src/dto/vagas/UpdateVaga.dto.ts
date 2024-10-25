@@ -1,4 +1,4 @@
-import {IsString, IsInt, IsNumber, IsEnum, IsBoolean, IsOptional, Max, Min } from 'class-validator';
+import {IsString, IsInt, IsNumber, IsEnum, IsBoolean, IsOptional, Max, Min, IsArray } from 'class-validator';
 import { NivelDeEducacao, TempoDeExperiencia, NivelDeExperiencia, Modalidade } from '../../model/vaga.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
@@ -77,4 +77,9 @@ export class UpdateVagaDto {
   @IsOptional()
   @IsInt()
   setorId?: number;
+  
+  @ApiProperty({ type: [Number] })
+  @IsArray()
+  @IsOptional()
+  tagIds?: number[];
 }

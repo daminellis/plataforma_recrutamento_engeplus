@@ -1,17 +1,17 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { forwardRef, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Candidatura } from "../model/candidatura.entity";
 import {CreateCandidaturaDto} from "../dto/candidaturas/CreateCandidatura.dto";
 import {UpdateCandidaturaDto} from "../dto/candidaturas/UpdateCandidatura.dto";
 import { VagaService } from "./vaga.service";
-import Vaga from "src/model/vaga.entity";
 
 @Injectable()
 export class CandidaturaService {
     constructor(
         @InjectRepository(Candidatura)
         private candidaturaRepository: Repository<Candidatura>,
+        @Inject(forwardRef(() => VagaService)) private readonly vagaService: VagaService
     ) {}
 
     async findAllCandidaturas(): Promise<Candidatura[]> {
@@ -31,13 +31,13 @@ export class CandidaturaService {
     async create(createCandidaturaDto: CreateCandidaturaDto): Promise<Candidatura> {
         const newCandidatura = this.candidaturaRepository.create(createCandidaturaDto);
         
-        // if (createCandidaturaDto.vagaId) {
-        //     const vaga = await this.vagaService.findOneVaga(createCandidaturaDto.vagaId);
-        //     if (!vaga) {
-        //         throw new NotFoundException('Vaga não encontrada');
-        //     }
-        //     newCandidatura.vaga = vaga;
-        // }
+        if (createCandidaturaDto.vagaId){
+            const vaga = await this.vagaService.findOneVaga(createCandidaturaDto.vagaId);
+            if (!vaga) {
+                throw new NotFoundException('Vaga não encontrada');
+            }
+            newCandidatura.vaga = vaga;
+        }
 
         return this.candidaturaRepository.save(newCandidatura);
     }

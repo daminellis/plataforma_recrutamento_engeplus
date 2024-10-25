@@ -12,7 +12,7 @@ import { dateFormater } from '../utils/functions/dateFormater';
 import { CandidaturaService } from './candidatura.service';
 import { SetorService } from './setor.service';
 import { UsuarioService } from './usuario.service';
-import { VagaTagService } from './vagatag.service';
+import { TagService } from './tag.service';
 @Injectable()
 export class VagaService {
   constructor(
@@ -21,7 +21,7 @@ export class VagaService {
     private usuarioService: UsuarioService,
     private setorService: SetorService,
     private candidaturaService: CandidaturaService,
-    private vagaTagService: VagaTagService,
+    private tagService: TagService,
   ) { 
   }
 
@@ -31,7 +31,7 @@ export class VagaService {
   async findAllVagas(): Promise<Vaga[]> {
     const vagas = await this.vagasRepository.find({
       select: ['id', 'titulo', 'salarioMinimo', 'salarioMaximo', 'regiao', 'dataPostagem'],
-      relations: ['setor', 'vagatag'],
+      relations: ['setor', 'tags'],
     }); // SELECT * FROM vagas
     
     return vagas;
@@ -49,7 +49,7 @@ export class VagaService {
     const vaga = await this.vagasRepository.findOne({
       where: { id },
       select: ['id', 'titulo', 'salarioMinimo', 'salarioMaximo','educacao', 'tempoExperiencia', 'nivelExperiencia', 'modalidade', 'quantidadeVagas', 'dataExpiracao', 'descricao', 'responsabilidades', 'regiao', 'dataPostagem'],
-      relations: ['recrutador', 'setor', 'vagatag'],
+      relations: ['recrutador', 'setor', 'tags', 'candidatura'],
     }); // SELECT * FROM vagas WHERE id = ...
 
     return vaga;
@@ -95,18 +95,17 @@ export class VagaService {
       }
     }
 
-    if (createVagaDto.vagatagIds) {
-      newVaga.vagatag = [];
-      for (let i = 0; i < createVagaDto.vagatagIds.length; i++) {
-        const vagatag = await this.vagaTagService.findOneVagaTag(createVagaDto.vagatagIds[i]);
-        if (vagatag) {
-          newVaga.vagatag.push(vagatag);
+    if (createVagaDto.tagIds){
+      newVaga.tags= [];
+      for (let i = 0; i < createVagaDto.tagIds.length; i++) {
+        const tags = await this.tagService.findOneTag(createVagaDto.tagIds[i]);
+        if (tags) {
+          newVaga.tags.push(tags);
         } else {
-          throw new Error(`Vaga ${createVagaDto.vagatagIds[i]} não encontrada. Favor atribuir uma vaga válida.`);
+          throw new Error(`Tag(s) ${createVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`);
         }
       }
-    } 
-
+    }
     return this.vagasRepository.save(newVaga); // INSERT INTO vagas
   }
   
@@ -119,6 +118,38 @@ export class VagaService {
     }
     if (updateVagaDto.dataExpiracao) {
       updateVagaDto.dataExpiracao = dateFormater(updateVagaDto.dataExpiracao);
+    }
+
+    if (updateVagaDto.recruiterId) {
+      const recruiter = await this.usuarioService.findOne(
+        updateVagaDto.recruiterId,
+      );
+      
+      if (recruiter) {
+        vaga.recrutador = recruiter;
+      }else{
+        throw new NotFoundException('Recrutador não encontrado');
+      }
+    }
+    if (updateVagaDto.setorId) {
+      const sector = await this.setorService.findOneSetor(updateVagaDto.setorId);
+      if (sector) {
+        vaga.setor = sector;
+      }else{
+        throw new NotFoundException('Setor não encontrado');
+      }
+    }
+
+    if (updateVagaDto.tagIds){
+      vaga.tags= [];
+      for (let i = 0; i < updateVagaDto.tagIds.length; i++) {
+        const tags = await this.tagService.findOneTag(updateVagaDto.tagIds[i]);
+        if (tags) {
+          vaga.tags.push(tags);
+        } else {
+          throw new Error(`Tag(s) ${updateVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`);
+        }
+      }
     }
 
     Object.assign(vaga, updateVagaDto);

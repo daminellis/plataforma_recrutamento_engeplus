@@ -1,8 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, Timestamp } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, Timestamp, JoinTable, ManyToMany } from 'typeorm';
 import { Setor } from './setor.entity';
 import { Usuario } from './usuario.entity';
 import { Candidatura } from './candidatura.entity';
-import { VagaTag } from './vagatag.entity';
+import { Tag } from './tag.entity';
 
 export enum NivelDeEducacao {
   ENSINO_MEDIO = 'Ensino Médio',
@@ -85,7 +85,8 @@ export class Vaga {
   @OneToMany(() => Candidatura, candidatura => candidatura.vaga)
   candidatura: Candidatura[];
 
-  @OneToMany(() => VagaTag, vagatag => vagatag.vaga)
-  vagatag: VagaTag[];
+  @ManyToMany(() => Tag, tag => tag.vagas)
+  @JoinTable()
+  tags: Tag[];
 }
 export default Vaga;

@@ -4,18 +4,23 @@ import { Repository } from 'typeorm';
 import { Setor } from '../model/setor.entity';
 import { CreateSetorDto } from '../dto/setores/CreateSetor.dto';
 import { UpdateSetorDto } from '../dto/setores/UpdateSetor.dto';
+import { UsuarioService } from './usuario.service';
+import { VagaService } from './vaga.service';
 
 @Injectable()
 export class SetorService {
     constructor(@InjectRepository(Setor)
-    private setorRepository: Repository<Setor>,) {
+    private setorRepository: Repository<Setor>,
+) {
     }
 
     // FUNÇÕES PARA O CRUD DE SETORES
 
     //Get all setores
     findAllSetores(): Promise<Setor[]> {
-        return this.setorRepository.find(); // SELECT * FROM setores
+        return this.setorRepository.find({
+            relations: ['usuarios', 'vagas']
+        }); // SELECT * FROM setores
     }
 
     //Get one setor

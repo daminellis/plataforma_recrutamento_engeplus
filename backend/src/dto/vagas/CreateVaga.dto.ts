@@ -6,11 +6,9 @@ import {
   Length,
   Min,
   Max,
-  IsDate,
   IsBoolean,
   IsArray,
   IsOptional,
-  isDate,
   Matches,
 } from 'class-validator';
 import {
@@ -112,13 +110,12 @@ export class CreateVagaDto {
   setorId: number;
 
   @ApiProperty({ type: [Number] })
-  @IsNotEmpty()
+  @IsOptional()
   @IsArray()
   candidaturaIds: number[];
 
   @ApiProperty({ type: [Number] })
-  @IsNotEmpty()
   @IsArray()
   @IsOptional()
-  vagatagIds: number[];
+  tagIds: number[];
 }
