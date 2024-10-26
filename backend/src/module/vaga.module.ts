@@ -7,8 +7,9 @@ import { UsuarioModule } from "./usuario.module";
 import { SetorModule } from "./setor.module";
 import { CandidaturaModule } from "./candidatura.module";
 import { TagModule } from "./tag.module";
+import Candidatura from "src/model/candidatura.entity";
 @Module({
-    imports: [TypeOrmModule.forFeature([Vaga]), UsuarioModule, SetorModule, CandidaturaModule,TagModule],
+    imports: [TypeOrmModule.forFeature([Vaga, Candidatura]), UsuarioModule, SetorModule, CandidaturaModule,TagModule],
     providers: [VagaService],
     controllers: [VagaController],
     exports: [VagaService]

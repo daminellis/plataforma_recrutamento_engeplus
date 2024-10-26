@@ -16,6 +16,12 @@ export class CandidaturaController {
     async findOneCandidatura(@Param('id') id: number) {
         return this.candidaturaService.findOneCandidatura(id);
     }
+
+    @Get('find/all-by-vaga/:id')
+    async findAllByCandidature(@Param('id') vagaId: number){
+        return this.candidaturaService.findAllByCandidature(vagaId)
+    }
+
     @Post('create')
     @UseInterceptors(FileInterceptor('file'))
     async create(

@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  Inject,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -13,6 +14,7 @@ import { CandidaturaService } from './candidatura.service';
 import { SetorService } from './setor.service';
 import { UsuarioService } from './usuario.service';
 import { TagService } from './tag.service';
+import Candidatura from 'src/model/candidatura.entity';
 @Injectable()
 export class VagaService {
   constructor(
@@ -20,8 +22,11 @@ export class VagaService {
     private vagasRepository: Repository<Vaga>, // Permite acessar os métodos do Repository
     private usuarioService: UsuarioService,
     private setorService: SetorService,
-    private candidaturaService: CandidaturaService,
     private tagService: TagService,
+
+    @InjectRepository(Candidatura)
+    private candidaturaRepository: Repository<Candidatura>,
+    private candidaturaService: CandidaturaService,
   ) { 
   }
 
@@ -53,6 +58,10 @@ export class VagaService {
     }); // SELECT * FROM vagas WHERE id = ...
 
     return vaga;
+  }
+
+  async findAllCandidaturasByVaga(vagaId: number): Promise<Candidatura[]> {
+    return this.candidaturaRepository.find({ where: { vaga: { id: vagaId } } });
   }
 
   //Cria uma vaga

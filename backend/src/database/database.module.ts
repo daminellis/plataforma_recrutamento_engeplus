@@ -31,7 +31,7 @@ import { CandidaturaTagModule } from 'src/module/candidaturatag.module';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-        entities: [__dirname + '/../**/*.entity{.ts}'],
+        entities: [Candidatura, CandidaturaTag, Cargo, Setor, Tag, Usuario, Vaga],
         synchronize: true, //TIRA ISSO EM PRODUÇÃO PELO AMOR DE DEUS!!!
       }),
       inject: [ConfigService],
