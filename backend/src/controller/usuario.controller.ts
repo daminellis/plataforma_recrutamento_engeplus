@@ -6,7 +6,7 @@ import Usuario from "src/model/usuario.entity";
 export class UsuarioController{
     constructor(private usuarioService: UsuarioService) {}
     @Get('/all')
-    findAllUsuarios() {
+    findAllUsuarios(): Promise<Usuario[]> {
         return this.usuarioService.findAll();
     }
     @Get('/find/:id')

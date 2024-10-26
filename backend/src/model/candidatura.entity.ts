@@ -5,6 +5,7 @@ import {
   ManyToOne,
   Timestamp,
   OneToOne,
+  JoinTable,
 } from 'typeorm';
 import { Vaga } from './vaga.entity';
 import {CandidaturaTag} from './candidaturatag.entity';

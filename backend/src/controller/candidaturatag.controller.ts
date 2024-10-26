@@ -8,7 +8,7 @@ export class CandidaturaTagController {
     constructor(private candidaturaTagService: CandidaturaTagService) {}
 
     @Get('/all')
-    async getAll(){
+    async getAll(): Promise<CandidaturaTag[]>{
         return this.candidaturaTagService.findAll()
     }
 

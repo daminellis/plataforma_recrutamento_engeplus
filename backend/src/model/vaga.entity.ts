@@ -12,7 +12,7 @@ import { Setor } from './setor.entity';
 import { Usuario } from './usuario.entity';
 import { Candidatura } from './candidatura.entity';
 import { Tag } from './tag.entity';
-import BancoTalentos from './banco_talentos.entity';
+import BancoTalentos from './bancotalentos.entity';
 
 export enum NivelDeEducacao {
   ENSINO_MEDIO = 'Ensino Médio',

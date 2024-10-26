@@ -4,8 +4,6 @@ import { Repository } from 'typeorm';
 import { Setor } from '../model/setor.entity';
 import { CreateSetorDto } from '../dto/setores/CreateSetor.dto';
 import { UpdateSetorDto } from '../dto/setores/UpdateSetor.dto';
-import { UsuarioService } from './usuario.service';
-import { VagaService } from './vaga.service';
 
 @Injectable()
 export class SetorService {

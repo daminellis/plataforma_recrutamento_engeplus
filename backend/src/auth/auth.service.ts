@@ -56,7 +56,7 @@ export class AuthService {
     if (createUsuarioDto.cargoId){
       const cargo= await this.cargoService.findOne(createUsuarioDto.cargoId);
       if(cargo){
-        newUser.cargo = cargo;
+        newUser.cargo = {id: cargo.id, nome: cargo.nome, descricao: cargo.descricao} as any;
       }else{
         throw new Error(`Cargo ${createUsuarioDto.cargoId} não encontrado. Favor atribuir um cargo válido.`);
       }
@@ -76,7 +76,7 @@ export class AuthService {
       for (let i = 0; i < createUsuarioDto.vagaIds.length; i++) {
         const vaga = await this.vagaService.findOneVaga(createUsuarioDto.vagaIds[i]);
         if (vaga) {
-          newUser.vagas.push(vaga);
+          newUser.vagas.push({id: vaga.id, titulo: vaga.titulo} as any);
         } else {
           throw new Error(`Vaga ${createUsuarioDto.vagaIds[i]} não encontrada. Favor atribuir uma vaga válida.`);
         }

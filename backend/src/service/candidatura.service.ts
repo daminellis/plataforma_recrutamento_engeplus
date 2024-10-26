@@ -19,14 +19,14 @@ export class CandidaturaService {
     async findAllCandidaturas(): Promise<Candidatura[]> {
         return this.candidaturaRepository.find({
             select: ['id', 'nomeCompleto', 'email', 'telefone', 'descricao', 'favorito', 'dataCandidatura' ],
-            relations: ['vaga', 'candidaturaTags']
+            relations: ['vaga', 'status']
         });
     }
 
     async findOneCandidatura(id: number): Promise<Candidatura | null> {
         return this.candidaturaRepository.findOne({
             where: { id },
-            relations: ['vaga', 'candidaturaTags']
+            relations: ['vaga', 'status']
         });
     }
 
@@ -44,7 +44,7 @@ export class CandidaturaService {
             if (!vaga) {
                 throw new NotFoundException('Vaga não encontrada');
             }
-            newCandidatura.vaga = {id: vaga.id} as any;
+            newCandidatura.vaga = {id: vaga.id, titulo: vaga.titulo} as any;
         }
         
         return this.candidaturaRepository.save(newCandidatura);

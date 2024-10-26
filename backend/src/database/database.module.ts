@@ -16,6 +16,8 @@ import { TagModule } from 'src/module/tag.module';
 import { CandidaturaModule } from 'src/module/candidatura.module';
 import CandidaturaTag from 'src/model/candidaturatag.entity';
 import { CandidaturaTagModule } from 'src/module/candidaturatag.module';
+import BancoTalentos from 'src/model/bancotalentos.entity';
+import { BancoTalentosModule } from 'src/module/bancotalentos.module';
 
 @Module({
   imports: [
@@ -31,7 +33,7 @@ import { CandidaturaTagModule } from 'src/module/candidaturatag.module';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-        entities: [Candidatura, CandidaturaTag, Cargo, Setor, Tag, Usuario, Vaga],
+        entities: [Candidatura, CandidaturaTag, Cargo, Setor, Tag, Usuario, Vaga, BancoTalentos],
         synchronize: true, //TIRA ISSO EM PRODUÇÃO PELO AMOR DE DEUS!!!
       }),
       inject: [ConfigService],
@@ -42,7 +44,8 @@ import { CandidaturaTagModule } from 'src/module/candidaturatag.module';
     CargoModule,
     TagModule,
     CandidaturaModule,
-    CandidaturaTagModule
+    CandidaturaTagModule,
+    BancoTalentosModule
   ],
 })
 export class DatabaseModule {}

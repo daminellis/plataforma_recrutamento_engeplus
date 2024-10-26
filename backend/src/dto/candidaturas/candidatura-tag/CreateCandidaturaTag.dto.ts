@@ -16,5 +16,5 @@ export class CreateCandidaturaTagDto{
     @ApiProperty({type: [Number]})
     @IsOptional()
     @IsArray()
-    candidaturaIds= Number;
+    candidaturaIds: number[];
 }

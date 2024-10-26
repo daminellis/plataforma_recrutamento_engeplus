@@ -78,7 +78,7 @@ export class VagaService {
         createVagaDto.recruiterId,
       );
       if (recruiter) {
-        newVaga.recrutador = recruiter;
+        newVaga.recrutador = {id: recruiter.id, nomeCompleto: recruiter.nomeCompleto } as any;
       }else{
         throw new NotFoundException('Recrutador não encontrado');
       }
@@ -97,7 +97,7 @@ export class VagaService {
       for (let i = 0; i < createVagaDto.candidaturaIds.length; i++) {
         const candidaturas = await this.candidaturaService.findOneCandidatura(createVagaDto.candidaturaIds[i]);
         if (candidaturas) {
-          newVaga.candidatura.push(candidaturas);
+          newVaga.candidatura.push({id: candidaturas.id, nomeCompleto: candidaturas.nomeCompleto, email: candidaturas.email, telefone: candidaturas.telefone} as any);
         } else {
           throw new Error(`Vaga ${createVagaDto.candidaturaIds[i]} não encontrada. Favor atribuir uma vaga válida.`);
         }
@@ -109,7 +109,7 @@ export class VagaService {
       for (let i = 0; i < createVagaDto.tagIds.length; i++) {
         const tags = await this.tagService.findOneTag(createVagaDto.tagIds[i]);
         if (tags) {
-          newVaga.tags.push(tags);
+          newVaga.tags.push({id: tags.id, nome: tags.nome, cor: tags.corTag} as any);
         } else {
           throw new Error(`Tag(s) ${createVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`);
         }
