@@ -31,7 +31,7 @@ export class CreateCandidaturaDto {
 
     @ApiProperty()
     @IsNotEmpty()
-    @IsInt()
-    vagaId: number;
+    @IsString()
+    vagaId: string;
 
 }

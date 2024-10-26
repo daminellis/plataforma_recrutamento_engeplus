@@ -30,21 +30,21 @@ export class CandidaturaService {
         });
     }
 
-    // async findAllByCandidature(id: number): Promise<Candidatura[] | null>{
-    //     const candidatosPorVaga: Candidatura[] = this.vagaService.findAllVagas()
+    async findAllByCandidature(vagaId: number): Promise<Candidatura[] | null>{
+        const candidatosPorVaga: Candidatura[] = await this.vagaService.findAllCandidaturasByVaga(vagaId);
 
-    //     return {}
-    // }
+        return candidatosPorVaga
+    }
 
     async create(createCandidaturaDto: CreateCandidaturaDto): Promise<Candidatura> {
         const newCandidatura = this.candidaturaRepository.create(createCandidaturaDto);
         
         if (createCandidaturaDto.vagaId){
-            const vaga = await this.vagaService.findOneVaga(createCandidaturaDto.vagaId);
+            const vaga = await this.vagaService.findOneVaga(parseInt(createCandidaturaDto.vagaId));
             if (!vaga) {
                 throw new NotFoundException('Vaga não encontrada');
             }
-            newCandidatura.vaga = vaga;
+            newCandidatura.vaga = {id: vaga.id} as any;
         }
         
         return this.candidaturaRepository.save(newCandidatura);
