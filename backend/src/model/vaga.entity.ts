@@ -1,8 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, Timestamp, JoinTable, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+  Timestamp,
+  JoinTable,
+  ManyToMany,
+} from 'typeorm';
 import { Setor } from './setor.entity';
 import { Usuario } from './usuario.entity';
 import { Candidatura } from './candidatura.entity';
 import { Tag } from './tag.entity';
+import BancoTalentos from './banco_talentos.entity';
 
 export enum NivelDeEducacao {
   ENSINO_MEDIO = 'Ensino Médio',
@@ -37,10 +47,10 @@ export class Vaga {
   @Column({ length: 100, name: 'titulo' })
   titulo: string;
 
-  @Column({ type: 'numeric', name: "salario_minimo", precision: 10, scale: 2 })
+  @Column({ type: 'numeric', name: 'salario_minimo', precision: 10, scale: 2 })
   salarioMinimo: number;
 
-  @Column({ type: 'numeric', name: "salario_maximo", precision: 10, scale: 2 })
+  @Column({ type: 'numeric', name: 'salario_maximo', precision: 10, scale: 2 })
   salarioMaximo: number;
 
   @Column({ type: 'enum', enum: NivelDeEducacao, name: 'educacao' })
@@ -70,22 +80,30 @@ export class Vaga {
   @Column({ type: 'varchar', name: 'regiao' })
   regiao: string;
 
-  @Column({ type: 'timestamp', name: 'data_postagem', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
+  @Column({
+    type: 'timestamp',
+    name: 'data_postagem',
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   dataPostagem: Timestamp;
 
   @Column({ default: true, name: 'disponivel' })
   disponivel: boolean;
 
-  @ManyToOne(() => Usuario, usuario => usuario.vagas)
+  @ManyToOne(() => Usuario, (usuario) => usuario.vagas)
   recrutador: Usuario;
 
-  @ManyToOne(() => Setor, setor => setor.vagas)
+  @ManyToOne(() => Setor, (setor) => setor.vagas)
   setor: Setor;
 
-  @OneToMany(() => Candidatura, candidatura => candidatura.vaga)
+  @OneToMany(() => Candidatura, (candidatura) => candidatura.vaga)
   candidatura: Candidatura[];
 
-  @ManyToMany(() => Tag, tag => tag.vagas)
+  @OneToMany(() => BancoTalentos, (bancoTalentos) => bancoTalentos.vaga)
+  bancoTalentos: BancoTalentos[];
+
+  @ManyToMany(() => Tag, (tag) => tag.vagas)
   @JoinTable()
   tags: Tag[];
 }
