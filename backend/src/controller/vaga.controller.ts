@@ -1,8 +1,11 @@
-import { Body, Controller, Get, Param, Post, Put, Delete } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, Delete, UseGuards } from "@nestjs/common";
 import { VagaService } from "../service/vaga.service";
 import { Vaga } from "../model/vaga.entity";
 import { CreateVagaDto } from "src/dto/vagas/CreateVaga.dto";
 import { UpdateVagaDto } from "../dto/vagas/UpdateVaga.dto";
+import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
+import { UserTypeGuard } from "src/auth/guards/UserTypeGuard.guard";
+import { AuthGuard } from "src/auth/guards/auth.guard";
 
 @Controller('vagas')
 export class VagaController {
@@ -23,6 +26,8 @@ export class VagaController {
     }
 
     @Post('/create')
+    @UseGuards(AuthGuard,UserTypeGuard)
+    @AllowUserTypes('Administrador', 'Recursos Humanos')
     async createVaga(@Body() createVagaDto: CreateVagaDto): Promise<Vaga> {
         return this.vagaService.createVaga(createVagaDto);
     }

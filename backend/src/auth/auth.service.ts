@@ -10,7 +10,9 @@ import { CreateUsuarioDto } from 'src/dto/usuarios/CreateUsuario.dto';
 import { UpdateUsuarioDto } from 'src/dto/usuarios/UpdateUsuario.dto';
 import { SetorService } from 'src/service/setor.service';
 import { VagaService } from 'src/service/vaga.service';
+import { ResponseLoginDto } from 'src/dto/autenticacao/ResponseLogin.dto';
 import { CargoService } from 'src/service/cargo.service';
+import { Token } from 'nodemailer/lib/xoauth2';
 @Injectable()
 export class AuthService {
   
@@ -83,7 +85,7 @@ export class AuthService {
     return this.usuariosRepository.save(newUser);
   }
 
-  async login(loginDto: LoginDto):Promise<{success: any, access_token: string, user?: Usuario}> {
+  async login(loginDto: LoginDto):Promise<{success: any, access_token: string, user?: ResponseLoginDto}> {
     try{
       const user = await this.fetchUserFromDb(loginDto.username);
       
@@ -95,9 +97,9 @@ export class AuthService {
       
         if (match) {
           // login
-          const payload= { username: user.username, sub: user.id, email: user.email, nomeCompleto: user.nomeCompleto, cargo: user.cargo, setor: user.setor, vagas: user.vagas, tipoUsuario: user.tipoUsuario };
+          const payload= { username: user.username, sub: user.id, email: user.email, nomeCompleto: user.nomeCompleto, tipoUsuario: user.tipoUsuario, iat: Math.floor(Date.now() / 1000) };
           const access_token = await this.jwtService.signAsync(payload);
-  
+          console.log(payload)
           return { 
             success: true, 
             access_token: access_token, 
@@ -106,10 +108,12 @@ export class AuthService {
               username: user.username,
               nomeCompleto: user.nomeCompleto,
               email: user.email,
-              senhaHash: user.senhaHash,
-              cargo: user.cargo,
-              setor: user.setor,
-              vagas: user.vagas,
+              cargo: user.cargo.nome,
+              setor: user.setor.nome,
+              vagas: {
+                vagaIds: user.vagas.map(vaga => vaga.id),
+                vagaNames: user.vagas.map(vaga => vaga.titulo)
+              },
               tipoUsuario: user.tipoUsuario
             }
           };
@@ -161,5 +165,32 @@ export class AuthService {
     } 
     Object.assign(usuario, updateUsuarioDto);
     return this.usuariosRepository.save(usuario);
+  }
+
+
+  async tokenValidation(token: string): Promise<{access:boolean, token: string}> {
+    try {
+      if (typeof token !== 'string') {
+        throw new Error('Token must be a string');
+      }
+  
+      const payload = await this.jwtService.verifyAsync(token);
+      console.log('Payload:', payload);
+  
+      const currentTime = Math.floor(Date.now() / 1000);
+      const fortyMinutesInSeconds = 40 * 60;
+      console.log('Current Time:', currentTime);
+      console.log('Token Issued At:', payload.iat);
+      console.log('Time Difference:', currentTime - payload.iat);
+  
+      if (payload.iat && (currentTime - payload.iat) > fortyMinutesInSeconds) {
+        return {access: false, token: ''};
+      } else {
+        return {access: true, token: token};
+      }
+    } catch (err) {
+      console.error('Token validation error:', err);
+      return {access: false, token: ''};
+    }
   }
 }
