@@ -3,6 +3,7 @@ import {
   NotFoundException,
   BadRequestException,
   Inject,
+  HttpStatus,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -15,6 +16,7 @@ import { SetorService } from './setor.service';
 import { UsuarioService } from './usuario.service';
 import { TagService } from './tag.service';
 import Candidatura from 'src/model/candidatura.entity';
+import { CustomHttpException } from 'src/errors/exceptions/custom-exceptions';
 @Injectable()
 export class VagaService {
   constructor(
@@ -39,6 +41,14 @@ export class VagaService {
       relations: ['setor', 'tags'],
     }); // SELECT * FROM vagas
     
+    return vagas;
+  }
+
+  async findAllVagasByLiderSetor(): Promise<Vaga[]> {
+    const vagas = await this.vagasRepository.find({
+      where: { setor: { nome: 'Lider' } },
+      relations: ['setor', 'tags'],
+    });
     return vagas;
   }
 
@@ -88,7 +98,7 @@ export class VagaService {
       if (sector) {
         newVaga.setor = sector;
       }else{
-        throw new NotFoundException('Setor não encontrado');
+        throw new CustomHttpException(`Setor ${createVagaDto.setorId} não encontrado`, HttpStatus.BAD_REQUEST);
       }
     }
 
@@ -99,7 +109,7 @@ export class VagaService {
         if (candidaturas) {
           newVaga.candidatura.push({id: candidaturas.id, nomeCompleto: candidaturas.nomeCompleto, email: candidaturas.email, telefone: candidaturas.telefone} as any);
         } else {
-          throw new Error(`Vaga ${createVagaDto.candidaturaIds[i]} não encontrada. Favor atribuir uma vaga válida.`);
+          throw new CustomHttpException(`Vaga ${createVagaDto.candidaturaIds[i]} não encontrada. Favor atribuir uma vaga válida.`, HttpStatus.BAD_REQUEST);
         }
       }
     }
@@ -111,7 +121,7 @@ export class VagaService {
         if (tags) {
           newVaga.tags.push({id: tags.id, nome: tags.nome, cor: tags.corTag} as any);
         } else {
-          throw new Error(`Tag(s) ${createVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`);
+          throw new CustomHttpException(`Tag(s) ${createVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`, HttpStatus.BAD_REQUEST);
         }
       }
     }
@@ -156,7 +166,7 @@ export class VagaService {
         if (tags) {
           vaga.tags.push(tags);
         } else {
-          throw new Error(`Tag(s) ${updateVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`);
+          throw new CustomHttpException(`Tag(s) ${updateVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`, HttpStatus.BAD_REQUEST);
         }
       }
     }
@@ -181,7 +191,6 @@ export class VagaService {
 
     for (let i = 0; i < vagasNull.length; i++) {
         await this.vagasRepository.delete(vagasNull[i].id);
-        console.log(`Vaga com id ${vagasNull[i].id} excluída`);
     }
 }
 }

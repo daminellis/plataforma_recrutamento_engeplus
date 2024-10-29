@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 import { CandidaturaTag } from "../model/candidaturatag.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { CreateCandidaturaTagDto } from "src/dto/candidaturas/candidatura-tag/CreateCandidaturaTag.dto";
 import { UpdateCandidaturaTagDto } from "src/dto/candidaturas/candidatura-tag/UpdateCandidaturatag.dto";
+import { CustomHttpException } from "src/errors/exceptions/custom-exceptions";
 
 @Injectable()
 export class CandidaturaTagService {
@@ -30,7 +31,7 @@ export class CandidaturaTagService {
   async update(id: number, updateCandidaturaTagDto: UpdateCandidaturaTagDto): Promise<CandidaturaTag> {
     const candidaturaTagToUpdate = await this.CandidaturaTagRepository.findOneBy({id});
     if (!candidaturaTagToUpdate) {
-      throw new NotFoundException('CandidaturaTag não encontrada');
+      throw new CustomHttpException('CandidaturaTag não encontrada', HttpStatus.NOT_FOUND);
     }
     Object.assign(candidaturaTagToUpdate, updateCandidaturaTagDto);
     return this.CandidaturaTagRepository.save(candidaturaTagToUpdate);
@@ -39,7 +40,7 @@ export class CandidaturaTagService {
   async delete(id: number): Promise<void> {
     const candidaturaTag = await this.CandidaturaTagRepository.findOneBy({id});
     if (!candidaturaTag) {
-      throw new NotFoundException('CandidaturaTag não encontrada');
+      throw new CustomHttpException('CandidaturaTag não encontrada', HttpStatus.NOT_FOUND);
     }
     this.CandidaturaTagRepository.remove(candidaturaTag);
   }

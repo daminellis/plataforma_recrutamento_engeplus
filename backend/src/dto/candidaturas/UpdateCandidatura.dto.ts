@@ -34,5 +34,5 @@ export class UpdateCandidaturaDto {
   @ApiProperty()
   @IsOptional()
   @IsInt()
-  statusId?: number
+  candidaturaTagId?: number
 }

@@ -12,9 +12,4 @@ export class CreateCandidaturaTagDto{
     @IsNotEmpty()
     @IsString()
     corTag: string;
-
-    @ApiProperty({type: [Number]})
-    @IsOptional()
-    @IsArray()
-    candidaturaIds: number[];
 }
