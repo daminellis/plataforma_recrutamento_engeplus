@@ -21,6 +21,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       message = 'Internal server error';
     }
+
+    console.log(exception);
     
     response.status(status).send({
       statusCode: status,
