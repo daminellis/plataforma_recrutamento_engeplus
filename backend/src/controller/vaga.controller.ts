@@ -5,8 +5,7 @@ import { CreateVagaDto } from "src/dto/vagas/CreateVaga.dto";
 import { UpdateVagaDto } from "../dto/vagas/UpdateVaga.dto";
 import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
 import { Public } from "src/auth/decorators/public.decorator";
-import { GetUserType } from "src/auth/decorators/auth.decorator";
-import { TipoUsuarioEnum } from "src/model/usuario.entity";
+
 @Controller('vagas')
 export class VagaController {
     constructor(private vagaService: VagaService) {}

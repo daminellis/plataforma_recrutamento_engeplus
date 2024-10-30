@@ -10,16 +10,6 @@ export class CreateTableTag1730253145492 implements MigrationInterface {
                 cor_tag VARCHAR(255) NOT NULL
             );
         `);
-
-        await queryRunner.query(`
-            CREATE TABLE vaga_tags_tag (
-                vagaId INT NOT NULL,
-                tagId INT NOT NULL,
-                CONSTRAINT PK_vaga_tags_tag PRIMARY KEY (vagaId, tagId),
-                CONSTRAINT FK_vaga FOREIGN KEY (vagaId) REFERENCES vaga(id) ON DELETE CASCADE,
-                CONSTRAINT FK_tag FOREIGN KEY (tagId) REFERENCES tag(id) ON DELETE CASCADE
-            );
-        `);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

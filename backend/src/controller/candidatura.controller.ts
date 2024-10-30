@@ -14,7 +14,7 @@ export class CandidaturaController {
     @Get('/all')
     @AllowUserTypes('Administrador', 'Recursos Humanos', 'Lider')
     async findAllCandidaturas(@GetUserType('Lider') userType: TipoUsuarioEnum): Promise<Candidatura[]> {
-
+        console.log('User Type:', userType);
         if ( userType === 'Lider') {
             return this.candidaturaService.findAllLiderCandidaturas();
         }
