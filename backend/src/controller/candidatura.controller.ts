@@ -41,7 +41,8 @@ export class CandidaturaController {
         @Body() createCandidaturaDto: CreateCandidaturaDto,
     ): Promise<Candidatura> {
         if (file && file.buffer) {
-            createCandidaturaDto.cvData = file.buffer;
+            createCandidaturaDto.cvData.buffer = file.buffer;
+            createCandidaturaDto.cvData.type = file.mimetype;
             console.log('File buffer:', createCandidaturaDto.cvData); 
         } else {
             throw new Error ('File or file buffer is undefined');

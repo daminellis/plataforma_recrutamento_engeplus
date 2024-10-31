@@ -13,8 +13,13 @@ export class VagaController {
     @Get('/all')
     @Public()
     async findAll(): Promise<Vaga[]> {
-
         return this.vagaService.findAllVagas();
+    }
+
+    @Get('/all-lider')
+    @AllowUserTypes('Lider')
+    async findAllLider(): Promise<Vaga[]> {
+        return this.vagaService.findAllVagasByLiderSetor();
     }
 
     @Get('/disponiveis')

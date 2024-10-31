@@ -12,7 +12,7 @@ import {CandidaturaTag} from './candidaturatag.entity';
 
 export enum StatusCandidatura {
   ATIVO = 'Ativo',
-  EXPIRADO = 'Expirado',
+  INATIVO = 'Inativo',
   APROVADO = 'Aprovado',
   REPROVADO = 'Reprovado',
 }
