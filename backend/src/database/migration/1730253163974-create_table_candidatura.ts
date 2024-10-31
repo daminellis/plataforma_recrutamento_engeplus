@@ -1,9 +1,8 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateTableCandidatura1730253163974 implements MigrationInterface {
-
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             CREATE TABLE candidatura (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 nome_completo VARCHAR(50) NOT NULL,
@@ -14,17 +13,15 @@ export class CreateTableCandidatura1730253163974 implements MigrationInterface {
                 data_candidatura TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
                 favorito BOOLEAN DEFAULT FALSE,
                 status ENUM('ATIVO', 'INATIVO') DEFAULT 'ATIVO' NOT NULL,
-                vagaId INT,
-                candidaturaTagId INT,
-                CONSTRAINT FK_vaga FOREIGN KEY (vagaId) REFERENCES vaga(id),
-                CONSTRAINT FK_candidaturaTag FOREIGN KEY (candidaturaTagId) REFERENCES candidatura_tag(id)
+                vaga_id INT,
+                candidatura_tag_id INT,
+                CONSTRAINT FK_vaga FOREIGN KEY (vaga_id) REFERENCES vaga(id),
+                CONSTRAINT FK_candidatura_tag FOREIGN KEY (candidatura_tag_id) REFERENCES candidatura_tag(id)
             );
         `);
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP TABLE candidatura;`);
-    }
-
-
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`DROP TABLE candidatura;`);
+  }
 }
