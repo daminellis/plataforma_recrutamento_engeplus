@@ -30,6 +30,9 @@ export class CreateCandidaturaDto {
     cvData: Buffer;
 
     @ApiProperty()
+    cvType: string;
+
+    @ApiProperty()
     @IsNotEmpty()
     @IsString()
     vagaId: string;

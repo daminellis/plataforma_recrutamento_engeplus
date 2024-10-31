@@ -42,7 +42,9 @@ export class CandidaturaController {
     ): Promise<Candidatura> {
         if (file && file.buffer) {
             createCandidaturaDto.cvData = file.buffer;
+            createCandidaturaDto.cvType = file.mimetype;
             console.log('File buffer:', createCandidaturaDto.cvData); 
+            console.log('File type:', createCandidaturaDto.cvType); 
         } else {
             throw new Error ('File or file buffer is undefined');
         }

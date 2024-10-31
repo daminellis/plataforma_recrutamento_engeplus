@@ -19,7 +19,7 @@ export class EmailService {
         if (!candidato) {
             throw new Error(`Candidato com email ${sendEmail.email} não foi encontrado em nossa base de dados.`);
         }
-
+        console.log( candidatoAprovado, candidato)
         if (candidatoAprovado && candidato) {     
             await this.mailerService.sendMail({
                 to: candidato.email,
