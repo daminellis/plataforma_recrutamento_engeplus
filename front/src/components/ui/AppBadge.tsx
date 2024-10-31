@@ -1,22 +1,15 @@
 import { Tailwindest } from "tailwindest";
 
-type TextColor = Tailwindest["color"];
-type BackgroundColor = Tailwindest["backgroundColor"];
-
 interface AppBadgeProps {
-  text: String;
-  textColorClass: TextColor;
-  backgroundColorClass: BackgroundColor;
+  text: string;
+  corTag: string;
 }
 
-export const AppBadge = ({
-  text,
-  textColorClass,
-  backgroundColorClass,
-}: AppBadgeProps) => {
+export const AppBadge = ({ text, corTag }: AppBadgeProps) => {
   return (
     <span
-      className={`${textColorClass} ${backgroundColorClass} p-1.5 rounded-md text-xs ml-2`}
+      className="p-1.5 rounded-md text-xs ml-2"
+      style={{ backgroundColor: `${corTag}33`, color: corTag }}
     >
       {text}
     </span>

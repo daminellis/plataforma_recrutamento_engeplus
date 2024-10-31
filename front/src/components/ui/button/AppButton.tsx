@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import { ButtonHTMLAttributes } from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
@@ -25,16 +28,23 @@ type ButtonVariants = VariantProps<typeof buttonClass>;
 interface AppButtonProps
   extends ButtonVariants,
     Omit<ButtonHTMLAttributes<HTMLButtonElement>, "color"> {
+  href?: string;
   children: React.ReactNode;
 }
 
 export const AppButton = ({
-  children,
+  href,
   className,
+  children,
   ...props
 }: AppButtonProps) => {
+  const router = useRouter();
   return (
-    <button className={buttonClass({ ...props, className })} {...props}>
+    <button
+      className={buttonClass({ ...props, className })}
+      onClick={props.onClick || (() => href && router.push(href))}
+      {...props}
+    >
       {children}
     </button>
   );

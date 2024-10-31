@@ -1,10 +1,52 @@
 "use client";
 import { DashboardIcon, SectionIcon } from "@radix-ui/react-icons";
 import { CardJob } from "./ui/CardJob";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { JobType } from "@/types/Job";
+import { api } from "@/service/axios";
+import { useSearchParams } from "next/navigation";
 
-export const PublicJobs = () => {
+type PublicJobsProps = {
+  filter?: string;
+  excpectThisJobID?: number;
+};
+
+export const PublicJobs = ({ filter, excpectThisJobID }: PublicJobsProps) => {
   const [isListGrid, setIsListGrid] = useState(false);
+  const [jobs, setJobs] = useState<JobType[]>([]);
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
+
+  useEffect(() => {
+    api.get("vagas/all").then((response) => {
+      const { data } = response as { data: JobType[] };
+      let filteredJobs: JobType[] = data;
+
+      if (filter) {
+        filteredJobs = data.filter((job) =>
+          job.setor.nome.toLowerCase().includes(filter!.toLowerCase())
+        );
+
+        if (excpectThisJobID) {
+          filteredJobs = filteredJobs.filter(
+            (job) => job.id !== excpectThisJobID
+          );
+        }
+
+        setJobs(filteredJobs);
+      }
+
+      if (search) {
+        filteredJobs = filteredJobs.filter((job) =>
+          job.titulo.toLowerCase().includes(search.toLowerCase())
+        );
+
+        setJobs(filteredJobs);
+      }
+
+      if (!search && !filter) setJobs(data);
+    });
+  }, [filter, search]);
 
   return (
     <>
@@ -25,9 +67,9 @@ export const PublicJobs = () => {
       </div>
 
       <div className="mt-5 flex flex-wrap gap-6 max-md:justify-center">
-        <CardJob isListGrid={isListGrid} />
-        <CardJob isListGrid={isListGrid} />
-        <CardJob isListGrid={isListGrid} />
+        {jobs.map((job) => (
+          <CardJob key={job.id} {...job} isListGrid={isListGrid} />
+        ))}
       </div>
     </>
   );

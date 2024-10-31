@@ -1,15 +1,18 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export const PublicHeader = () => {
   return (
     <header className="flex justify-center p-5">
       <div className="flex max-md:flex-col justify-between max-md:items-center max-md:gap-5 w-full max-w-screen-xl">
-        <Image
-          src="/static/images/logos/LogoAzul.png"
-          alt="logo-engeplus"
-          width={143}
-          height={40}
-        />
+        <Link href="/">
+          <Image
+            src="/static/images/logos/LogoAzul.png"
+            alt="logo-engeplus"
+            width={143}
+            height={40}
+          />
+        </Link>
 
         <div className="flex items-center gap-5">
           <a href="https://www.linkedin.com/company/engelus/" target="_blank">

@@ -1,4 +1,4 @@
-import { IconType } from "@/app/types/Icon";
+import { IconType } from "@/types/Icon";
 
 interface SummaryItemProps {
   Icon: IconType;

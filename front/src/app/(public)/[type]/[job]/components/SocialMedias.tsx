@@ -4,13 +4,19 @@ import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import { CopyLink } from "./CopyLink";
 import { SocialNetworkLink } from "./SocialNetworkLink";
 import { WhatsApp } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 
 interface SocialMediasProps {
   jobTitle: string;
 }
 
 export const SocialMedias = ({ jobTitle }: SocialMediasProps) => {
-  const fullUrl = window.location.href;
+  const [fullUrl, setFullUrl] = useState("");
+
+  useEffect(() => {
+    setFullUrl(window.location.href);
+  }, []);
+
   return (
     <div className="flex gap-2">
       <CopyLink fullUrl={fullUrl} />

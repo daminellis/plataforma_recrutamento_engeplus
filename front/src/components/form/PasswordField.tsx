@@ -19,6 +19,7 @@ export const PasswordField = ({ label }: { label: string }) => {
       <InputLabel htmlFor="outlined-adornment-password">{label}</InputLabel>
       <OutlinedInput
         type={showPassword ? "text" : "password"}
+        name="password"
         endAdornment={
           <InputAdornment position="end">
             <IconButton

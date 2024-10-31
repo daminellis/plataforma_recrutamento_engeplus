@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { formatTextUrl } from "@/app/utils/textTransform";
+import { formatUrlToText } from "@/utils/textTransform";
 
 interface BreadcrumbProps {
   initialText: string;
@@ -34,7 +34,7 @@ export const Breadcrumb = ({ initialText, initialIndex }: BreadcrumbProps) => {
         let itemClasses =
           classLink +
           (paths === href ? " font-bold text-black" : " text-gray-500");
-        let itemLink = formatTextUrl(link);
+        let itemLink = formatUrlToText(link);
 
         return (
           <React.Fragment key={index}>

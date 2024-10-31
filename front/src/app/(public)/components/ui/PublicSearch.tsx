@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppButton } from "@/components/ui/button/AppButton";
 import { Divider, MenuItem, Select } from "@mui/material";
 import {
@@ -8,12 +8,69 @@ import {
   LayersIcon,
   MagnifyingGlassIcon,
 } from "@radix-ui/react-icons";
+import { api } from "@/service/axios";
+import { useParams, useRouter } from "next/navigation";
+import { formatTextToUrl, formatUrlToText } from "@/utils/textTransform";
+
+type SectorProps = {
+  id: number;
+  nome: string;
+};
 
 export const PublicSearch = () => {
-  const [typejob, setTypejob] = useState<String>("10");
+  const [typejob, setTypejob] = useState<number>(0);
+  const [sectors, setSectors] = useState<SectorProps[]>([]);
+  const [windowWidth, setWindowWidth] = useState<number>(0);
+  const router = useRouter();
+  const params = useParams();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    getSectors();
+
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+
+      const handleResize = () => setWindowWidth(window.innerWidth);
+      window.addEventListener("resize", handleResize);
+
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
+  const getSectors = () => {
+    api
+      .get("setores/all")
+      .then((response) => {
+        const { data } = response as { data: SectorProps[] };
+        const type = params.type as string | null;
+
+        if (!type) {
+          setSectors(data);
+          return;
+        }
+
+        const formatedType = formatUrlToText(type.toLowerCase(), true);
+
+        const sectorSelected = data.find(
+          (sector) => sector.nome.toLowerCase() === formatedType
+        );
+
+        setSectors(data);
+
+        if (sectorSelected) setTypejob(sectorSelected.id);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const form = new FormData(e.currentTarget);
+
+    const searchQuery = form.get("search") as string;
+    router.push(`?search=${searchQuery}`);
   };
 
   return (
@@ -26,13 +83,13 @@ export const PublicSearch = () => {
           <MagnifyingGlassIcon className="w-5 h-5 text-blue-500" />
           <input
             className="flex-1 h-full border-none outline-none"
+            name="search"
             type="text"
             placeholder="Cargo, palavra-chave...."
-            required
           />
         </div>
         <Divider
-          orientation={window.innerWidth < 768 ? "horizontal" : "vertical"}
+          orientation={windowWidth < 768 ? "horizontal" : "vertical"}
           flexItem
         />
         <div className="flex gap-4 items-center w-full md:max-w-96">
@@ -45,11 +102,20 @@ export const PublicSearch = () => {
               variant="standard"
               className="flex-1"
               IconComponent={ChevronDownIcon}
-              onChange={(e) => setTypejob(e.target.value)}
+              onChange={(e) => setTypejob(e.target.value as number)}
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              <MenuItem value={0} onClick={() => router.push("/")}>
+                Todas as vagas
+              </MenuItem>
+              {sectors.map((sector) => (
+                <MenuItem
+                  key={sector.id}
+                  value={sector.id}
+                  onClick={() => router.push(formatTextToUrl(sector.nome))}
+                >
+                  {sector.nome}
+                </MenuItem>
+              ))}
             </Select>
           </div>
           <AppButton type="submit">Procurar</AppButton>

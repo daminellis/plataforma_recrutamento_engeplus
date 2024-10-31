@@ -1,6 +1,6 @@
 import { AppButton } from "@/components/ui/button/AppButton";
 import { PublicLayout } from "../../components/PublicLayout";
-import { formatTextUrl } from "@/app/utils/textTransform";
+import { formatUrlToText } from "@/utils/textTransform";
 import { AppBadge } from "@/components/ui/AppBadge";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { SummaryItem } from "./components/SummaryItem";
@@ -14,6 +14,9 @@ import {
 } from "@mui/icons-material";
 import { SocialMedias } from "./components/SocialMedias";
 import { PublicJobs } from "../../components/PublicJobs";
+import { api } from "@/service/axios";
+import { JobDetails } from "@/types/Job";
+import { formatSalaryMinMax } from "@/utils/formatNumbers";
 
 interface JobPageProps {
   params: {
@@ -21,8 +24,21 @@ interface JobPageProps {
   };
 }
 
-export default function JobPage({ params }: JobPageProps) {
-  const jobTitle = formatTextUrl(params.job);
+export async function generateMetadata({ params }: JobPageProps) {
+  const job = formatUrlToText(params.job);
+
+  return {
+    title: `Vaga de ${job}`,
+    description: `Confira a vaga de emprego disponível para ${job}`,
+  };
+}
+
+export default async function JobPage({ params }: JobPageProps) {
+  const jobTitle = formatUrlToText(params.job);
+  const jobId = params.job.split("-")[0];
+
+  const jobData = (await api.get(`vagas/find/${jobId}`)).data as JobDetails;
+
   return (
     <PublicLayout title="Detalhes da vaga">
       <section className="flex justify-between items-center">
@@ -30,15 +46,13 @@ export default function JobPage({ params }: JobPageProps) {
           <h1 className="text-2xl font-medium">{jobTitle}</h1>
 
           <div className="flex mt-2">
-            <AppBadge
-              text="Tempo integral"
-              textColorClass="text-blue-500"
-              backgroundColorClass="bg-blue-500/20"
-            />
+            {jobData.tags?.map((tag) => (
+              <AppBadge key={tag.id} text={tag.nome} corTag={tag.corTag} />
+            ))}
           </div>
         </div>
 
-        <AppButton className="max-md:hidden">
+        <AppButton className="max-md:hidden" href={`${params.job}/aplicar`}>
           Aplicar agora <ArrowRightIcon />
         </AppButton>
       </section>
@@ -46,38 +60,15 @@ export default function JobPage({ params }: JobPageProps) {
       <section className="flex mt-5 gap-10 max-md:flex-col-reverse">
         <article className="md:flex-1 md:min-w-80 max-md:min-h-80">
           <h2 className="font-medium text-lg">Descrição da vaga</h2>
-          <p className="text-base text-gray-500">
-            Integer aliquet pretium consequat. Donec et sapien id leo accumsan
-            pellentesque eget maximus tellus. Duis et est ac leo rhoncus
-            tincidunt vitae vehicula augue. Donec in suscipit diam. Pellentesque
-            quis justo sit amet arcu commodo sollicitudin. Integer finibus
-            blandit condimentum. Vivamus sit amet ligula ullamcorper, pulvinar
-            ante id, tristique erat. Quisque sit amet aliquam urna. Maecenas
-            blandit felis id massa sodales finibus. Integer bibendum eu nulla eu
-            sollicitudin. Sed lobortis diam tincidunt accumsan faucibus. Quisque
-            blandit augue quis turpis auctor, dapibus euismod ante ultricies. Ut
-            non felis lacinia turpis feugiat euismod at id magna. Sed ut orci
-            arcu. Suspendisse sollicitudin faucibus aliquet.
-          </p>
-          <p className="text-base text-gray-500">
-            Nam dapibus consectetur erat in euismod. Cras urna augue, mollis
-            venenatis augue sed, porttitor aliquet nibh. Sed tristique dictum
-            elementum. Nulla imperdiet sit amet quam eget lobortis. Etiam in
-            neque sit amet orci interdum tincidunt.
-          </p>
+          <p className="text-base text-gray-500">{jobData.descricao}</p>
 
           <h2 className="font-medium text-lg mt-8">Responsabilidades</h2>
           <ul className="list-disc list-inside ml-2">
-            <li>Quisque semper gravida est et consectetur.</li>
-            <li>Quisque semper gravida est et consectetur.</li>
-            <li>Quisque semper gravida est et consectetur.</li>
-            <li>Quisque semper gravida est et consectetur.</li>
-            <li>Quisque semper gravida est et consectetur.</li>
-            <li>Quisque semper gravida est et consectetur.</li>
-            <li>Quisque semper gravida est et consectetur.</li>
-            <li>Quisque semper gravida est et consectetur.</li>
+            {jobData.responsabilidades.map((responsability, i) => (
+              <li key={i}>{responsability}</li>
+            ))}
           </ul>
-          <AppButton className="md:hidden mt-5">
+          <AppButton className="md:hidden mt-5" href={`${params.job}/aplicar`}>
             Aplicar agora <ArrowRightIcon />
           </AppButton>
         </article>
@@ -90,32 +81,35 @@ export default function JobPage({ params }: JobPageProps) {
               <SummaryItem
                 Icon={EventOutlined}
                 title="Vaga postada"
-                value="22/12/2024"
+                value={new Date(jobData.dataPostagem).toLocaleDateString()}
               />
               <SummaryItem
                 Icon={SchoolOutlined}
                 title="Escolaridade"
-                value="Graduação"
+                value={jobData.educacao}
               />
               <SummaryItem
                 Icon={PaymentsOutlined}
                 title="Salário"
-                value="R$ 3k - 5k"
+                value={formatSalaryMinMax(
+                  jobData.salarioMinimo,
+                  jobData.salarioMaximo
+                )}
               />
               <SummaryItem
                 Icon={LocationOnOutlined}
                 title="Localização"
-                value="Criciuma - SC"
+                value={jobData.regiao}
               />
               <SummaryItem
                 Icon={HomeWorkOutlined}
                 title="Modalidade"
-                value="Tempo integral"
+                value={jobData.modalidade}
               />
               <SummaryItem
                 Icon={PermContactCalendarOutlined}
                 title="Tempo de experiência"
-                value="2-5 anos"
+                value={jobData.tempoExperiencia}
               />
             </div>
           </div>
@@ -130,7 +124,7 @@ export default function JobPage({ params }: JobPageProps) {
         <h1 className="font-medium text-4xl mt-24 mb-5">
           Empregos relacionados
         </h1>
-        <PublicJobs />
+        <PublicJobs filter={jobData.setor.nome} excpectThisJobID={jobData.id} />
       </section>
     </PublicLayout>
   );
