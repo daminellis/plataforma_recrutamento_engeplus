@@ -27,11 +27,10 @@ export class CreateCandidaturaDto {
     descricao: string;
 
     @ApiProperty()
-    cvData: {
-        buffer: Buffer;
+    cvData: Buffer;
 
-        type: string;
-    };
+    @ApiProperty()
+    cvType: string;
 
     @ApiProperty()
     @IsNotEmpty()

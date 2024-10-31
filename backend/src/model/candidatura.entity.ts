@@ -33,8 +33,11 @@ export class Candidatura {
   @Column({ type: 'text', name: 'descricao' })
   descricao: string;
 
-  @Column({ type: 'blob', name: 'cv' })
+  @Column({ type: 'blob', name: 'cv_data' })
   cvData: Buffer;
+
+  @Column({ type: 'varchar', name: 'cv_type' })
+  cvType: string;
 
   @Column({ type: 'timestamp', name: 'data_candidatura', nullable: false, default: () => 'CURRENT_TIMESTAMP'})
   dataCandidatura: Timestamp;
