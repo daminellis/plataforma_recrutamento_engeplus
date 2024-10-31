@@ -5,6 +5,7 @@ import {
   Inject,
   HttpStatus,
 } from '@nestjs/common';
+import { isValid, parse } from 'date-fns';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateVagaDto } from '../dto/vagas/CreateVaga.dto';
@@ -77,10 +78,15 @@ export class VagaService {
   //Cria uma vaga
   async createVaga(createVagaDto: CreateVagaDto): Promise<Vaga> {
     const newVaga = this.vagasRepository.create(createVagaDto);
-    if (newVaga.dataExpiracao) {
-      newVaga.dataExpiracao = new Date(
-        dateFormater(createVagaDto.dataExpiracao),
-      );
+    if (createVagaDto.dataExpiracao) {
+        const parsedDate = parse(createVagaDto.dataExpiracao, 'dd/MM/yyyy', new Date());
+        if (!isValid(parsedDate)) {
+            throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
+        }
+        newVaga.dataExpiracao = parsedDate;
+        if (newVaga.dataExpiracao < new Date()) {
+            throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
+        }
     }
 
     if (createVagaDto.recruiterId) {
