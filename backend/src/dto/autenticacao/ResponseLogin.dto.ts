@@ -36,20 +36,4 @@ export class ResponseLoginDto {
     @IsString()
     @IsOptional()
     setor: string;
-
-    @ApiProperty({ type: [Any] })
-    @IsArray()
-    @IsOptional()
-    vagas: {
-
-        vagaIds: number[];
-    
-        vagaNames: String[];
-    }
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
-    @IsEnum(TipoUsuarioEnum)
-    tipoUsuario: TipoUsuarioEnum;
 }

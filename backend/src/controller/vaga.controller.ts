@@ -5,6 +5,8 @@ import { CreateVagaDto } from "src/dto/vagas/CreateVaga.dto";
 import { UpdateVagaDto } from "../dto/vagas/UpdateVaga.dto";
 import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
 import { Public } from "src/auth/decorators/public.decorator";
+import { GetUserType } from "src/auth/decorators/auth.decorator";
+import { TipoUsuarioEnum } from "src/model/usuario.entity";
 
 @Controller('vagas')
 export class VagaController {
@@ -16,10 +18,15 @@ export class VagaController {
         return this.vagaService.findAllVagas();
     }
 
-    @Get('/all-lider')
-    @AllowUserTypes('Lider')
-    async findAllLider(): Promise<Vaga[]> {
-        return this.vagaService.findAllVagasByLiderSetor();
+    @Get('/all-private')
+    @AllowUserTypes('Administrador', 'Recursos Humanos', 'Lider')
+    async findAllPrivate(@GetUserType('Lider') userType: TipoUsuarioEnum): Promise<Vaga[]> {
+
+        if (userType === 'Lider'){
+            return this.vagaService.findAllVagasByLiderSetor();
+        }
+
+        return this.vagaService.findAllVagas();
     }
 
     @Get('/disponiveis')
