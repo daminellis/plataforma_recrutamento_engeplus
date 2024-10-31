@@ -5,10 +5,17 @@ import {
   ManyToOne,
   Timestamp,
   OneToOne,
+  JoinTable,
 } from 'typeorm';
 import { Vaga } from './vaga.entity';
 import {CandidaturaTag} from './candidaturatag.entity';
 
+export enum StatusCandidatura {
+  ATIVO = 'Ativo',
+  EXPIRADO = 'Expirado',
+  APROVADO = 'Aprovado',
+  REPROVADO = 'Reprovado',
+}
 @Entity()
 export class Candidatura {
   @PrimaryGeneratedColumn({ type: 'int' })
@@ -35,10 +42,13 @@ export class Candidatura {
   @Column({ type: 'boolean', name: 'favorito', default: false })
   favorito: boolean;
 
+  @Column({ type: 'enum', enum: StatusCandidatura, name: 'status', default: StatusCandidatura.ATIVO })
+  status: StatusCandidatura;
+
   @ManyToOne(() => Vaga, (vaga) => vaga.candidatura)
   vaga: Vaga;
 
   @ManyToOne(() => CandidaturaTag, candidaturaTag => candidaturaTag.candidaturas)
-  status: CandidaturaTag;
+  candidaturaTagId: CandidaturaTag;
 }
 export default Candidatura;

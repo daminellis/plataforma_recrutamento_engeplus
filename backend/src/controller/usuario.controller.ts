@@ -1,15 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Controller, Delete, Get, Param } from "@nestjs/common";
 import { UsuarioService } from "../service/usuario.service";
-import { CreateUsuarioDto } from "../dto/usuarios/CreateUsuario.dto";
-import{ UpdateUsuarioDto } from "../dto/usuarios/UpdateUsuario.dto";
 import Usuario from "src/model/usuario.entity";
-// import { LoginDto } from "src/dto/autenticacao/Login.dto";
+import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
 
 @Controller('usuarios')
+@AllowUserTypes('Administrador')
 export class UsuarioController{
     constructor(private usuarioService: UsuarioService) {}
+    
     @Get('/all')
-    findAllUsuarios() {
+    findAllUsuarios(): Promise<Usuario[]> {
         return this.usuarioService.findAll();
     }
     @Get('/find/:id')

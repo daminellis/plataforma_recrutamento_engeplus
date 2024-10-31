@@ -5,7 +5,7 @@ import { Vaga } from './vaga.entity';
 
 export enum TipoUsuarioEnum {
   ADMIN = 'Administrador',
-  RH = 'Recusos Humanos',
+  RH = 'Recursos Humanos',
   LIDER = 'Lider',
 }
 
