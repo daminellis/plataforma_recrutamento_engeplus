@@ -1,9 +1,8 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateTableVaga1730253034085 implements MigrationInterface {
-
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             CREATE TABLE vaga (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 titulo VARCHAR(100) NOT NULL,
@@ -20,27 +19,26 @@ export class CreateTableVaga1730253034085 implements MigrationInterface {
                 regiao VARCHAR(255) NOT NULL,
                 data_postagem TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
                 disponivel BOOLEAN DEFAULT TRUE,
-                recrutadorId INT,
-                setorId INT,
-                CONSTRAINT FK_recrutador FOREIGN KEY (recrutadorId) REFERENCES usuario(id),
-                CONSTRAINT FK_setor FOREIGN KEY (setorId) REFERENCES setor(id)
+                recrutador_id INT,
+                setor_id INT NOT NULL,
+                CONSTRAINT FK_recrutador FOREIGN KEY (recrutador_id) REFERENCES usuario(id),
+                CONSTRAINT FK_setor FOREIGN KEY (setor_id) REFERENCES setor(id)
             );
         `);
 
-        await queryRunner.query(`
+    await queryRunner.query(`
             CREATE TABLE vaga_tags_tag (
-                vagaId INT NOT NULL,
-                tagId INT NOT NULL,
-                CONSTRAINT FK_vaga FOREIGN KEY (vagaId) REFERENCES vaga(id) ON DELETE CASCADE,
-                CONSTRAINT FK_tag FOREIGN KEY (tagId) REFERENCES tag(id) ON DELETE CASCADE,
-                PRIMARY KEY (vagaId, tagId)
+                vaga_id INT NOT NULL,
+                tag_id INT NOT NULL,
+                CONSTRAINT FK_vaga FOREIGN KEY (vaga_id) REFERENCES vaga(id) ON DELETE CASCADE,
+                CONSTRAINT FK_tag FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE,
+                PRIMARY KEY (vaga_id, tag_id)
             );
         `);
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP TABLE vaga_tags_tag;`);
-        await queryRunner.query(`DROP TABLE vaga;`);
-    }
-
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`DROP TABLE vaga_tags_tag;`);
+    await queryRunner.query(`DROP TABLE vaga;`);
+  }
 }
