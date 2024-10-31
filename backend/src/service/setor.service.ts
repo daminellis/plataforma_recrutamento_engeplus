@@ -16,9 +16,7 @@ export class SetorService {
 
     //Get all setores
     findAllSetores(): Promise<Setor[]> {
-        return this.setorRepository.find({
-            relations: ['usuarios', 'vagas']
-        }); // SELECT * FROM setores
+        return this.setorRepository.find(); // SELECT * FROM setores
     }
 
     //Get one setor
