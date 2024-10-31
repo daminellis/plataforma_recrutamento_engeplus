@@ -28,8 +28,8 @@ export class CandidaturaController {
     }
 
     @Get('/find/all-by-vaga/:id')
-    @AllowUserTypes('Administrador', 'Recursos Humanos')
-    async findAllByCandidature(@Param('id') vagaId: number): Promise<Candidatura[] | null>{
+    @AllowUserTypes('Administrador', 'Recursos Humanos', 'Lider')
+    async findAllCandidaturesByVaga(@Param('id') vagaId: number): Promise<Candidatura[] | null>{
         return this.candidaturaService.findAllByCandidature(vagaId)
     }
 

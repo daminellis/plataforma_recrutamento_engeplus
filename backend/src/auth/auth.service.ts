@@ -115,11 +115,6 @@ export class AuthService {
             email: user.email,
             cargo: user.cargo.nome,
             setor: user.setor.nome,
-            vagas: {
-              vagaIds: user.vagas.map(vaga => vaga.id),
-              vagaNames: user.vagas.map(vaga => vaga.titulo)
-            },
-            tipoUsuario: user.tipoUsuario
           }
         };
       }
