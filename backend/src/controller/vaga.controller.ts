@@ -7,6 +7,7 @@ import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
 import { Public } from "src/auth/decorators/public.decorator";
 import { GetUserType } from "src/auth/decorators/auth.decorator";
 import { TipoUsuarioEnum } from "src/model/usuario.entity";
+import { ResponseCountCandidatureDto } from "src/dto/vagas/ResponseCountCandidature.dto";
 
 @Controller('vagas')
 export class VagaController {
@@ -20,13 +21,16 @@ export class VagaController {
 
     @Get('/all-private')
     @AllowUserTypes('Administrador', 'Recursos Humanos', 'Lider')
-    async findAllPrivate(@GetUserType('Lider') userType: TipoUsuarioEnum): Promise<Vaga[]> {
-
+    async findAllPrivate(@GetUserType('Lider') userType: TipoUsuarioEnum): Promise<ResponseCountCandidatureDto[]> {
+        const allVagas= await this.vagaService.findAllVagasWithCandidateCount()
+    
         if (userType === 'Lider'){
-            return this.vagaService.findAllVagasByLiderSetor();
+            const candidaturaPorLiderVagas= await this.vagaService.findAllWithCandidateCountByLiderSetor()
+            console.log("Lider")
+            return candidaturaPorLiderVagas;
         }
 
-        return this.vagaService.findAllVagas();
+        return allVagas;
     }
 
     @Get('/disponiveis')
