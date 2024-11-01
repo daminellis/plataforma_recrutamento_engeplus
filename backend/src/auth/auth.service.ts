@@ -48,7 +48,7 @@ export class AuthService {
   }
 
   async fetchUserFromDb(username: string): Promise<Usuario | null> {
-    return this.usuarioService.findOneByName(username);
+    return this.usuarioService.findOneByUsername(username);
   }
 
   async register(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
