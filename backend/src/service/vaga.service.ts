@@ -18,6 +18,7 @@ import { UsuarioService } from './usuario.service';
 import { TagService } from './tag.service';
 import Candidatura from 'src/model/candidatura.entity';
 import { CustomHttpException } from 'src/errors/exceptions/custom-exceptions';
+import { ResponseCountCandidatureDto } from 'src/dto/vagas/ResponseCountCandidature.dto';
 @Injectable()
 export class VagaService {
   constructor(
@@ -30,7 +31,7 @@ export class VagaService {
     @InjectRepository(Candidatura)
     private candidaturaRepository: Repository<Candidatura>,
     private candidaturaService: CandidaturaService,
-  ) { 
+  ) {
   }
 
   // FUNÇÕES PARA O CRUD DE VAGAS
@@ -41,7 +42,7 @@ export class VagaService {
       select: ['id', 'titulo', 'salarioMinimo', 'salarioMaximo', 'regiao', 'dataPostagem'],
       relations: ['setor', 'tags'],
     }); // SELECT * FROM vagas
-    
+
     return vagas;
   }
 
@@ -55,16 +56,16 @@ export class VagaService {
 
   async findVagasDisponiveis(): Promise<Vaga[] | null> {
     const vagas = await this.vagasRepository.find(); // SELECT * FROM vagas
-  
+
     const vagasDisponiveis = vagas.filter(vaga => vaga.disponivel === true);
-  
+
     return vagasDisponiveis.length > 0 ? vagasDisponiveis : null;
   }
   //Get one vaga
   async findOneVaga(id: number): Promise<Vaga | null> {
     const vaga = await this.vagasRepository.findOne({
       where: { id },
-      select: ['id', 'titulo', 'salarioMinimo', 'salarioMaximo','educacao', 'tempoExperiencia', 'nivelExperiencia', 'modalidade', 'quantidadeVagas', 'dataExpiracao', 'descricao', 'responsabilidades', 'regiao', 'dataPostagem'],
+      select: ['id', 'titulo', 'salarioMinimo', 'salarioMaximo', 'educacao', 'tempoExperiencia', 'nivelExperiencia', 'modalidade', 'quantidadeVagas', 'dataExpiracao', 'descricao', 'responsabilidades', 'regiao', 'dataPostagem'],
       relations: ['recrutador', 'setor', 'tags', 'candidatura'],
     }); // SELECT * FROM vagas WHERE id = ...
 
@@ -73,6 +74,74 @@ export class VagaService {
 
   async findAllCandidaturasByVaga(vagaId: number): Promise<Candidatura[]> {
     return this.candidaturaRepository.find({ where: { vaga: { id: vagaId } } });
+  }
+
+  async findAllVagasWithCandidateCount(): Promise<ResponseCountCandidatureDto[]> {
+
+    type VagaWithCount = Vaga & { candidaturaCount: number };
+
+    const candidatosPorAllVagas = await this.vagasRepository
+      .createQueryBuilder('vaga')
+      .leftJoinAndSelect('vaga.setor', 'setor')
+      .leftJoinAndSelect('vaga.tags', 'tags')
+      .loadRelationCountAndMap('vaga.candidaturaCount', 'vaga.candidatura')
+      .getMany() as VagaWithCount[];
+
+    const candidateCounter: ResponseCountCandidatureDto[] = [];
+
+    candidatosPorAllVagas.forEach(vaga => {
+      if (vaga && vaga.setor && vaga.tags) {
+        candidateCounter.push({
+          id: vaga.id,
+          titulo: vaga.titulo,
+          salarioMinimo: vaga.salarioMinimo,
+          salarioMaximo: vaga.salarioMaximo,
+          regiao: vaga.regiao,
+          dataPostagem: vaga.dataPostagem,
+          setor: vaga.setor,
+          tags: vaga.tags,
+          candidaturaCount: vaga.candidaturaCount,
+        });
+      } else {
+        console.error('Propriedades indefinidas em vaga:', vaga);
+      }
+    });
+
+    return candidateCounter;
+  }
+
+  async findAllWithCandidateCountByLiderSetor(): Promise<ResponseCountCandidatureDto[]> {
+    type VagaWithCount = Vaga & { candidaturaCount: number };
+
+    const candidatosPorLiderVagas = await this.vagasRepository
+      .createQueryBuilder('vaga')
+      .loadRelationCountAndMap('vaga.candidaturaCount', 'vaga.candidatura')
+      .leftJoinAndSelect('vaga.setor', 'setor')
+      .leftJoinAndSelect('vaga.tags', 'tags')
+      .where('setor.nome = :setorNome', { setorNome: 'Lider' })
+      .getMany() as VagaWithCount[];
+
+    const candidateCounter: ResponseCountCandidatureDto[] = [];
+
+    candidatosPorLiderVagas.forEach(vaga => {
+      if (vaga && vaga.setor && vaga.tags) {
+        candidateCounter.push({
+          id: vaga.id,
+          titulo: vaga.titulo,
+          salarioMinimo: vaga.salarioMinimo,
+          salarioMaximo: vaga.salarioMaximo,
+          regiao: vaga.regiao,
+          dataPostagem: vaga.dataPostagem,
+          setor: vaga.setor,
+          tags: vaga.tags,
+          candidaturaCount: vaga.candidaturaCount,
+        });
+      } else {
+        console.error('Propriedades indefinidas em vaga:', vaga);
+      }
+    });
+
+    return candidateCounter;
   }
 
   //Cria uma vaga
@@ -94,8 +163,8 @@ export class VagaService {
         createVagaDto.recruiterId,
       );
       if (recruiter) {
-        newVaga.recrutador = {id: recruiter.id, nomeCompleto: recruiter.nomeCompleto } as any;
-      }else{
+        newVaga.recrutador = { id: recruiter.id, nomeCompleto: recruiter.nomeCompleto } as any;
+      } else {
         throw new NotFoundException('Recrutador não encontrado');
       }
     }
@@ -103,29 +172,29 @@ export class VagaService {
       const sector = await this.setorService.findOneSetor(createVagaDto.setorId);
       if (sector) {
         newVaga.setor = sector;
-      }else{
+      } else {
         throw new CustomHttpException(`Setor ${createVagaDto.setorId} não encontrado`, HttpStatus.BAD_REQUEST);
       }
     }
 
-    if (createVagaDto.candidaturaIds){
-      newVaga.candidatura= [];
+    if (createVagaDto.candidaturaIds) {
+      newVaga.candidatura = [];
       for (let i = 0; i < createVagaDto.candidaturaIds.length; i++) {
         const candidaturas = await this.candidaturaService.findOneCandidatura(createVagaDto.candidaturaIds[i]);
         if (candidaturas) {
-          newVaga.candidatura.push({id: candidaturas.id, nomeCompleto: candidaturas.nomeCompleto, email: candidaturas.email, telefone: candidaturas.telefone} as any);
+          newVaga.candidatura.push({ id: candidaturas.id, nomeCompleto: candidaturas.nomeCompleto, email: candidaturas.email, telefone: candidaturas.telefone } as any);
         } else {
           throw new CustomHttpException(`Vaga ${createVagaDto.candidaturaIds[i]} não encontrada. Favor atribuir uma vaga válida.`, HttpStatus.BAD_REQUEST);
         }
       }
     }
 
-    if (createVagaDto.tagIds){
-      newVaga.tags= [];
+    if (createVagaDto.tagIds) {
+      newVaga.tags = [];
       for (let i = 0; i < createVagaDto.tagIds.length; i++) {
         const tags = await this.tagService.findOneTag(createVagaDto.tagIds[i]);
         if (tags) {
-          newVaga.tags.push({id: tags.id, nome: tags.nome, cor: tags.corTag} as any);
+          newVaga.tags.push({ id: tags.id, nome: tags.nome, cor: tags.corTag } as any);
         } else {
           throw new CustomHttpException(`Tag(s) ${createVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`, HttpStatus.BAD_REQUEST);
         }
@@ -133,7 +202,7 @@ export class VagaService {
     }
     return this.vagasRepository.save(newVaga); // INSERT INTO vagas
   }
-  
+
 
   // Atualiza uma vaga
   async updateVaga(id: number, updateVagaDto: UpdateVagaDto): Promise<Vaga> {
@@ -149,10 +218,10 @@ export class VagaService {
       const recruiter = await this.usuarioService.findOne(
         updateVagaDto.recruiterId,
       );
-      
+
       if (recruiter) {
         vaga.recrutador = recruiter;
-      }else{
+      } else {
         throw new NotFoundException('Recrutador não encontrado');
       }
     }
@@ -160,13 +229,13 @@ export class VagaService {
       const sector = await this.setorService.findOneSetor(updateVagaDto.setorId);
       if (sector) {
         vaga.setor = sector;
-      }else{
+      } else {
         throw new NotFoundException('Setor não encontrado');
       }
     }
 
-    if (updateVagaDto.tagIds){
-      vaga.tags= [];
+    if (updateVagaDto.tagIds) {
+      vaga.tags = [];
       for (let i = 0; i < updateVagaDto.tagIds.length; i++) {
         const tags = await this.tagService.findOneTag(updateVagaDto.tagIds[i]);
         if (tags) {
@@ -196,7 +265,7 @@ export class VagaService {
     const vagasNull = vagas.filter(vaga => vaga.setor === null);
 
     for (let i = 0; i < vagasNull.length; i++) {
-        await this.vagasRepository.delete(vagasNull[i].id);
+      await this.vagasRepository.delete(vagasNull[i].id);
     }
-}
+  }
 }

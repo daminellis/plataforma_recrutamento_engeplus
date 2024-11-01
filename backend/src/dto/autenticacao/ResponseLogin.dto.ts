@@ -1,7 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString, Length, IsEmail, IsNumber, IsOptional, IsArray, IsEnum, IsInt } from "class-validator";
-import Usuario, { TipoUsuarioEnum } from "src/model/usuario.entity";
-import { Any } from "typeorm";
+import { IsNotEmpty, IsString, Length, IsEmail, IsOptional, IsInt } from "class-validator";
+
 
 export class ResponseLoginDto {
 
