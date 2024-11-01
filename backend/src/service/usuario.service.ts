@@ -28,7 +28,7 @@ export class UsuarioService {
   }
 
   //Encontra um usuário por username
-  async findOneByName(username: string): Promise<Usuario | null> {
+  async findOneByUsername(username: string): Promise<Usuario | null> {
     return this.usuariosRepository.findOne({
       where: { username },
       relations: ['cargo', 'setor', 'vagas']
