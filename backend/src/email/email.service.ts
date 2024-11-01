@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { SendEmailDto } from 'src/dto/emails/SendEmail.dto';
 import { CandidaturaService } from 'src/service/candidatura.service';
 import Candidatura, { StatusCandidatura } from 'src/model/candidatura.entity';
+import { CustomHttpException } from 'src/errors/exceptions/custom-exceptions';
 
 @Injectable()
 export class EmailService {
@@ -16,10 +17,10 @@ export class EmailService {
         const candidato = candidatos.find(c => c.email === sendEmail.email);
         const candidatoAprovado = candidatos.find(c => c.status === StatusCandidatura.APROVADO);
 
-        if (!candidato) {
-            throw new Error(`Candidato com email ${sendEmail.email} não foi encontrado em nossa base de dados.`);
+        if (!candidato || !candidatoAprovado) {
+            throw new CustomHttpException(`Status do candidato incorreto ou email não encontrado.`, HttpStatus.BAD_REQUEST);
         }
-        console.log( candidatoAprovado, candidato)
+
         if (candidatoAprovado && candidato) {     
             await this.mailerService.sendMail({
                 to: candidato.email,
@@ -44,8 +45,9 @@ export class EmailService {
         const candidato = candidatos.find(c => c.email === sendEmail.email);
         const candidatoReprovado = candidatos.find(c => c.status === StatusCandidatura.REPROVADO);
 
-        if (!candidato) {
-            throw new Error(`Candidato com email ${sendEmail.email} não foi encontrado em nossa base de dados.`);
+      
+        if (!candidato || !candidatoReprovado) {
+            throw new CustomHttpException(`Status do candidato incorreto ou email não encontrado.`, HttpStatus.BAD_REQUEST);
         }
 
         if (candidatoReprovado && candidato) {

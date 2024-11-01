@@ -18,8 +18,8 @@ export class UsuarioController{
     }
 
     @Get('/findByName/:username') //Usar %20 em nomes compostos
-    async findOneUsuarioByName(@Param('username') username: string): Promise<Usuario | null> {
-        return await this.usuarioService.findOneByName(username);
+    async findOneUsuarioByUsername(@Param('username') username: string): Promise<Usuario | null> {
+        return await this.usuarioService.findOneByUsername(username);
     }
 
     @Delete('/delete/:id')
