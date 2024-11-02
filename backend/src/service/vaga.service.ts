@@ -148,11 +148,11 @@ export class VagaService {
   async createVaga(createVagaDto: CreateVagaDto): Promise<Vaga> {
     const newVaga = this.vagasRepository.create(createVagaDto);
     if (createVagaDto.dataExpiracao) {
-        const parsedDate = parse(createVagaDto.dataExpiracao, 'dd/MM/yyyy', new Date());
-        if (!isValid(parsedDate)) {
+        const formattedDate = new Date(dateFormater(createVagaDto.dataExpiracao));
+        if (!isValid(formattedDate)) {
             throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
         }
-        newVaga.dataExpiracao = parsedDate;
+        newVaga.dataExpiracao = formattedDate;
         if (newVaga.dataExpiracao < new Date()) {
             throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
         }
