@@ -6,10 +6,13 @@ import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { DropFileField } from "@/components/form/DropFileField";
 import { api } from "@/service/axios";
 import { useRouter, usePathname } from "next/navigation";
+import { useState } from "react";
+import { Loading } from "@/components/ui/Loading";
 
 export const ApplyForm = ({ jobId }: { jobId: number }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -19,9 +22,13 @@ export const ApplyForm = ({ jobId }: { jobId: number }) => {
 
     form.append("vagaId", jobId.toString());
 
-    await api.post("/candidaturas/create", form).then((res) => {
-      router.push(`${pathname}/sucesso`);
-    });
+    setIsLoading(true);
+    await api
+      .post("/candidaturas/create", form)
+      .then((res) => {
+        router.push(`${pathname}/sucesso`);
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -63,7 +70,12 @@ export const ApplyForm = ({ jobId }: { jobId: number }) => {
       <DropFileField />
 
       <AppButton type="submit">
-        Enviar candidatura <ArrowRightIcon className="size-5" />
+        Enviar candidatura
+        {isLoading ? (
+          <Loading isWhite />
+        ) : (
+          <ArrowRightIcon className="size-5" />
+        )}
       </AppButton>
     </form>
   );

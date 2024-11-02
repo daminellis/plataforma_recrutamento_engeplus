@@ -11,6 +11,7 @@ const buttonClass = tv({
       primary: "bg-blue-500 hover:bg-blue-600 text-white",
       secondary:
         "bg-blue-500/20 hover:bg-blue-600 text-blue-500 hover:text-white",
+      outline: "border border-blue-500 text-blue-500 hover:bg-blue-500/20",
     },
     size: {
       sm: "py-2 px-4",

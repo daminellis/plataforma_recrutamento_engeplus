@@ -6,8 +6,9 @@ import { FileIcon } from "@radix-ui/react-icons";
 
 export const DropFileField = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [error, setError] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const aceptedFileTypes = ["pdf", "docx", "jpg"];
+  const aceptedFileTypes = ["pdf", "docx", "jpg", "jpeg"];
 
   const onClickInput = () => {
     fileInputRef.current?.click();
@@ -16,12 +17,21 @@ export const DropFileField = () => {
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
+    let isValidFileType = false;
 
     for (const fileType of aceptedFileTypes) {
       if (file.type.includes(fileType)) {
         setSelectedFile(file);
+
+        isValidFileType = true;
         break;
       }
+    }
+
+    if (!isValidFileType) {
+      setError(true);
+    } else {
+      setError(false);
     }
   };
 
@@ -33,7 +43,9 @@ export const DropFileField = () => {
 
   return (
     <div
-      className="flex items-center justify-between gap-5 w-full border-2 border-dashed rounded-md cursor-pointer p-10 bg-gray-100"
+      className={`flex items-center justify-between gap-5 w-full border-2 border-dashed rounded-md ${
+        error && "border-red-500"
+      } cursor-pointer p-10 bg-gray-100`}
       onDrop={handleFileDrop}
       onDragOver={(event) => event.preventDefault()}
     >
@@ -48,11 +60,15 @@ export const DropFileField = () => {
             </h3>
           ) : (
             <>
-              <h3 className="text-gray-700 font-semibold text-xl max-md:text-lg">
-                Solte aqui o arquivo!
+              <h3
+                className={`${
+                  error ? "text-red-500" : "text-gray-700"
+                } font-semibold text-xl max-md:text-lg`}
+              >
+                {error ? "Arquivo inválido" : "Solte aqui o arquivo!"}
               </h3>
               <p className="text-gray-400 text-sm">
-                Formatos suportados - PDF, DOCX E JPG
+                Formatos suportados - PDF, DOCX, JPG e JPEG
               </p>
             </>
           )}

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { JobType } from "@/types/Job";
 import { api } from "@/service/axios";
 import { useSearchParams } from "next/navigation";
+import { Loading } from "@/components/ui/Loading";
 
 type PublicJobsProps = {
   filter?: string;
@@ -14,39 +15,43 @@ type PublicJobsProps = {
 export const PublicJobs = ({ filter, excpectThisJobID }: PublicJobsProps) => {
   const [isListGrid, setIsListGrid] = useState(false);
   const [jobs, setJobs] = useState<JobType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const searchParams = useSearchParams();
   const search = searchParams.get("search");
 
   useEffect(() => {
-    api.get("vagas/all").then((response) => {
-      const { data } = response as { data: JobType[] };
-      let filteredJobs: JobType[] = data;
+    api
+      .get("vagas/all")
+      .then((response) => {
+        const { data } = response as { data: JobType[] };
+        let filteredJobs: JobType[] = data;
 
-      if (filter) {
-        filteredJobs = data.filter((job) =>
-          job.setor.nome.toLowerCase().includes(filter!.toLowerCase())
-        );
-
-        if (excpectThisJobID) {
-          filteredJobs = filteredJobs.filter(
-            (job) => job.id !== excpectThisJobID
+        if (filter) {
+          filteredJobs = data.filter((job) =>
+            job.setor.nome.toLowerCase().includes(filter!.toLowerCase())
           );
+
+          if (excpectThisJobID) {
+            filteredJobs = filteredJobs.filter(
+              (job) => job.id !== excpectThisJobID
+            );
+          }
+
+          setJobs(filteredJobs);
         }
 
-        setJobs(filteredJobs);
-      }
+        if (search) {
+          filteredJobs = filteredJobs.filter((job) =>
+            job.titulo.toLowerCase().includes(search.toLowerCase())
+          );
 
-      if (search) {
-        filteredJobs = filteredJobs.filter((job) =>
-          job.titulo.toLowerCase().includes(search.toLowerCase())
-        );
+          setJobs(filteredJobs);
+        }
 
-        setJobs(filteredJobs);
-      }
-
-      if (!search && !filter) setJobs(data);
-    });
-  }, [filter, search]);
+        if (!search && !filter) setJobs(data);
+      })
+      .finally(() => setIsLoading(false));
+  }, [excpectThisJobID, filter, search]);
 
   return (
     <>
@@ -66,10 +71,18 @@ export const PublicJobs = ({ filter, excpectThisJobID }: PublicJobsProps) => {
         </div>
       </div>
 
-      <div className="mt-5 flex flex-wrap gap-6 max-md:justify-center">
-        {jobs.map((job) => (
-          <CardJob key={job.id} {...job} isListGrid={isListGrid} />
-        ))}
+      <div
+        className={`mt-5 flex flex-wrap gap-6 max-md:justify-center ${
+          isLoading && "flex-1 items-center justify-center"
+        }`}
+      >
+        {isLoading ? (
+          <Loading size="3rem" />
+        ) : (
+          jobs.map((job) => (
+            <CardJob key={job.id} {...job} isListGrid={isListGrid} />
+          ))
+        )}
       </div>
     </>
   );

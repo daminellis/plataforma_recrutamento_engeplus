@@ -1,13 +1,21 @@
 "use client";
 
-import { LabelControl } from "@/components/form/LabelControl";
 import { PasswordField } from "@/components/form/PasswordField";
 import { AppButton } from "@/components/ui/button/AppButton";
+import { Loading } from "@/components/ui/Loading";
 import { api } from "@/service/axios";
-import { Checkbox, TextField } from "@mui/material";
+import { AuthLogin } from "@/types/Auth";
+import { CircularProgress, TextField } from "@mui/material";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function LoginPage() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -22,31 +30,52 @@ export default function LoginPage() {
   };
 
   const handleLogin = async (dto: { username: string; password: string }) => {
+    setIsLoading(true);
     try {
-      const response = await api.post("auth/login", dto);
+      const { data } = await api.post<AuthLogin>("auth/login", dto);
 
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
+      document.cookie = `token=${data.access_token}; path=/; max-age=86400; secure; samesite=strict`;
+
+      localStorage.setItem(
+        "token",
+        JSON.stringify({
+          token: data.access_token,
+          expires: new Date(),
+        })
+      );
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      router.push("/admin/dashboard");
+    } catch (e) {
+      if (e instanceof AxiosError && e.status == 401) {
+        setError(e.response?.data.message);
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
     <>
       <h1 className="text-2xl font-semibold">Login</h1>
 
+      {error && <p className="text-red-500">{error}</p>}
       <form className="flex flex-col gap-5 mt-5" onSubmit={handleSubmit}>
         <TextField
           label="Usuário"
           variant="outlined"
           type="text"
           name="username"
+          required
         />
-        <PasswordField label="Senha" />
-
-        <LabelControl control={<Checkbox />} label="Lembrar-me" />
+        <PasswordField label="Senha" required />
 
         <AppButton type="submit">
-          Login <ArrowRightIcon className="size-6" />
+          Login{" "}
+          {isLoading ? (
+            <Loading isWhite />
+          ) : (
+            <ArrowRightIcon className="size-6" />
+          )}
         </AppButton>
       </form>
     </>
