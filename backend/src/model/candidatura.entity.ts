@@ -33,7 +33,7 @@ export class Candidatura {
   @Column({ type: 'text', name: 'descricao' })
   descricao: string;
 
-  @Column({ type: 'blob', name: 'cv_data' })
+  @Column({ type: 'longblob', name: 'cv_data' })
   cvData: Buffer;
 
   @Column({ type: 'varchar', name: 'cv_type' })

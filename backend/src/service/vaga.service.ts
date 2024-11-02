@@ -1,11 +1,9 @@
 import {
   Injectable,
   NotFoundException,
-  BadRequestException,
-  Inject,
   HttpStatus,
 } from '@nestjs/common';
-import { isValid, parse } from 'date-fns';
+import { isValid } from 'date-fns';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateVagaDto } from '../dto/vagas/CreateVaga.dto';
@@ -16,7 +14,6 @@ import { CandidaturaService } from './candidatura.service';
 import { SetorService } from './setor.service';
 import { UsuarioService } from './usuario.service';
 import { TagService } from './tag.service';
-import Candidatura from 'src/model/candidatura.entity';
 import { CustomHttpException } from 'src/errors/exceptions/custom-exceptions';
 import { ResponseCountCandidatureDto } from 'src/dto/vagas/ResponseCountCandidature.dto';
 @Injectable()
@@ -27,9 +24,6 @@ export class VagaService {
     private usuarioService: UsuarioService,
     private setorService: SetorService,
     private tagService: TagService,
-
-    @InjectRepository(Candidatura)
-    private candidaturaRepository: Repository<Candidatura>,
     private candidaturaService: CandidaturaService,
   ) {
   }
@@ -70,10 +64,6 @@ export class VagaService {
     }); // SELECT * FROM vagas WHERE id = ...
 
     return vaga;
-  }
-
-  async findAllCandidaturasByVaga(vagaId: number): Promise<Candidatura[]> {
-    return this.candidaturaRepository.find({ where: { vaga: { id: vagaId } } });
   }
 
   async findAllVagasWithCandidateCount(): Promise<ResponseCountCandidatureDto[]> {

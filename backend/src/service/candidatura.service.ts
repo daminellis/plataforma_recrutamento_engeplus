@@ -33,8 +33,10 @@ export class CandidaturaService {
         const candidaturasLider: Candidatura[] = [];
 
         for (const vaga of vagasLider) {
-            const candidaturas = await this.vagaService.findAllCandidaturasByVaga(vaga.id);
-            candidaturasLider.push(...candidaturas);
+            const candidaturas = await this.findAllByVaga(vaga.id);
+            if (candidaturas) {
+                candidaturasLider.push(...candidaturas);
+            }
         }
 
         return candidaturasLider;
@@ -47,10 +49,12 @@ export class CandidaturaService {
         });
     }
 
-    async findAllByCandidature(vagaId: number): Promise<Candidatura[] | null> {
-        const candidatosPorVaga: Candidatura[] = await this.vagaService.findAllCandidaturasByVaga(vagaId);
+    async findAllByVaga(vagaId: number): Promise<Candidatura[] | null> {
 
-        return candidatosPorVaga
+        const candidatosPorVaga: Candidatura[] = await this.candidaturaRepository.find({ where: { vaga: { id: vagaId } } });
+        
+        return candidatosPorVaga;
+
     }
 
     async create(createCandidaturaDto: CreateCandidaturaDto): Promise<Candidatura> {
