@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { CandidaturaService } from "../service/candidatura.service";
 import { CreateCandidaturaDto } from "src/dto/candidaturas/CreateCandidatura.dto";
 import { UpdateCandidaturaDto } from "src/dto/candidaturas/UpdateCandidatura.dto";
@@ -8,9 +8,11 @@ import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
 import { Public } from "src/auth/decorators/public.decorator";
 import { GetUserType } from "src/auth/decorators/auth.decorator";
 import { TipoUsuarioEnum } from "src/model/usuario.entity";
+import { CustomHttpException } from "src/errors/exceptions/custom-exceptions";
 @Controller('candidaturas')
 export class CandidaturaController {
     constructor(private candidaturaService: CandidaturaService) {}
+
     @Get('/all')
     @AllowUserTypes('Administrador', 'Recursos Humanos', 'Lider')
     async findAllCandidaturas(@GetUserType('Lider') userType: TipoUsuarioEnum): Promise<Candidatura[]> {
@@ -30,7 +32,7 @@ export class CandidaturaController {
     @Get('/find/all-by-vaga/:id')
     @AllowUserTypes('Administrador', 'Recursos Humanos', 'Lider')
     async findAllCandidaturesByVaga(@Param('id') vagaId: number): Promise<Candidatura[] | null>{
-        return this.candidaturaService.findAllByCandidature(vagaId)
+        return this.candidaturaService.findAllByVaga(vagaId)
     }
 
     @Post('/create')
@@ -43,10 +45,19 @@ export class CandidaturaController {
         if (file && file.buffer) {
             createCandidaturaDto.cvData = file.buffer;
             createCandidaturaDto.cvType = file.mimetype;
-            console.log('File buffer:', createCandidaturaDto.cvData); 
-            console.log('File type:', createCandidaturaDto.cvType); 
+            
+            const originalFileSize = file.size;
+            const storedFileSize = createCandidaturaDto.cvData.length; 
+
+            if (originalFileSize !== storedFileSize) {
+                throw new CustomHttpException('O tamanho do arquivo original não coincide com o tamanho dos dados armazenados', HttpStatus.BAD_REQUEST);
+            } else{
+                console.log('File size:', originalFileSize);
+                console.log('Stored file size:', storedFileSize);
+            }
+
         } else {
-            throw new Error ('File or file buffer is undefined');
+            throw new CustomHttpException ('File or file buffer is undefined', 400);
         }
         return this.candidaturaService.create(createCandidaturaDto);
     }
