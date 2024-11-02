@@ -6,6 +6,11 @@ export class SendEmailDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
+    nomeCompleto: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
     @IsEmail()
     @Length(8, 50)
     email: string;

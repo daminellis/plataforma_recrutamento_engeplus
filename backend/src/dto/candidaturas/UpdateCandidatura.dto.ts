@@ -1,4 +1,5 @@
-import { IsString, IsEmail, IsBoolean, IsOptional, IsUrl, IsInt } from 'class-validator';
+import { IsString, IsEmail, IsBoolean, IsOptional, IsUrl, IsInt, IsEnum } from 'class-validator';
+import { StatusCandidatura } from 'src/model/candidatura.entity';
 import { ApiProperty } from '@nestjs/swagger';
 export class UpdateCandidaturaDto {
   @ApiProperty()
@@ -22,14 +23,15 @@ export class UpdateCandidaturaDto {
   descricao?: string;
 
   @ApiProperty()
-  @IsUrl()
-  @IsOptional()
-  cvUrl?: string;
-
-  @ApiProperty()
   @IsBoolean()
   @IsOptional()
   favorito?: boolean;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  @IsEnum(StatusCandidatura)
+  status?: StatusCandidatura;
 
   @ApiProperty()
   @IsOptional()
