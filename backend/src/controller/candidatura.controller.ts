@@ -14,23 +14,23 @@ export class CandidaturaController {
     constructor(private candidaturaService: CandidaturaService) {}
 
     @Get('/all')
-    @AllowUserTypes('Administrador', 'Recursos Humanos', 'Lider')
-    async findAllCandidaturas(@GetUserType('Lider') userType: TipoUsuarioEnum): Promise<Candidatura[]> {
+    @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
+    async findAllCandidaturas(@GetUserType('Líder') userType: TipoUsuarioEnum): Promise<Candidatura[]> {
         console.log('User Type:', userType);
-        if ( userType === 'Lider') {
+        if ( userType === 'Líder') {
             return this.candidaturaService.findAllLiderCandidaturas();
         }
         return this.candidaturaService.findAllCandidaturas();
     }
 
     @Get('/find/:id')
-    @AllowUserTypes('Administrador', 'Recursos Humanos', 'Lider')
+    @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
     async findOneCandidatura(@Param('id') id: number): Promise<Candidatura | null> {
         return this.candidaturaService.findOneCandidatura(id);
     }
 
     @Get('/find/all-by-vaga/:id')
-    @AllowUserTypes('Administrador', 'Recursos Humanos', 'Lider')
+    @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
     async findAllCandidaturesByVaga(@Param('id') vagaId: number): Promise<Candidatura[] | null>{
         return this.candidaturaService.findAllByVaga(vagaId)
     }
