@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateTableVaga1730253034085 implements MigrationInterface {
+export class CreateTableVaga1730253004000 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
             CREATE TABLE vaga (
@@ -22,7 +22,7 @@ export class CreateTableVaga1730253034085 implements MigrationInterface {
                 recrutador_id INT,
                 setor_id INT NOT NULL,
                 CONSTRAINT FK_recrutador FOREIGN KEY (recrutador_id) REFERENCES usuario(id),
-                CONSTRAINT FK_setor FOREIGN KEY (setor_id) REFERENCES setor(id)
+                CONSTRAINT FK_setor_vaga FOREIGN KEY (setor_id) REFERENCES setor(id)
             );
         `);
 
@@ -30,7 +30,7 @@ export class CreateTableVaga1730253034085 implements MigrationInterface {
             CREATE TABLE vaga_tags_tag (
                 vaga_id INT NOT NULL,
                 tag_id INT NOT NULL,
-                CONSTRAINT FK_vaga FOREIGN KEY (vaga_id) REFERENCES vaga(id) ON DELETE CASCADE,
+                CONSTRAINT FK_vaga_tag FOREIGN KEY (vaga_id) REFERENCES vaga(id) ON DELETE CASCADE,
                 CONSTRAINT FK_tag FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE,
                 PRIMARY KEY (vaga_id, tag_id)
             );
