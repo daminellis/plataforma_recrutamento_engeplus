@@ -49,8 +49,8 @@ import {CreateTableBancotalentos1730253191858} from './migration/1730253191858-c
           CreateTableUsuario1730253082745,
           CreateTableTag1730253145492,
           CreateTableVaga1730253034085,
-          CreateTableCandidatura1730253163974,
           CreateTableCandidaturatag1730253172222,
+          CreateTableCandidatura1730253163974,
           CreateTableBancotalentos1730253191858
         ],
         migrationsRun: true,
