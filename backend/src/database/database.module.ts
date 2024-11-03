@@ -34,8 +34,8 @@ import BancoTalentos from 'src/model/bancotalentos.entity';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
         entities: [Candidatura, CandidaturaTag, Cargo, Setor, Tag, Usuario, Vaga, BancoTalentos],
+        synchronize: true,
         // migrations: [],
-        synchronize: true, //TIRA ISSO EM PRODUÇÃO PELO AMOR DE DEUS!!!
       }),
       inject: [ConfigService],
     }),

@@ -20,13 +20,12 @@ export class VagaController {
     }
 
     @Get('/all-private')
-    @AllowUserTypes('Administrador', 'Recursos Humanos', 'Lider')
-    async findAllPrivate(@GetUserType('Lider') userType: TipoUsuarioEnum): Promise<ResponseCountCandidatureDto[]> {
+    @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
+    async findAllPrivate(@GetUserType('Líder') userType: TipoUsuarioEnum): Promise<ResponseCountCandidatureDto[]> {
         const allVagas= await this.vagaService.findAllVagasWithCandidateCount()
     
-        if (userType === 'Lider'){
+        if (userType === 'Líder') {	
             const candidaturaPorLiderVagas= await this.vagaService.findAllWithCandidateCountByLiderSetor()
-            console.log("Lider")
             return candidaturaPorLiderVagas;
         }
 

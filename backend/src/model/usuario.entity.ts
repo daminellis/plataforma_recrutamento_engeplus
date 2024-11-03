@@ -6,7 +6,7 @@ import { Vaga } from './vaga.entity';
 export enum TipoUsuarioEnum {
   ADMIN = 'Administrador',
   RH = 'Recursos Humanos',
-  LIDER = 'Lider',
+  LIDER = 'Líder',
 }
 
 @Entity()

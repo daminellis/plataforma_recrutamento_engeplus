@@ -109,8 +109,8 @@ export class AuthService {
             username: user.username,
             nomeCompleto: user.nomeCompleto,
             email: user.email,
-            cargo: user.cargo.nome,
-            setor: user.setor.nome,
+            cargo: user.cargo ? user.cargo.nome : 'Cargo não atribuído ou cadastrado',
+            setor: user.setor ? user.setor.nome : 'Setor não atribuído ou cadastrado',
           }
         };
       }

@@ -42,7 +42,7 @@ export class VagaService {
 
   async findAllVagasByLiderSetor(): Promise<Vaga[]> {
     const vagas = await this.vagasRepository.find({
-      where: { setor: { nome: 'Lider' } },
+      where: { setor: { nome: 'Líder' } },
       relations: ['setor', 'tags'],
     });
     return vagas;
@@ -108,7 +108,7 @@ export class VagaService {
       .loadRelationCountAndMap('vaga.candidaturaCount', 'vaga.candidatura')
       .leftJoinAndSelect('vaga.setor', 'setor')
       .leftJoinAndSelect('vaga.tags', 'tags')
-      .where('setor.nome = :setorNome', { setorNome: 'Lider' })
+      .where('setor.nome = :setorNome', { setorNome: 'Líder' })
       .getMany() as VagaWithCount[];
 
     const candidateCounter: ResponseCountCandidatureDto[] = [];
