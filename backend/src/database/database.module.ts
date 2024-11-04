@@ -42,18 +42,19 @@ import {CreateTableBancotalentos1730253007000} from './migration/1730253007000-c
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
         entities: [Candidatura, CandidaturaTag, Cargo, Setor, Tag, Usuario, Vaga, BancoTalentos],
-        migrations: 
-        [
-          CreateTableSetor1730253000000,
-          CreateTableCargo1730253001000,
-          CreateTableUsuario1730253002000,
-          CreateTableTag1730253003000,
-          CreateTableVaga1730253004000,
-          CreateTableCandidaturatag1730253005000,
-          CreateTableCandidatura1730253006000,
-          CreateTableBancotalentos1730253007000
-        ],
-        migrationsRun: true,
+        synchronize: true,
+        // migrations: 
+        // [
+        //   CreateTableSetor1730253000000,
+        //   CreateTableCargo1730253001000,
+        //   CreateTableUsuario1730253002000,
+        //   CreateTableTag1730253003000,
+        //   CreateTableVaga1730253004000,
+        //   CreateTableCandidaturatag1730253005000,
+        //   CreateTableCandidatura1730253006000,
+        //   CreateTableBancotalentos1730253007000
+        // ],
+        // migrationsRun: true,
       }),
       inject: [ConfigService],
     }),
