@@ -6,14 +6,14 @@ export class CreateTableUsuario1730253002000 implements MigrationInterface {
           CREATE TABLE usuario (
             id INT PRIMARY KEY AUTO_INCREMENT,
             username VARCHAR(50) NOT NULL UNIQUE,
-            nome_completo VARCHAR(100),
+            nome_completo VARCHAR(100) NOT NULL,
             email VARCHAR(100) NOT NULL UNIQUE,
-            senha_hash VARCHAR(70),
-            tipo_usuario ENUM('Administrador', 'Recursos Humanos', 'Líder'),
-            cargo_id INT,
-            setor_id INT,
-            CONSTRAINT FK_cargo FOREIGN KEY (cargo_id) REFERENCES cargo(id),
-            CONSTRAINT FK_setor FOREIGN KEY (setor_id) REFERENCES setor(id)
+            senha_hash VARCHAR(70) NOT NULL,
+            tipo_usuario ENUM('Administrador', 'Recursos Humanos', 'Líder') NOT NULL,
+            cargoId INT NOT NULL,
+            setorId INT NOT NULL,
+            CONSTRAINT FK_cargo FOREIGN KEY (cargoId) REFERENCES cargo(id),
+            CONSTRAINT FK_setor FOREIGN KEY (setorId) REFERENCES setor(id)
           );
         `);
   }

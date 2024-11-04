@@ -12,8 +12,8 @@ export class CreateTableBancotalentos1730253007000
                 telefone TEXT NOT NULL,
                 descricao TEXT NOT NULL,
                 cv BLOB NOT NULL,
-                vaga_id INT,
-                CONSTRAINT FK_vaga_banco FOREIGN KEY (vaga_id) REFERENCES vaga(id)
+                vagaId INT,
+                CONSTRAINT FK_vaga_banco FOREIGN KEY (vagaId) REFERENCES vaga(id)
             );
         `);
   }

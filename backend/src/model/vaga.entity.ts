@@ -44,40 +44,40 @@ export class Vaga {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
-  @Column({ length: 100, name: 'titulo' })
+  @Column({ length: 100, name: 'titulo', nullable: false })
   titulo: string;
 
-  @Column({ type: 'numeric', name: 'salario_minimo', precision: 10, scale: 2 })
+  @Column({ type: 'numeric', name: 'salario_minimo', precision: 10, scale: 2, nullable: false })
   salarioMinimo: number;
 
-  @Column({ type: 'numeric', name: 'salario_maximo', precision: 10, scale: 2 })
+  @Column({ type: 'numeric', name: 'salario_maximo', precision: 10, scale: 2, nullable: false })
   salarioMaximo: number;
 
-  @Column({ type: 'enum', enum: NivelDeEducacao, name: 'educacao' })
+  @Column({ type: 'enum', enum: NivelDeEducacao, name: 'educacao', nullable: false })
   educacao: NivelDeEducacao;
 
-  @Column({ type: 'enum', enum: TempoDeExperiencia, name: 'tempo_experiencia' })
+  @Column({ type: 'enum', enum: TempoDeExperiencia, name: 'tempo_experiencia', nullable: false })
   tempoExperiencia: TempoDeExperiencia;
 
-  @Column({ type: 'enum', enum: NivelDeExperiencia, name: 'nivel_experiencia' })
+  @Column({ type: 'enum', enum: NivelDeExperiencia, name: 'nivel_experiencia', nullable: false })
   nivelExperiencia: NivelDeExperiencia;
 
-  @Column({ type: 'enum', enum: Modalidade, name: 'modalidade' })
+  @Column({ type: 'enum', enum: Modalidade, name: 'modalidade', nullable: false })
   modalidade: Modalidade;
 
-  @Column({ type: 'int', name: 'qtd_vagas' })
+  @Column({ type: 'int', name: 'qtd_vagas', nullable: false })
   quantidadeVagas: number;
 
   @Column({ type: 'date', name: 'data_expiracao', nullable: false })
   dataExpiracao: Date;
 
-  @Column({ type: 'text', name: 'descricao' })
+  @Column({ type: 'text', name: 'descricao', nullable: false })
   descricao: string;
 
-  @Column({ type: 'simple-array', name: 'responsabilidades' })
+  @Column({ type: 'simple-array', name: 'responsabilidades', nullable: false })
   responsabilidades: string[];
 
-  @Column({ type: 'varchar', name: 'regiao' })
+  @Column({ type: 'varchar', name: 'regiao', nullable: false})
   regiao: string;
 
   @Column({
@@ -88,13 +88,13 @@ export class Vaga {
   })
   dataPostagem: Timestamp;
 
-  @Column({ default: true, name: 'disponivel' })
+  @Column({ default: true, name: 'disponivel', nullable: false })
   disponivel: boolean;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.vagas)
+  @ManyToOne(() => Usuario, (usuario) => usuario.vagas, { nullable: false })
   recrutador: Usuario;
 
-  @ManyToOne(() => Setor, (setor) => setor.vagas)
+  @ManyToOne(() => Setor, (setor) => setor.vagas, { nullable: false })
   setor: Setor;
 
   @OneToMany(() => Candidatura, (candidatura) => candidatura.vaga)
@@ -104,7 +104,17 @@ export class Vaga {
   bancoTalentos: BancoTalentos[];
 
   @ManyToMany(() => Tag, (tag) => tag.vagas)
-  @JoinTable()
+  @JoinTable({
+    name: 'vaga_tags_tag',
+    joinColumn: {
+      name: 'vagaId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'tagId',
+      referencedColumnName: 'id',
+    },
+  })
   tags: Tag[];
 }
 export default Vaga;

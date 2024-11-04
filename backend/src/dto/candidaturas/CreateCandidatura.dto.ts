@@ -30,6 +30,7 @@ export class CreateCandidaturaDto {
     cvData: Buffer;
 
     @ApiProperty()
+    @Length(4, 100)
     cvType: string;
 
     @ApiProperty()

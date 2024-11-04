@@ -6,7 +6,6 @@ import {
   Length,
   Min,
   Max,
-  IsBoolean,
   IsArray,
   IsOptional,
   Matches,
@@ -88,9 +87,6 @@ export class CreateVagaDto {
   regiao: string;
 
   @ApiProperty()
-  tempoPostado: string;
-
-  @ApiProperty()
   @Type(() => Date)
   dataPostagem: Date;
 
@@ -103,11 +99,6 @@ export class CreateVagaDto {
   @IsNotEmpty()
   @IsNumber()
   setorId: number;
-
-  @ApiProperty({ type: [Number] })
-  @IsOptional()
-  @IsArray()
-  candidaturaIds: number[];
 
   @ApiProperty({ type: [Number] })
   @IsArray()

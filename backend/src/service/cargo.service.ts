@@ -11,9 +11,7 @@ export class CargoService{
     private cargosRepository: Repository<Cargo>,){}
     
     findAll(): Promise<Cargo[]>{
-        return this.cargosRepository.find({
-            relations: ['usuarios']
-        });
+        return this.cargosRepository.find();
     }
 
     findOne(id: number): Promise<Cargo | null>{

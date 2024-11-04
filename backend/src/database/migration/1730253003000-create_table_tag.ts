@@ -7,7 +7,7 @@ export class CreateTableTag1730253003000 implements MigrationInterface {
             CREATE TABLE tag (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 nome VARCHAR(50) NOT NULL UNIQUE,
-                cor_tag VARCHAR(255) NOT NULL
+                cor_tag VARCHAR(7) NOT NULL
             );
         `);
     }

@@ -7,7 +7,7 @@ export class CreateTableCandidaturatag1730253005000 implements MigrationInterfac
             CREATE TABLE candidatura_tag (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 nome VARCHAR(50) NOT NULL UNIQUE,
-                cor_tag VARCHAR(255) NOT NULL
+                cor_tag VARCHAR(7) NOT NULL
             );
         `);
     }

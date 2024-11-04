@@ -167,18 +167,6 @@ export class VagaService {
       }
     }
 
-    if (createVagaDto.candidaturaIds) {
-      newVaga.candidatura = [];
-      for (let i = 0; i < createVagaDto.candidaturaIds.length; i++) {
-        const candidaturas = await this.candidaturaService.findOneCandidatura(createVagaDto.candidaturaIds[i]);
-        if (candidaturas) {
-          newVaga.candidatura.push({ id: candidaturas.id, nomeCompleto: candidaturas.nomeCompleto, email: candidaturas.email, telefone: candidaturas.telefone } as any);
-        } else {
-          throw new CustomHttpException(`Vaga ${createVagaDto.candidaturaIds[i]} não encontrada. Favor atribuir uma vaga válida.`, HttpStatus.BAD_REQUEST);
-        }
-      }
-    }
-
     if (createVagaDto.tagIds) {
       newVaga.tags = [];
       for (let i = 0; i < createVagaDto.tagIds.length; i++) {
@@ -200,8 +188,28 @@ export class VagaService {
     if (!vaga) {
       throw new NotFoundException('Vaga não encontrada');
     }
+    
     if (updateVagaDto.dataExpiracao) {
-      updateVagaDto.dataExpiracao = dateFormater(updateVagaDto.dataExpiracao);
+      const formattedDate = dateFormater(updateVagaDto.dataExpiracao);
+      if (!isValid(formattedDate)) {
+        throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
+    }
+      vaga.dataExpiracao = new Date(formattedDate);
+      if (vaga.dataExpiracao < new Date()) {
+          throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
+      }
+    }
+
+    if (updateVagaDto.candidaturaIds) {
+      vaga.candidatura = [];
+      for (let i = 0; i < updateVagaDto.candidaturaIds.length; i++) {
+        const candidaturas = await this.candidaturaService.findOneCandidatura(updateVagaDto.candidaturaIds[i]);
+        if (candidaturas) {
+          vaga.candidatura.push({ id: candidaturas.id, nomeCompleto: candidaturas.nomeCompleto, email: candidaturas.email, telefone: candidaturas.telefone } as any);
+        } else {
+          throw new CustomHttpException(`Candidato ${updateVagaDto.candidaturaIds[i]} não encontrado. Favor atribuir um candidato válido.`, HttpStatus.BAD_REQUEST);
+        }
+      }
     }
 
     if (updateVagaDto.recruiterId) {

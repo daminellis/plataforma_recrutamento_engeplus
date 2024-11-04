@@ -12,7 +12,8 @@ export class AuthController {
   constructor(private authService: AuthService) { }
 
   @Post('/register')
-  @AllowUserTypes('Administrador')
+  @Public()
+  // @AllowUserTypes('Administrador')
   async register(@Body() createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
     return await this.authService.register(createUsuarioDto);
   }
