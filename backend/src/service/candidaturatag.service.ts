@@ -10,38 +10,38 @@ import { CustomHttpException } from "src/errors/exceptions/custom-exceptions";
 export class CandidaturaTagService {
   constructor(
     @InjectRepository(CandidaturaTag)
-    private CandidaturaTagRepository: Repository<CandidaturaTag>
+    private candidaturaTagRepository: Repository<CandidaturaTag>
   ) {  
   }
   async findAll(): Promise<CandidaturaTag[]> {
-    return this.CandidaturaTagRepository.find({
+    return this.candidaturaTagRepository.find({
       relations: ['candidaturas']
     });
   }
 
   async findOne(id: number): Promise<CandidaturaTag | null> {
-    return this.CandidaturaTagRepository.findOne({where: {id}, relations: ['candidaturas']});
+    return this.candidaturaTagRepository.findOne({where: {id}, relations: ['candidaturas']});
   }
 
   async create(CreateCandidaturaTagDto: CreateCandidaturaTagDto): Promise<CandidaturaTag> {
-    const newCandidaturaTag = this.CandidaturaTagRepository.create(CreateCandidaturaTagDto);
-    return this.CandidaturaTagRepository.save(newCandidaturaTag);
+    const newCandidaturaTag = this.candidaturaTagRepository.create(CreateCandidaturaTagDto);
+    return this.candidaturaTagRepository.save(newCandidaturaTag);
   }
 
   async update(id: number, updateCandidaturaTagDto: UpdateCandidaturaTagDto): Promise<CandidaturaTag> {
-    const candidaturaTagToUpdate = await this.CandidaturaTagRepository.findOneBy({id});
+    const candidaturaTagToUpdate = await this.candidaturaTagRepository.findOneBy({id});
     if (!candidaturaTagToUpdate) {
       throw new CustomHttpException('CandidaturaTag não encontrada', HttpStatus.NOT_FOUND);
     }
     Object.assign(candidaturaTagToUpdate, updateCandidaturaTagDto);
-    return this.CandidaturaTagRepository.save(candidaturaTagToUpdate);
+    return this.candidaturaTagRepository.save(candidaturaTagToUpdate);
   }
 
   async delete(id: number): Promise<void> {
-    const candidaturaTag = await this.CandidaturaTagRepository.findOneBy({id});
+    const candidaturaTag = await this.candidaturaTagRepository.findOneBy({id});
     if (!candidaturaTag) {
       throw new CustomHttpException('CandidaturaTag não encontrada', HttpStatus.NOT_FOUND);
     }
-    this.CandidaturaTagRepository.remove(candidaturaTag);
+    this.candidaturaTagRepository.remove(candidaturaTag);
   }
 }
