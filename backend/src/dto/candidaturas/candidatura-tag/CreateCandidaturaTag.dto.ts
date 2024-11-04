@@ -7,9 +7,13 @@ export class CreateCandidaturaTagDto{
     @IsNotEmpty()
     @IsString()
     nome: string;
-  
+
     @ApiProperty()
-    @IsNotEmpty()
     @IsString()
     corTag: string;
+
+    @ApiProperty({ type: [Number] })
+    @IsOptional()
+    @IsArray()
+    candidaturaIds: number[];
 }
