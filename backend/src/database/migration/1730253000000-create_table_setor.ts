@@ -1,19 +1,20 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateTableCargo1730253140445 implements MigrationInterface {
+export class CreateTableSetor1730253000000 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-            CREATE TABLE cargo (
+            CREATE TABLE setor (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                nome VARCHAR(100) NOT NULL UNIQUE,
-                descricao VARCHAR(255) NOT NULL
+                nome VARCHAR(50) NOT NULL UNIQUE
             );
         `);
     }
-    
+
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP TABLE cargo;`);
+        await queryRunner.query(`
+            DROP TABLE setor;
+        `);
     }
 
 }

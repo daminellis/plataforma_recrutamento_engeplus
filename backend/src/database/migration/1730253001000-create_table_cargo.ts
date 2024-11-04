@@ -1,19 +1,19 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateTableCandidaturatag1730253172222 implements MigrationInterface {
+export class CreateTableCargo1730253001000 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-            CREATE TABLE candidatura_tag (
+            CREATE TABLE cargo (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                nome VARCHAR(50) NOT NULL UNIQUE,
-                cor_tag VARCHAR(255) NOT NULL
+                nome VARCHAR(100) NOT NULL UNIQUE,
+                descricao VARCHAR(255) NOT NULL
             );
         `);
     }
-
+    
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP TABLE candidatura_tag;`);
+        await queryRunner.query(`DROP TABLE cargo;`);
     }
 
 }

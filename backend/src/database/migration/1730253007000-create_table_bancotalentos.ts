@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateTableBancotalentos1730253191858
+export class CreateTableBancotalentos1730253007000
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -13,7 +13,7 @@ export class CreateTableBancotalentos1730253191858
                 descricao TEXT NOT NULL,
                 cv BLOB NOT NULL,
                 vaga_id INT,
-                CONSTRAINT FK_vaga FOREIGN KEY (vaga_id) REFERENCES vaga(id)
+                CONSTRAINT FK_vaga_banco FOREIGN KEY (vaga_id) REFERENCES vaga(id)
             );
         `);
   }
