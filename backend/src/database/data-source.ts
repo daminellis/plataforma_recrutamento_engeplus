@@ -1,4 +1,3 @@
-// src/database/data-source.ts
 import { DataSource } from 'typeorm';
 import { typeOrmConfig } from './typeorm.config';
 
