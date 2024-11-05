@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator'; 
+import { IsArray, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator'; 
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTagDto {
@@ -9,6 +9,8 @@ export class CreateTagDto {
   nome: string;
 
   @ApiProperty()
+  @IsOptional()
+  @MaxLength(7)
   @IsString()
   corTag: string;
 

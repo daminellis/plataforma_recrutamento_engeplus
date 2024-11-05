@@ -13,9 +13,7 @@ export class TagService {
     ) { }
 
     async findAllTags(): Promise<Tag[]> {
-        return this.tagRepository.find({
-            relations: ['vagas']
-        });
+        return this.tagRepository.find();
     }
 
     async findOneTag(id: number): Promise<Tag | null> {

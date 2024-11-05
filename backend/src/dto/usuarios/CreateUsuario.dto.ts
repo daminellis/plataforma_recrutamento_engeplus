@@ -29,23 +29,25 @@ export class CreateUsuarioDto {
   senhaHash: string;
 
   @ApiProperty()
-  @IsNumber()
-  @IsNotEmpty()
-  cargoId: number;
-
-  @ApiProperty()
-  @IsNumber()
-  @IsNotEmpty()
-  setorId: number;
-
-  @ApiProperty({type: [Number]})
-  @IsArray()
-  @IsOptional()
-  vagaIds: number[];
-
-  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   @IsEnum(TipoUsuarioEnum)
   tipoUsuario: TipoUsuarioEnum;
+
+  @ApiProperty()
+  @IsNumber()
+  // @IsNotEmpty()
+  @IsOptional()
+  cargoId: number;
+
+  @ApiProperty()
+  @IsNumber()
+  // @IsNotEmpty()
+  @IsOptional()
+  setorId: number;
+
+  @ApiProperty({ type: [Number] })
+  @IsArray()
+  @IsOptional()
+  vagaIds: number[];
 }

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator'
+import { IsArray, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator'
 
 export class CreateCandidaturaTagDto{
 
@@ -7,9 +7,15 @@ export class CreateCandidaturaTagDto{
     @IsNotEmpty()
     @IsString()
     nome: string;
-  
+
     @ApiProperty()
-    @IsNotEmpty()
     @IsString()
+    @IsOptional()
+    @MaxLength(7)
     corTag: string;
+
+    @ApiProperty({ type: [Number] })
+    @IsOptional()
+    @IsArray()
+    candidaturaIds: number[];
 }

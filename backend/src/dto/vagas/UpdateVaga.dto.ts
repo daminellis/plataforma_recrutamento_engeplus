@@ -77,6 +77,11 @@ export class UpdateVagaDto {
   @IsOptional()
   @IsInt()
   setorId?: number;
+
+  @ApiProperty({ type: [Number] })
+  @IsOptional()
+  @IsArray()
+  candidaturaIds?: number[];
   
   @ApiProperty({ type: [Number] })
   @IsArray()

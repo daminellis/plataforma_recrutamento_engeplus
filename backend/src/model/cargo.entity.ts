@@ -6,10 +6,10 @@ export class Cargo {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
-  @Column({ length: 100, name: 'nome', unique: true })
+  @Column({ length: 100, name: 'nome', unique: true, nullable: false })
   nome: string;
 
-  @Column({ length: 255, name: 'descricao' })
+  @Column({ length: 255, name: 'descricao'})
   descricao: string;
 
   @OneToMany(() => Usuario, (usuario) => usuario.cargo)

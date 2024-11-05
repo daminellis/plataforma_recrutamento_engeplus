@@ -9,7 +9,7 @@ export class Tag {
     @Column({ length: 50, unique: true, name: 'nome' })
     nome: string;
 
-    @Column({name: 'cor_tag'})
+    @Column({name: 'cor_tag', length: 7})
     corTag: string
 
     @ManyToMany(() => Vaga, vaga => vaga.tags)

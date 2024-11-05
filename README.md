@@ -1,7 +1,5 @@
 # Projeto Sistema WEB
 
-Plataforma RH engeplus
-=======
 ## Alunos
 + Matheus Daminelli
 + Gabriel Morona
