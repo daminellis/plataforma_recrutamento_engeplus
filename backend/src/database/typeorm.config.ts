@@ -9,7 +9,7 @@ import { Tag } from '../model/tag.entity';
 import { Usuario } from '../model/usuario.entity';
 import { Vaga } from '../model/vaga.entity';
 import { BancoTalentos } from '../model/bancotalentos.entity';
-import { GenerateMigration1730768596585 } from './migrations/1730768596585-GenerateMigration';
+import { GenerateMigration1730771693231 } from './migrations/1730771693231-GenerateMigration';
 import 'dotenv/config';
 
 const configService = new ConfigService();
@@ -23,7 +23,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   password: configService.get<string>('DB_PASSWORD'),
   database: configService.get<string>('DB_DATABASE'),
   entities: [Candidatura, CandidaturaTag, Cargo, Setor, Tag, Usuario, Vaga, BancoTalentos],
-  migrations: [GenerateMigration1730768596585],
+  migrations: [GenerateMigration1730771693231],
   migrationsRun: true,
   synchronize: false,
 }

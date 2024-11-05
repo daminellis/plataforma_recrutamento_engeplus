@@ -1,13 +1,13 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class GenerateMigration1730768596585 implements MigrationInterface {
-    name = 'GenerateMigration1730768596585'
+export class GenerateMigration1730771693231 implements MigrationInterface {
+    name = 'GenerateMigration1730771693231'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE \`cargo\` (\`id\` int NOT NULL AUTO_INCREMENT, \`nome\` varchar(100) NOT NULL, \`descricao\` varchar(255) NOT NULL, UNIQUE INDEX \`IDX_5511f6fba69ccf2c6147d98319\` (\`nome\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`usuario\` (\`id\` int NOT NULL AUTO_INCREMENT, \`username\` varchar(50) NOT NULL, \`nome_completo\` varchar(100) NOT NULL, \`email\` varchar(100) NOT NULL, \`senha_hash\` varchar(70) NOT NULL, \`tipo_usuario\` enum ('Administrador', 'Recursos Humanos', 'Líder') NOT NULL, \`cargoId\` int NULL, \`setorId\` int NULL, UNIQUE INDEX \`IDX_6ccff37176a6978449a99c82e1\` (\`username\`), UNIQUE INDEX \`IDX_2863682842e688ca198eb25c12\` (\`email\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`setor\` (\`id\` int NOT NULL AUTO_INCREMENT, \`nome\` varchar(50) NOT NULL, UNIQUE INDEX \`IDX_0d9d3f7f072e028a5601e07a97\` (\`nome\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
-        await queryRunner.query(`CREATE TABLE \`tag\` (\`id\` int NOT NULL AUTO_INCREMENT, \`nome\` varchar(50) NOT NULL, \`cor_tag\` varchar(255) NOT NULL, UNIQUE INDEX \`IDX_cb0841b6ede0938edc2758a40d\` (\`nome\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
+        await queryRunner.query(`CREATE TABLE \`tag\` (\`id\` int NOT NULL AUTO_INCREMENT, \`nome\` varchar(50) NOT NULL, \`cor_tag\` varchar(7) NOT NULL, UNIQUE INDEX \`IDX_cb0841b6ede0938edc2758a40d\` (\`nome\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`banco_talentos\` (\`id\` int NOT NULL AUTO_INCREMENT, \`nome_completo\` varchar(50) NOT NULL, \`email\` varchar(50) NOT NULL, \`telefone\` text NOT NULL, \`descricao\` text NOT NULL, \`cv\` blob NOT NULL, \`vagaId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`vaga\` (\`id\` int NOT NULL AUTO_INCREMENT, \`titulo\` varchar(100) NOT NULL, \`salario_minimo\` decimal(10,2) NOT NULL, \`salario_maximo\` decimal(10,2) NOT NULL, \`educacao\` enum ('Ensino Médio', 'Superior', 'Pós-Graduação') NOT NULL, \`tempo_experiencia\` enum ('Menos de 1 ano', '1-3 anos', '3-5 anos', 'Mais de 5 anos') NOT NULL, \`nivel_experiencia\` enum ('Júnior', 'Pleno', 'Sênior') NOT NULL, \`modalidade\` enum ('Presencial', 'Remoto', 'Híbrido') NOT NULL, \`qtd_vagas\` int NOT NULL, \`data_expiracao\` date NOT NULL, \`descricao\` text NOT NULL, \`responsabilidades\` text NOT NULL, \`regiao\` varchar(255) NOT NULL, \`data_postagem\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, \`disponivel\` tinyint NOT NULL DEFAULT 1, \`recrutadorId\` int NOT NULL, \`setorId\` int NOT NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`candidatura_tag\` (\`id\` int NOT NULL AUTO_INCREMENT, \`nome\` varchar(50) NOT NULL, \`cor_tag\` varchar(7) NOT NULL, UNIQUE INDEX \`IDX_3029f8406b7b64798a9b5d78f2\` (\`nome\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);

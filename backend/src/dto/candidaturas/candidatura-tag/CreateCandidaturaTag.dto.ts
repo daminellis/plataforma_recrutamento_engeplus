@@ -10,6 +10,7 @@ export class CreateCandidaturaTagDto{
 
     @ApiProperty()
     @IsString()
+    @IsOptional()
     @MaxLength(7)
     corTag: string;
 

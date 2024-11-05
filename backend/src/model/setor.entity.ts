@@ -7,7 +7,7 @@ export class Setor {
     @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
-    @Column({ length: 50, name: 'nome', unique: true })
+    @Column({ length: 50, name: 'nome', unique: true, nullable: false})
     nome: string;
 
     @OneToMany(() => Usuario, usuario => usuario.setor)
