@@ -1,13 +1,11 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailService } from './email.service';
 import { EmailController } from './email.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-// import { CandidaturaModule } from 'src/module/candidatura.module';
 
 @Module({
   imports: [
-    // CandidaturaModule,
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
