@@ -16,6 +16,8 @@ import { UsuarioService } from './usuario.service';
 import { TagService } from './tag.service';
 import { CustomHttpException } from 'src/errors/exceptions/custom-exceptions';
 import { ResponseCountCandidatureDto } from 'src/dto/vagas/ResponseCountCandidature.dto';
+
+import { TempoDeExperiencia, NivelDeEducacao, NivelDeExperiencia, Modalidade } from '../model/vaga.entity';
 @Injectable()
 export class VagaService {
   constructor(
@@ -28,6 +30,17 @@ export class VagaService {
   ) {
   }
 
+  async getEnums(): Promise<{tempoDeExperiencia: typeof TempoDeExperiencia, nivelDeEducacao: typeof NivelDeEducacao, nivelDeExperiencia: typeof NivelDeExperiencia, modalidade: typeof Modalidade}>{
+    const enums = {
+      tempoDeExperiencia: TempoDeExperiencia,
+      nivelDeEducacao: NivelDeEducacao,
+      nivelDeExperiencia: NivelDeExperiencia,
+      modalidade: Modalidade
+    }
+
+    return enums;
+  }
+
   // FUNÇÕES PARA O CRUD DE VAGAS
 
   //Get all vagas
@@ -35,26 +48,25 @@ export class VagaService {
     const vagas = await this.vagasRepository.find({
       select: ['id', 'titulo', 'salarioMinimo', 'salarioMaximo', 'regiao', 'dataPostagem'],
       relations: ['setor', 'tags'],
+      where: { disponivel: true }
     }); // SELECT * FROM vagas
 
     return vagas;
   }
 
-  async findAllVagasByLiderSetor(): Promise<Vaga[]> {
-    const vagas = await this.vagasRepository.find({
-      where: { setor: { nome: 'Líder' } },
-      relations: ['setor', 'tags'],
-    });
+  async findAllVagasByLiderCargo(): Promise<Vaga[]> {
+    const vagas = await this.vagasRepository.createQueryBuilder('vaga')
+    .leftJoinAndSelect('vaga.setor', 'setor')
+    .leftJoinAndSelect('vaga.tags', 'tags')
+    .leftJoinAndSelect('vaga.recrutador', 'recrutador')
+    .leftJoinAndSelect('recrutador.cargo', 'cargo')
+    .where('cargo.nome = :cargoNome', { cargoNome: 'Líder' })
+    .getMany();
+
     return vagas;
   }
 
-  async findVagasDisponiveis(): Promise<Vaga[] | null> {
-    const vagas = await this.vagasRepository.find(); // SELECT * FROM vagas
 
-    const vagasDisponiveis = vagas.filter(vaga => vaga.disponivel === true);
-
-    return vagasDisponiveis.length > 0 ? vagasDisponiveis : null;
-  }
   //Get one vaga
   async findOneVaga(id: number): Promise<Vaga | null> {
     const vaga = await this.vagasRepository.findOne({
@@ -66,7 +78,7 @@ export class VagaService {
     return vaga;
   }
 
-  async findAllVagasWithCandidateCount(): Promise<ResponseCountCandidatureDto[]> {
+  async findAllPrivateVagas(): Promise<ResponseCountCandidatureDto[]> {
 
     type VagaWithCount = Vaga & { candidaturaCount: number };
 
@@ -74,13 +86,14 @@ export class VagaService {
       .createQueryBuilder('vaga')
       .leftJoinAndSelect('vaga.setor', 'setor')
       .leftJoinAndSelect('vaga.tags', 'tags')
+      .leftJoinAndSelect('vaga.recrutador', 'recrutador')
       .loadRelationCountAndMap('vaga.candidaturaCount', 'vaga.candidatura')
       .getMany() as VagaWithCount[];
 
     const candidateCounter: ResponseCountCandidatureDto[] = [];
 
     candidatosPorAllVagas.forEach(vaga => {
-      if (vaga && vaga.setor && vaga.tags) {
+      if (vaga && vaga.setor && vaga.recrutador) {
         candidateCounter.push({
           id: vaga.id,
           titulo: vaga.titulo,
@@ -88,6 +101,7 @@ export class VagaService {
           salarioMaximo: vaga.salarioMaximo,
           regiao: vaga.regiao,
           dataPostagem: vaga.dataPostagem,
+          disponivel: vaga.disponivel,
           setor: vaga.setor,
           tags: vaga.tags,
           candidaturaCount: vaga.candidaturaCount,
@@ -100,7 +114,7 @@ export class VagaService {
     return candidateCounter;
   }
 
-  async findAllWithCandidateCountByLiderSetor(): Promise<ResponseCountCandidatureDto[]> {
+  async findAllPrivateVagasByLider(): Promise<ResponseCountCandidatureDto[]> {
     type VagaWithCount = Vaga & { candidaturaCount: number };
 
     const candidatosPorLiderVagas = await this.vagasRepository
@@ -108,13 +122,14 @@ export class VagaService {
       .loadRelationCountAndMap('vaga.candidaturaCount', 'vaga.candidatura')
       .leftJoinAndSelect('vaga.setor', 'setor')
       .leftJoinAndSelect('vaga.tags', 'tags')
-      .where('setor.nome = :setorNome', { setorNome: 'Líder' })
+      .leftJoinAndSelect('vaga.recrutador', 'recrutador')
+      .leftJoinAndSelect('recrutador.cargo', 'cargo')
+      .where('cargo.nome = :cargoNome', { cargoNome: 'Líder' })
       .getMany() as VagaWithCount[];
 
     const candidateCounter: ResponseCountCandidatureDto[] = [];
-
     candidatosPorLiderVagas.forEach(vaga => {
-      if (vaga && vaga.setor && vaga.tags) {
+      if (vaga && vaga.setor && vaga.recrutador) {
         candidateCounter.push({
           id: vaga.id,
           titulo: vaga.titulo,
@@ -122,6 +137,7 @@ export class VagaService {
           salarioMaximo: vaga.salarioMaximo,
           regiao: vaga.regiao,
           dataPostagem: vaga.dataPostagem,
+          disponivel: vaga.disponivel,
           setor: vaga.setor,
           tags: vaga.tags,
           candidaturaCount: vaga.candidaturaCount,
@@ -138,14 +154,14 @@ export class VagaService {
   async createVaga(createVagaDto: CreateVagaDto): Promise<Vaga> {
     const newVaga = this.vagasRepository.create(createVagaDto);
     if (createVagaDto.dataExpiracao) {
-        const formattedDate = new Date(dateFormater(createVagaDto.dataExpiracao));
-        if (!isValid(formattedDate)) {
-            throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
-        }
-        newVaga.dataExpiracao = formattedDate;
-        if (newVaga.dataExpiracao < new Date()) {
-            throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
-        }
+      const formattedDate = new Date(dateFormater(createVagaDto.dataExpiracao));
+      if (!isValid(formattedDate)) {
+        throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
+      }
+      newVaga.dataExpiracao = formattedDate;
+      if (newVaga.dataExpiracao < new Date()) {
+        throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
+      }
     }
 
     if (createVagaDto.recruiterId) {
@@ -188,15 +204,15 @@ export class VagaService {
     if (!vaga) {
       throw new NotFoundException('Vaga não encontrada');
     }
-    
+
     if (updateVagaDto.dataExpiracao) {
       const formattedDate = dateFormater(updateVagaDto.dataExpiracao);
       if (!isValid(formattedDate)) {
         throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
-    }
+      }
       vaga.dataExpiracao = new Date(formattedDate);
       if (vaga.dataExpiracao < new Date()) {
-          throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
+        throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
       }
     }
 

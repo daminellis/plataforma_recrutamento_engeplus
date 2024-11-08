@@ -21,10 +21,12 @@
     "typeorm": "typeorm-ts-node-commonjs -d src/database/data-source.ts",
     "migration:generate": "npm run typeorm -- migration:generate src/database/migrations/GenerateMigration",
     "migration:run": "npm run typeorm -- migration:run",
-    "migration:revert": "npm run typeorm -- migration:revert"
+    "migration:revert": "npm run typeorm -- migration:revert",
+    "typeorm:seed": "npx typeorm-extension seed:run"
   },
   "dependencies": {
     "@blazity/nest-file-fastify": "^1.0.0",
+    "@faker-js/faker": "^9.2.0",
     "@fastify/static": "^7.0.4",
     "@nest-lab/fastify-multer": "^1.2.0",
     "@nestjs-modules/mailer": "^2.0.2",
@@ -51,7 +53,8 @@
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "ts-luxon": "^5.0.7-beta.0",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "typeorm-extension": "^3.6.2"
   },
   "devDependencies": {
     "@fastify/multipart": "^6.0.0",
