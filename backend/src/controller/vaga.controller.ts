@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Put, Delete } from "@nestjs/common";
 import { VagaService } from "../service/vaga.service";
-import { Vaga } from "../model/vaga.entity";
+import { Modalidade, NivelDeEducacao, NivelDeExperiencia, TempoDeExperiencia, Vaga } from "../model/vaga.entity";
 import { CreateVagaDto } from "src/dto/vagas/CreateVaga.dto";
 import { UpdateVagaDto } from "../dto/vagas/UpdateVaga.dto";
 import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
@@ -13,6 +13,12 @@ import { ResponseCountCandidatureDto } from "src/dto/vagas/ResponseCountCandidat
 export class VagaController {
     constructor(private vagaService: VagaService) {}
 
+    @Get('/enums')
+    @Public()
+    async findVagaEnums(): Promise<{tempoDeExperiencia: typeof TempoDeExperiencia, nivelDeEducacao: typeof NivelDeEducacao, nivelDeExperiencia: typeof NivelDeExperiencia, modalidade: typeof Modalidade}>{
+        return this.vagaService.getEnums()
+    }
+
     @Get('/all')
     @Public()
     async findAll(): Promise<Vaga[]> {
@@ -22,20 +28,14 @@ export class VagaController {
     @Get('/all-private')
     @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
     async findAllPrivate(@GetUserType('Líder') userType: TipoUsuarioEnum): Promise<ResponseCountCandidatureDto[]> {
-        const allVagas= await this.vagaService.findAllVagasWithCandidateCount()
+        const allVagas= await this.vagaService.findAllPrivateVagas()
     
         if (userType === 'Líder') {	
-            const candidaturaPorLiderVagas= await this.vagaService.findAllWithCandidateCountByLiderSetor()
+            const candidaturaPorLiderVagas= await this.vagaService.findAllPrivateVagasByLider()
             return candidaturaPorLiderVagas;
         }
 
         return allVagas;
-    }
-
-    @Get('/disponiveis')
-    @Public()
-    async findDisponiveis(): Promise<Vaga[] | null> {
-        return this.vagaService.findVagasDisponiveis();
     }
 
     @Get('/find/:id')
@@ -60,11 +60,5 @@ export class VagaController {
     @AllowUserTypes('Administrador', 'Recursos Humanos')
     async deleteVaga(@Param('id') id: number): Promise<void> {
         return this.vagaService.deleteVaga(id);
-    }
-
-    @Delete('/delete/allNull')
-    @AllowUserTypes('Administrador')
-    async deleteAllNull(): Promise<void> {
-        return this.vagaService.deleteAllNullVagas();
     }
 };

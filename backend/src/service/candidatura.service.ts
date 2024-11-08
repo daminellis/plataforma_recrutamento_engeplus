@@ -29,7 +29,7 @@ export class CandidaturaService {
     }
 
     async findAllLiderCandidaturas(): Promise<Candidatura[]> {
-        const vagasLider = await this.vagaService.findAllVagasByLiderSetor();
+        const vagasLider = await this.vagaService.findAllVagasByLiderCargo();
         const candidaturasLider: Candidatura[] = [];
 
         for (const vaga of vagasLider) {

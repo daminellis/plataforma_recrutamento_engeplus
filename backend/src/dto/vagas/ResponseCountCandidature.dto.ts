@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsArray, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Length, Matches, Max, Min } from "class-validator";
+import { IsArray, IsBoolean, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Length, Matches, Max, Min } from "class-validator";
 import Setor from "src/model/setor.entity";
 import Tag from "src/model/tag.entity";
 import { Timestamp } from "typeorm";
@@ -41,6 +41,10 @@ export class ResponseCountCandidatureDto {
     @ApiProperty()
     @Type(() => Date)
     dataPostagem: Timestamp;
+
+    @ApiProperty()
+    @IsBoolean()
+    disponivel: boolean;
 
     @ApiProperty()
     @IsNotEmpty()
