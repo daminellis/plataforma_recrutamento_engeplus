@@ -43,7 +43,9 @@ export default function RootLayout({
             </Link>
 
             <div className="flex items-center gap-5">
-              <AppButton color="outline">Adicionar vaga</AppButton>
+              <AppButton color="outline" href="/admin/add-vaga">
+                Adicionar vaga
+              </AppButton>
               <Profile />
             </div>
           </div>

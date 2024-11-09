@@ -8,7 +8,7 @@ interface AppBadgeProps {
 export const AppBadge = ({ text, corTag }: AppBadgeProps) => {
   return (
     <span
-      className="p-1.5 rounded-md text-xs ml-2"
+      className="p-1.5 rounded-md text-xs ml-2 whitespace-nowrap"
       style={{ backgroundColor: `${corTag}33`, color: corTag }}
     >
       {text}

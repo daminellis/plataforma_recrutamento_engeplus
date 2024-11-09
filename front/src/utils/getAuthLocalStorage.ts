@@ -16,6 +16,11 @@ export const getUserInfos = (): UserType | null => {
 };
 
 const getData = (key: string) => {
+  if (typeof window === "undefined") {
+    // Estamos no lado do servidor
+    return null;
+  }
+
   const data = localStorage.getItem(key);
   if (!data) return null;
 

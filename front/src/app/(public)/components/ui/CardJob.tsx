@@ -43,7 +43,7 @@ const CardJobContentGrid = (props: InternCardJobProps) => {
       onClick={props.onClick}
     >
       <h2 className="text-xl font-medium text-gray-900">
-        {props.titulo}
+        {props.titulo} <br />
         {props.tags.map((tag) => (
           <AppBadge key={tag.id} text={tag.nome} corTag={tag.corTag} />
         ))}
