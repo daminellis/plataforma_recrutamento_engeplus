@@ -9,6 +9,7 @@ import { CandidaturaTagService } from "./candidaturatag.service";
 import { CustomHttpException } from "src/errors/exceptions/custom-exceptions";
 import { EmailService } from "src/email/email.service";
 import { SendEmailDto } from "src/dto/emails/SendEmail.dto";
+import { StatusCandidatura } from "../model/candidatura.entity";
 
 @Injectable()
 export class CandidaturaService {
@@ -20,6 +21,10 @@ export class CandidaturaService {
         private emailService: EmailService,
         @Inject(forwardRef(() => VagaService)) private readonly vagaService: VagaService
     ) { }
+
+    async getEnum(): Promise<{statusCandidatura: typeof StatusCandidatura}>{
+        return {statusCandidatura: StatusCandidatura};
+    }
 
     async findAllCandidaturas(): Promise<Candidatura[]> {
         return this.candidaturaRepository.find({

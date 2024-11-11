@@ -1,6 +1,6 @@
 import { Controller, Delete, Get, Param } from "@nestjs/common";
 import { UsuarioService } from "../service/usuario.service";
-import Usuario from "src/model/usuario.entity";
+import Usuario, { TipoUsuarioEnum } from "src/model/usuario.entity";
 import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
 
 @Controller('usuarios')
@@ -8,6 +8,11 @@ import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
 export class UsuarioController{
     constructor(private usuarioService: UsuarioService) {}
     
+    @Get('/enum')
+    async getEnum(): Promise<{tupoUsuario: typeof TipoUsuarioEnum}>{
+        return {tupoUsuario: TipoUsuarioEnum};
+    }
+
     @Get('/all')
     findAllUsuarios(): Promise<Usuario[]> {
         return this.usuarioService.findAll();

@@ -36,14 +36,12 @@ export class CreateUsuarioDto {
 
   @ApiProperty()
   @IsNumber()
-  // @IsNotEmpty()
-  @IsOptional()
+  @IsNotEmpty()
   cargoId: number;
 
   @ApiProperty()
   @IsNumber()
-  // @IsNotEmpty()
-  @IsOptional()
+  @IsNotEmpty()
   setorId: number;
 
   @ApiProperty({ type: [Number] })

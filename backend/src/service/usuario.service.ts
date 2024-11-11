@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import Usuario from '../model/usuario.entity';
+import Usuario, { TipoUsuarioEnum } from '../model/usuario.entity';
 
 @Injectable()
 export class UsuarioService {
@@ -9,6 +9,10 @@ export class UsuarioService {
     @InjectRepository(Usuario)
     private usuariosRepository: Repository<Usuario>,
   ) { }
+
+  async getEnum(): Promise<{tupoUsuario: typeof TipoUsuarioEnum}>{
+    return {tupoUsuario: TipoUsuarioEnum};
+  } 
 
   // FUNÇÕES PARA O CRUD DE USUÁRIOS
   //Econtra todos os usuários

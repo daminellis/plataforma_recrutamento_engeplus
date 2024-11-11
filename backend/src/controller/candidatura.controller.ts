@@ -3,7 +3,7 @@ import { CandidaturaService } from "../service/candidatura.service";
 import { CreateCandidaturaDto } from "src/dto/candidaturas/CreateCandidatura.dto";
 import { UpdateCandidaturaDto } from "src/dto/candidaturas/UpdateCandidatura.dto";
 import { FileInterceptor, File } from '@nest-lab/fastify-multer';
-import Candidatura from "src/model/candidatura.entity";
+import Candidatura, { StatusCandidatura } from "src/model/candidatura.entity";
 import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
 import { Public } from "src/auth/decorators/public.decorator";
 import { GetUserType } from "src/auth/decorators/auth.decorator";
@@ -12,6 +12,12 @@ import { CustomHttpException } from "src/errors/exceptions/custom-exceptions";
 @Controller('candidaturas')
 export class CandidaturaController {
     constructor(private candidaturaService: CandidaturaService) {}
+
+    @Get('/enum')
+    @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
+    async getEnum(): Promise<{statusCandidatura: typeof StatusCandidatura}>{
+        return this.candidaturaService.getEnum();
+    }
 
     @Get('/all')
     @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')

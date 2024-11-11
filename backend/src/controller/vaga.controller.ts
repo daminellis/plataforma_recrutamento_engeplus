@@ -14,7 +14,7 @@ export class VagaController {
     constructor(private vagaService: VagaService) {}
 
     @Get('/enums')
-    @Public()
+    @AllowUserTypes('Administrador', 'Recursos Humanos')
     async findVagaEnums(): Promise<{tempoDeExperiencia: typeof TempoDeExperiencia, nivelDeEducacao: typeof NivelDeEducacao, nivelDeExperiencia: typeof NivelDeExperiencia, modalidade: typeof Modalidade}>{
         return this.vagaService.getEnums()
     }
