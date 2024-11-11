@@ -12,7 +12,7 @@ import { Setor } from './setor.entity';
 import { Usuario } from './usuario.entity';
 import { Candidatura } from './candidatura.entity';
 import { Tag } from './tag.entity';
-import BancoTalentos from './bancotalentos.entity';
+// import BancoTalentos from './bancotalentos.entity';
 
 export enum NivelDeEducacao {
   ENSINO_MEDIO = 'Ensino Médio',
@@ -44,7 +44,7 @@ export class Vaga {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
-  @Column({ length: 100, name: 'titulo', nullable: false })
+  @Column({ type:'varchar', length: 100, name: 'titulo', nullable: false })
   titulo: string;
 
   @Column({ type: 'numeric', name: 'salario_minimo', precision: 10, scale: 2, nullable: false })
@@ -77,7 +77,7 @@ export class Vaga {
   @Column({ type: 'simple-array', name: 'responsabilidades', nullable: false })
   responsabilidades: string[];
 
-  @Column({ type: 'varchar', name: 'regiao', nullable: false})
+  @Column({ type: 'varchar', length:50, name: 'regiao', nullable: false})
   regiao: string;
 
   @Column({
@@ -91,19 +91,19 @@ export class Vaga {
   @Column({ default: true, name: 'disponivel', nullable: false })
   disponivel: boolean;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.vagas, { nullable: false })
+  @ManyToOne(() => Usuario, (usuario) => usuario.id, { nullable: false })
   recrutador: Usuario;
 
-  @ManyToOne(() => Setor, (setor) => setor.vagas, { nullable: false })
+  @ManyToOne(() => Setor, (setor) => setor.id, { nullable: false })
   setor: Setor;
 
   @OneToMany(() => Candidatura, (candidatura) => candidatura.vaga)
   candidatura: Candidatura[];
 
-  @OneToMany(() => BancoTalentos, (bancoTalentos) => bancoTalentos.vaga)
-  bancoTalentos: BancoTalentos[];
+  // @OneToMany(() => BancoTalentos, (bancoTalentos) => bancoTalentos.vaga)
+  // bancoTalentos: BancoTalentos[];
 
-  @ManyToMany(() => Tag, (tag) => tag.vagas)
+  @ManyToMany(() => Tag, (tag) => tag.id)
   @JoinTable({
     name: 'vaga_tags_tag',
     joinColumn: {

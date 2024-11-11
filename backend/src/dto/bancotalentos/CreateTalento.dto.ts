@@ -18,7 +18,7 @@ export class CreateTalentoDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    @Length(8, 20)
+    @Length(10, 11)
     telefone: string;
 
     @ApiProperty()

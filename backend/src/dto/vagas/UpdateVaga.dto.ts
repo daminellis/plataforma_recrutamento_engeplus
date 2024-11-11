@@ -1,4 +1,4 @@
-import {IsString, IsInt, IsNumber, IsEnum, IsBoolean, IsOptional, Max, Min, IsArray } from 'class-validator';
+import {IsString, IsInt, IsNumber, IsEnum, IsBoolean, IsOptional, Max, Min, IsArray, Length, Matches } from 'class-validator';
 import { NivelDeEducacao, TempoDeExperiencia, NivelDeExperiencia, Modalidade } from '../../model/vaga.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
@@ -6,6 +6,7 @@ import { Type } from 'class-transformer';
 export class UpdateVagaDto {
   @ApiProperty({ required: false, type: String })
   @IsOptional()
+  @Length(1, 100)
   @IsString()
   titulo?: string;
 
@@ -46,6 +47,7 @@ export class UpdateVagaDto {
   @ApiProperty({ required: false, type: Number })
   @IsOptional()
   @IsInt()
+  @Min(1)
   quantidadeVagas?: number;
 
   @ApiProperty({ required: false, type: String, format: 'date-time' })
@@ -56,12 +58,19 @@ export class UpdateVagaDto {
   @ApiProperty({ required: false, type: String })
   @IsOptional()
   @IsString()
+  @Length(10, 2000)
   descricao?: string;
 
-  @ApiProperty({ required: false, type: String })
+  @ApiProperty({ required: false, type: [String] })
+  @IsOptional()
+  @IsArray()
+  responsabilidades?: string[];
+
+  @ApiProperty()
   @IsOptional()
   @IsString()
-  responsabilidades?: string;
+  @Matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+ - [A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
+  regiao: string;
 
   @ApiProperty({ required: false, type: Boolean })
   @IsOptional()

@@ -29,7 +29,7 @@ export class UpdateUsuarioDto {
   @IsNotEmpty()
   @IsString()
   @Length(6, 60)
-  senhaHash?: string;
+  senha?: string;
 
   @ApiProperty()
   @IsOptional()
@@ -41,10 +41,10 @@ export class UpdateUsuarioDto {
   @IsNumber()
   setorId?: number;
 
-  @ApiProperty({ type: [Number] })
-  @IsOptional()
-  @IsArray()
-  vagaIds?: number[];
+  // @ApiProperty({ type: [Number] })
+  // @IsOptional()
+  // @IsArray()
+  // vagaIds?: number[];
 
   @ApiProperty()
   @IsOptional()

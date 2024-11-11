@@ -3,7 +3,6 @@ import { CreateTalentoDto } from "src/dto/bancotalentos/CreateTalento.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { BancoTalentos } from "../model/bancotalentos.entity";
-import { create } from "domain";
 import { CustomHttpException } from "src/errors/exceptions/custom-exceptions";
 @Injectable()
 export class BancoTalentosService {
@@ -34,7 +33,7 @@ export class BancoTalentosService {
         const talento = await this.bancoTalentosRepository.findOneBy({id});
 
         if (!talento) {
-            throw new CustomHttpException(`Talento com id ${id} não encontrado`, HttpStatus.BAD_REQUEST);
+            throw new CustomHttpException(`Talento com id ${id} não encontrado`, HttpStatus.NOT_FOUND);
         }
         
         await this.bancoTalentosRepository.delete(talento);

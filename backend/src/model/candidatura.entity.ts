@@ -4,8 +4,6 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   Timestamp,
-  OneToOne,
-  JoinTable,
 } from 'typeorm';
 import { Vaga } from './vaga.entity';
 import {CandidaturaTag} from './candidaturatag.entity';
@@ -27,7 +25,7 @@ export class Candidatura {
   @Column({ length: 50, name: 'email', nullable: false })
   email: string;
 
-  @Column({ type: 'text', name: 'telefone', nullable: false })
+  @Column({ type: 'varchar', length:11, name: 'telefone', nullable: false })
   telefone: string;
 
   @Column({ type: 'text', name: 'descricao', nullable: false })
@@ -36,7 +34,7 @@ export class Candidatura {
   @Column({ type: 'longblob', name: 'cv_data', nullable: false })
   cvData: Buffer;
 
-  @Column({ type: 'varchar', length: 100, name: 'cv_type', nullable: false })
+  @Column({ type: 'varchar', length: 50, name: 'cv_type', nullable: false })
   cvType: string;
 
   @Column({ type: 'timestamp', name: 'data_candidatura', nullable: false, default: () => 'CURRENT_TIMESTAMP'})
@@ -51,7 +49,7 @@ export class Candidatura {
   @ManyToOne(() => Vaga, (vaga) => vaga.candidatura, {nullable: false})
   vaga: Vaga;
 
-  @ManyToOne(() => CandidaturaTag, candidaturaTag => candidaturaTag.candidaturas)
+  @ManyToOne(() => CandidaturaTag, candidaturaTag => candidaturaTag.id)
   candidaturaTagId: CandidaturaTag;
 }
 export default Candidatura;

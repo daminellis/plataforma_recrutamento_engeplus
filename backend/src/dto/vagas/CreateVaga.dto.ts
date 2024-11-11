@@ -73,6 +73,7 @@ export class CreateVagaDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
+  @Length(10, 2000)
   descricao: string;
 
   @ApiProperty({ type: [String] })

@@ -2,9 +2,8 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToMany,
   ManyToOne,
-  OneToOne,
+  CreateDateColumn
 } from 'typeorm';
 import { Vaga } from './vaga.entity';
 
@@ -19,16 +18,19 @@ export class BancoTalentos {
   @Column({ length: 50, name: 'email' })
   email: string;
 
-  @Column({ type: 'text', name: 'telefone' })
+  @Column({ type: 'varchar', length: 11, name: 'telefone' })
   telefone: string;
 
   @Column({ type: 'text', name: 'descricao' })
   descricao: string;
 
-  @Column({ type: 'blob', name: 'cv' })
+  @Column({ type: 'longblob', name: 'cv_data' })
   cvData: Buffer;
 
-  @ManyToOne(() => Vaga, (vaga) => vaga.bancoTalentos)
+  @CreateDateColumn()
+  dataRegistro: Date;
+
+  @ManyToOne(() => Vaga, (vaga) => vaga.id)
   vaga: Vaga;
 }
 export default BancoTalentos;

@@ -9,11 +9,9 @@ import { LoginDto } from 'src/dto/autenticacao/Login.dto';
 import { CreateUsuarioDto } from 'src/dto/usuarios/CreateUsuario.dto';
 import { UpdateUsuarioDto } from 'src/dto/usuarios/UpdateUsuario.dto';
 import { SetorService } from 'src/service/setor.service';
-import { VagaService } from 'src/service/vaga.service';
 import { ResponseLoginDto } from 'src/dto/autenticacao/ResponseLogin.dto';
 import { CargoService } from 'src/service/cargo.service';
 import { CustomHttpException } from '../errors/exceptions/custom-exceptions';
-import { ErrorResponseDto } from 'src/errors/dto/ErroResponse.dto';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +22,6 @@ export class AuthService {
     private usuariosRepository: Repository<Usuario>,
     private usuarioService: UsuarioService,
     private setorService: SetorService,
-    private vagaService: VagaService,
     private cargoService: CargoService,
     private jwtService: JwtService
   ) { }
@@ -47,20 +44,20 @@ export class AuthService {
     }
   }
 
-  async fetchUserFromDb(username: string): Promise<Usuario | null> {
+  async fetchUserFromDb(username: string): Promise<Usuario | null>{
     return this.usuarioService.findOneByUsername(username);
   }
 
   async register(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
     const newUser = this.usuariosRepository.create(createUsuarioDto);
-    newUser.senhaHash = await this.hashPassword(newUser.senhaHash);
+    newUser.senha = await this.hashPassword(newUser.senha);
 
     if (createUsuarioDto.cargoId) {
       const cargo = await this.cargoService.findOne(createUsuarioDto.cargoId);
       if (cargo) {
         newUser.cargo = { id: cargo.id, nome: cargo.nome, descricao: cargo.descricao } as any;
       } else {
-        throw new CustomHttpException(`Cargo ${createUsuarioDto.cargoId} não encontrado. Favor atribuir um cargo válido.`, HttpStatus.BAD_REQUEST);
+        throw new CustomHttpException(`Cargo ${createUsuarioDto.cargoId} não encontrado. Favor atribuir um cargo válido.`, HttpStatus.NOT_FOUND);
       }
     }
 
@@ -69,21 +66,10 @@ export class AuthService {
       if (setor) {
         newUser.setor = setor;
       } else {
-        throw new CustomHttpException(`Setor ${createUsuarioDto.setorId} não encontrado. Favor atribuir um setor válido.`, HttpStatus.BAD_REQUEST);
+        throw new CustomHttpException(`Setor ${createUsuarioDto.setorId} não encontrado. Favor atribuir um setor válido.`, HttpStatus.NOT_FOUND);
       }
     }
 
-    if (createUsuarioDto.vagaIds) {
-      newUser.vagas = [];
-      for (let i = 0; i < createUsuarioDto.vagaIds.length; i++) {
-        const vaga = await this.vagaService.findOneVaga(createUsuarioDto.vagaIds[i]);
-        if (vaga) {
-          newUser.vagas.push({ id: vaga.id, titulo: vaga.titulo } as any);
-        } else {
-          throw new CustomHttpException(`Vaga ${createUsuarioDto.vagaIds[i]} não encontrada. Favor atribuir uma vaga válida.`, HttpStatus.BAD_REQUEST);
-        }
-      }
-    }
     return this.usuariosRepository.save(newUser);
   }
 
@@ -91,7 +77,7 @@ export class AuthService {
     
     try {
       const user = await this.fetchUserFromDb(loginDto.username);
-      const match = user && await this.comparePasswords(loginDto.password, user.senhaHash);
+      const match = user && await this.comparePasswords(loginDto.password, user.senha);
       
       if (!user || !match) {
         throw new UnauthorizedException('Credenciais incorretas');
@@ -123,11 +109,11 @@ export class AuthService {
   async updateUsuario(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
     const usuario = await this.usuarioService.findOne(id);
     if (!usuario) {
-      throw new UnauthorizedException('Usuário não encontrado');
+      throw new CustomHttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
     }
 
-    if (updateUsuarioDto.senhaHash) {
-      updateUsuarioDto.senhaHash = await this.hashPassword(updateUsuarioDto.senhaHash);
+    if (updateUsuarioDto.senha) {
+      updateUsuarioDto.senha = await this.hashPassword(updateUsuarioDto.senha);
     }
 
     if (updateUsuarioDto.cargoId) {
@@ -135,7 +121,7 @@ export class AuthService {
       if (cargo) {
         usuario.cargo = cargo;
       } else {
-        throw new CustomHttpException(`Cargo ${updateUsuarioDto.cargoId} não encontrado. Favor atribuir um cargo válido.`, HttpStatus.BAD_REQUEST);
+        throw new CustomHttpException(`Cargo ${updateUsuarioDto.cargoId} não encontrado. Favor atribuir um cargo válido.`, HttpStatus.NOT_FOUND);
       }
     }
 
@@ -144,21 +130,10 @@ export class AuthService {
       if (setor) {
         usuario.setor = setor;
       } else {
-        throw new CustomHttpException(`Setor ${updateUsuarioDto.setorId} não encontrado. Favor atribuir um setor válido.`, HttpStatus.BAD_REQUEST);
+        throw new CustomHttpException(`Setor ${updateUsuarioDto.setorId} não encontrado. Favor atribuir um setor válido.`, HttpStatus.NOT_FOUND);
       }
     }
 
-    if (updateUsuarioDto.vagaIds) {
-      usuario.vagas = [];
-      for (let i = 0; i < updateUsuarioDto.vagaIds.length; i++) {
-        const vaga = await this.vagaService.findOneVaga(updateUsuarioDto.vagaIds[i]);
-        if (vaga) {
-          usuario.vagas.push(vaga);
-        } else {
-          throw new CustomHttpException(`Vaga ${updateUsuarioDto.vagaIds[i]} não encontrada. Favor atribuir uma vaga válida.`, HttpStatus.BAD_REQUEST);
-        }
-      }
-    }
     Object.assign(usuario, updateUsuarioDto);
     return this.usuariosRepository.save(usuario);
   }

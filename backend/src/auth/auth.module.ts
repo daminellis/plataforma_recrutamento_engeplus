@@ -7,15 +7,13 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { SetorModule } from 'src/module/setor.module';
-import { VagaModule } from 'src/module/vaga.module';
 import { CargoModule } from 'src/module/cargo.module';
-import { CandidaturaModule } from 'src/module/candidatura.module';
 import { AuthGuard } from './guards/auth.guard';
 import { UserTypeGuard } from './guards/UserTypeGuard.guard';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Usuario]), UsuarioModule, SetorModule, VagaModule, CargoModule, CandidaturaModule,
+  imports: [TypeOrmModule.forFeature([Usuario]), UsuarioModule, SetorModule, CargoModule,
   JwtModule.register({
     global: true,
     secret: jwtConstants.secret,
