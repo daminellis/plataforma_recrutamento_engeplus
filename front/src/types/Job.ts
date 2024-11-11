@@ -5,11 +5,15 @@ export type JobType = {
   salarioMaximo: string;
   regiao: string;
   dataPostagem: string;
-  setor: Sector;
+  setor: SectorType;
   tags: Tags[];
 };
 
-type Sector = {
+export type JobPrivateType = JobType & {
+  candidaturaCount: number;
+};
+
+export type SectorType = {
   id: number;
   nome: string;
 };
@@ -36,7 +40,7 @@ export type JobDetails = {
   regiao: string;
   dataPostagem: string;
   recrutador: Recruiter;
-  setor: Sector;
+  setor: SectorType;
   tags: Tags[];
 };
 

@@ -11,7 +11,12 @@ export const usePrivateApi = <T,>(
   route: string,
   onTry?: (response: AxiosResponse<T>) => void,
   onCatch?: (error: AxiosError) => void
-): { isLoading: boolean; error: AxiosError | null; data: T | null } => {
+): {
+  isLoading: boolean;
+  error: AxiosError | null;
+  data: T | null;
+  fetchData: () => void;
+} => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<AxiosError | null>(null);
   const [data, setData] = useState<T | null>(null);
@@ -51,9 +56,5 @@ export const usePrivateApi = <T,>(
       });
   }, []);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  return { isLoading, error, data };
+  return { isLoading, error, data, fetchData };
 };

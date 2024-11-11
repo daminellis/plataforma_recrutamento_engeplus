@@ -34,7 +34,15 @@ export default function LoginPage() {
     try {
       const { data } = await api.post<AuthLogin>("auth/login", dto);
 
-      document.cookie = `token=${data.access_token}; path=/; max-age=86400; secure; samesite=strict`;
+      const maxAge = 40 * 60; // 40 minutos em segundos
+      document.cookie = `token=${data.access_token}; path=/; max-age=${maxAge}; secure; samesite=strict`;
+      document.cookie = `user=${JSON.stringify(
+        data.user
+      )}; path=/; max-age=${maxAge}; secure; samesite=strict`;
+
+      document.cookie = `user=${JSON.stringify(
+        data.user
+      )}; path=/; max-age=86400; secure; samesite=strict`;
 
       localStorage.setItem(
         "token",
