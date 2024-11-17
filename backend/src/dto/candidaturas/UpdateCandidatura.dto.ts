@@ -1,25 +1,29 @@
-import { IsString, IsEmail, IsBoolean, IsOptional, IsUrl, IsInt, IsEnum } from 'class-validator';
+import { IsString, IsEmail, IsBoolean, IsOptional, IsInt, IsEnum, Length } from 'class-validator';
 import { StatusCandidatura } from 'src/model/candidatura.entity';
 import { ApiProperty } from '@nestjs/swagger';
 export class UpdateCandidaturaDto {
   @ApiProperty()
   @IsString()
   @IsOptional()
+  @Length(4, 50)
   nomeCompleto?: string;
 
   @ApiProperty()
   @IsEmail()
   @IsOptional()
+  @Length(8, 50)
   email?: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
+  @Length(10, 11)
   telefone?: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
+  @Length(10, 2000)
   descricao?: string;
 
   @ApiProperty()

@@ -6,6 +6,7 @@ export class CreateCandidaturaTagDto{
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
+    @MaxLength(50)
     nome: string;
 
     @ApiProperty()
@@ -13,9 +14,4 @@ export class CreateCandidaturaTagDto{
     @IsOptional()
     @MaxLength(7)
     corTag: string;
-
-    @ApiProperty({ type: [Number] })
-    @IsOptional()
-    @IsArray()
-    candidaturaIds: number[];
 }

@@ -14,13 +14,11 @@ export class CandidaturaTagService {
   ) {  
   }
   async findAll(): Promise<CandidaturaTag[]> {
-    return this.candidaturaTagRepository.find({
-      relations: ['candidaturas']
-    });
+    return this.candidaturaTagRepository.find();
   }
 
   async findOne(id: number): Promise<CandidaturaTag | null> {
-    return this.candidaturaTagRepository.findOne({where: {id}, relations: ['candidaturas']});
+    return this.candidaturaTagRepository.findOneBy({id});
   }
 
   async create(CreateCandidaturaTagDto: CreateCandidaturaTagDto): Promise<CandidaturaTag> {

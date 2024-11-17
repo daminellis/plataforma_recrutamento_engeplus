@@ -9,6 +9,7 @@ import {
   IsArray,
   IsOptional,
   Matches,
+  MaxLength,
 } from 'class-validator';
 import {
   NivelDeEducacao,
@@ -22,7 +23,7 @@ export class CreateVagaDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  @Length(1, 100)
+  @Length(3, 100)
   titulo: string;
 
   @ApiProperty()
@@ -73,6 +74,7 @@ export class CreateVagaDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
+  @Length(10, 3000)
   descricao: string;
 
   @ApiProperty({ type: [String] })
@@ -84,6 +86,7 @@ export class CreateVagaDto {
   @IsNotEmpty()
   @IsString()
   @Matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+ - [A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
+  @MaxLength(50)
   regiao: string;
 
   @ApiProperty()

@@ -179,7 +179,7 @@ export class VagaService {
       if (sector) {
         newVaga.setor = sector;
       } else {
-        throw new CustomHttpException(`Setor ${createVagaDto.setorId} não encontrado`, HttpStatus.BAD_REQUEST);
+        throw new CustomHttpException(`Setor ${createVagaDto.setorId} não encontrado`, HttpStatus.NOT_FOUND);
       }
     }
 
@@ -190,7 +190,7 @@ export class VagaService {
         if (tags) {
           newVaga.tags.push({ id: tags.id, nome: tags.nome, cor: tags.corTag } as any);
         } else {
-          throw new CustomHttpException(`Tag(s) ${createVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`, HttpStatus.BAD_REQUEST);
+          throw new CustomHttpException(`Tag(s) ${createVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`, HttpStatus.NOT_FOUND);
         }
       }
     }
@@ -223,7 +223,7 @@ export class VagaService {
         if (candidaturas) {
           vaga.candidatura.push({ id: candidaturas.id, nomeCompleto: candidaturas.nomeCompleto, email: candidaturas.email, telefone: candidaturas.telefone } as any);
         } else {
-          throw new CustomHttpException(`Candidato ${updateVagaDto.candidaturaIds[i]} não encontrado. Favor atribuir um candidato válido.`, HttpStatus.BAD_REQUEST);
+          throw new CustomHttpException(`Candidato ${updateVagaDto.candidaturaIds[i]} não encontrado. Favor atribuir um candidato válido.`, HttpStatus.NOT_FOUND);
         }
       }
     }
@@ -255,7 +255,7 @@ export class VagaService {
         if (tags) {
           vaga.tags.push(tags);
         } else {
-          throw new CustomHttpException(`Tag(s) ${updateVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`, HttpStatus.BAD_REQUEST);
+          throw new CustomHttpException(`Tag(s) ${updateVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`, HttpStatus.NOT_FOUND);
         }
       }
     }

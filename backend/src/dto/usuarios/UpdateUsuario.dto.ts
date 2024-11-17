@@ -14,7 +14,7 @@ export class UpdateUsuarioDto {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  @Length(4, 100)
+  @Length(4, 50)
   nomeCompleto?: string;
 
   @ApiProperty()
@@ -29,7 +29,7 @@ export class UpdateUsuarioDto {
   @IsNotEmpty()
   @IsString()
   @Length(6, 60)
-  senhaHash?: string;
+  senha?: string;
 
   @ApiProperty()
   @IsOptional()

@@ -3,7 +3,7 @@ import { BancoTalentosService } from "../service/bancotalentos.service";
 import { CreateTalentoDto } from "src/dto/bancotalentos/CreateTalento.dto";
 import BancoTalentos from "src/model/bancotalentos.entity";
 import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
-@Controller()
+@Controller('bancotalentos')
 @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
 export class BancoTalentosController{
     constructor(private bancoTalentosService: BancoTalentosService) { }

@@ -2,9 +2,7 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToMany,
   ManyToOne,
-  OneToOne,
 } from 'typeorm';
 import { Vaga } from './vaga.entity';
 
@@ -13,20 +11,23 @@ export class BancoTalentos {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
-  @Column({ length: 50, name: 'nome_completo' })
+  @Column({type: 'varchar', length: 50, name: 'nome_completo' })
   nomeCompleto: string;
 
-  @Column({ length: 50, name: 'email' })
+  @Column({type: 'varchar', length: 50, name: 'email' })
   email: string;
 
-  @Column({ type: 'text', name: 'telefone' })
+  @Column({type: 'varchar', length:11 , name: 'telefone' })
   telefone: string;
 
-  @Column({ type: 'text', name: 'descricao' })
+  @Column({ type: 'text',name: 'descricao' })
   descricao: string;
 
-  @Column({ type: 'blob', name: 'cv' })
+  @Column({ type: 'longblob', name: 'cv_data' })
   cvData: Buffer;
+
+  @Column({ type: 'varchar', length: 50, name: 'cv_type' })
+  cvType: string;
 
   @ManyToOne(() => Vaga, (vaga) => vaga.bancoTalentos)
   vaga: Vaga;

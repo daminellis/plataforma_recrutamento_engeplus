@@ -13,7 +13,7 @@ export class CreateUsuarioDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @Length(4, 100)
+  @Length(4, 50)
   nomeCompleto: string;
 
   @ApiProperty()
@@ -26,7 +26,7 @@ export class CreateUsuarioDto {
   @IsString()
   @IsNotEmpty()
   @Length(6, 60)
-  senhaHash: string;
+  senha: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -43,9 +43,4 @@ export class CreateUsuarioDto {
   @IsNumber()
   @IsNotEmpty()
   setorId: number;
-
-  @ApiProperty({ type: [Number] })
-  @IsArray()
-  @IsOptional()
-  vagaIds: number[];
 }

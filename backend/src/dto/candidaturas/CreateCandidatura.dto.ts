@@ -1,4 +1,4 @@
-import { Length, IsString, IsEmail, IsInt, IsNotEmpty, IsOptional, IsArray } from 'class-validator';
+import { Length, IsString, IsEmail, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 export class CreateCandidaturaDto {
 
@@ -17,7 +17,7 @@ export class CreateCandidaturaDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    @Length(8, 20)
+    @Length(10, 11)
     telefone: string;
 
     @ApiProperty()

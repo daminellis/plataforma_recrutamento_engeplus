@@ -14,17 +14,17 @@ export class Usuario {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
-  @Column({ length: 50, name: 'username', unique: true, nullable: false })
+  @Column({ type: 'varchar', length: 50, name: 'username', unique: true, nullable: false })
   username: string;
 
-  @Column({ length: 100, name: 'nome_completo', nullable: false })
+  @Column({type: 'varchar', length: 50, name: 'nome_completo', nullable: false })
   nomeCompleto: string;
 
-  @Column({ length: 100, name: 'email', unique: true, nullable: false })
+  @Column({type: 'varchar', length: 50, name: 'email', unique: true, nullable: false })
   email: string;
 
-  @Column({ length: 70, name: 'senha_hash', nullable: false })
-  senhaHash: string;
+  @Column({type: 'varchar', length: 70, name: 'senha_hash', nullable: false })
+  senha: string;
 
   @Column({ type:'enum', name: 'tipo_usuario', enum: TipoUsuarioEnum, nullable: false })
   tipoUsuario: TipoUsuarioEnum;

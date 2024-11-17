@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsInt } from 'class-validator';
+import { IsOptional, IsString, IsInt, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateSetorDto {
@@ -6,5 +6,6 @@ export class UpdateSetorDto {
     @ApiProperty()
     @IsOptional()
     @IsString()
+    @MaxLength(50)
     nome?: string;
 }

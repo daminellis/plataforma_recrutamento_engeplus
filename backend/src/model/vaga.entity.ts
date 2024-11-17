@@ -44,7 +44,7 @@ export class Vaga {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
-  @Column({ length: 100, name: 'titulo', nullable: false })
+  @Column({type: 'varchar', length: 100, name: 'titulo', nullable: false })
   titulo: string;
 
   @Column({ type: 'numeric', name: 'salario_minimo', precision: 10, scale: 2, nullable: false })
@@ -77,7 +77,7 @@ export class Vaga {
   @Column({ type: 'simple-array', name: 'responsabilidades', nullable: false })
   responsabilidades: string[];
 
-  @Column({ type: 'varchar', name: 'regiao', nullable: false})
+  @Column({ type: 'varchar', length: 50, name: 'regiao', nullable: false})
   regiao: string;
 
   @Column({

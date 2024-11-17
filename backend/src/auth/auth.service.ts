@@ -53,7 +53,7 @@ export class AuthService {
 
   async register(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
     const newUser = this.usuariosRepository.create(createUsuarioDto);
-    newUser.senhaHash = await this.hashPassword(newUser.senhaHash);
+    newUser.senha = await this.hashPassword(newUser.senha);
 
     if (createUsuarioDto.cargoId) {
       const cargo = await this.cargoService.findOne(createUsuarioDto.cargoId);
@@ -73,26 +73,15 @@ export class AuthService {
       }
     }
 
-    if (createUsuarioDto.vagaIds) {
-      newUser.vagas = [];
-      for (let i = 0; i < createUsuarioDto.vagaIds.length; i++) {
-        const vaga = await this.vagaService.findOneVaga(createUsuarioDto.vagaIds[i]);
-        if (vaga) {
-          newUser.vagas.push({ id: vaga.id, titulo: vaga.titulo } as any);
-        } else {
-          throw new CustomHttpException(`Vaga ${createUsuarioDto.vagaIds[i]} não encontrada. Favor atribuir uma vaga válida.`, HttpStatus.BAD_REQUEST);
-        }
-      }
-    }
     return this.usuariosRepository.save(newUser);
   }
 
   async login(loginDto: LoginDto): Promise<{ success: any, access_token: string, user?: ResponseLoginDto }> {
-    
+
     try {
       const user = await this.fetchUserFromDb(loginDto.username);
-      const match = user && await this.comparePasswords(loginDto.password, user.senhaHash);
-      
+      const match = user && await this.comparePasswords(loginDto.password, user.senha);
+
       if (!user || !match) {
         throw new UnauthorizedException('Credenciais incorretas');
       }
@@ -101,6 +90,76 @@ export class AuthService {
         // login
         const payload = { username: user.username, sub: user.id, email: user.email, nomeCompleto: user.nomeCompleto, tipoUsuario: user.tipoUsuario, iat: Math.floor(Date.now() / 1000) };
         const access_token = await this.jwtService.signAsync(payload);
+
+        const routes: any[] = [
+
+          //VAGAS
+          { route: '/vagas/enums', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' || user.tipoUsuario === 'Líder' },
+          { route: '/vagas/all', hasAccess: true }, //Pública
+          { route: '/vagas/all-private', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' || user.tipoUsuario === 'Líder' },
+          { route: '/vagas/create', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+          { route: '/vagas/update/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+          { route: '/vagas/delete/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+
+          //USUARIOS/AUTH
+          { route: '/auth/register', hasAccess: user.tipoUsuario === 'Administrador' },
+          { route: '/auth/login', hasAccess: true }, //Pública
+          { route: '/auth/update-usuario/:id', hasAccess: user.tipoUsuario === 'Administrador' },
+          { route: '/auth/token-validation', hasAccess: true },
+
+          { route: '/usuarios/enum', hasAccess: user.tipoUsuario === 'Administrador' },
+          { route: '/usuarios/all', hasAccess: user.tipoUsuario === 'Administrador' },
+          { route: '/usuarios/find/:id', hasAccess: user.tipoUsuario === 'Administrador' },
+          { route: '/usuarios/findByName/:username', hasAccess: user.tipoUsuario === 'Administrador' },
+          { route: '/usuarios/delete/:id', hasAccess: user.tipoUsuario === 'Administrador' },
+
+          //CANDIDATURAS
+          { route: '/candidaturas/enum', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' || user.tipoUsuario === 'Líder' },
+          { route: '/candidaturas/all', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' || user.tipoUsuario === 'Líder' },
+          { route: '/candidaturas/find/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' || user.tipoUsuario === 'Líder' },
+          { route: '/candidaturas/find/all-by-vaga/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' || user.tipoUsuario === 'Líder' },
+          { route: '/candidaturas/create', hasAccess: true }, // Pública
+          { route: '/candidaturas/update/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+          { route: '/candidaturas/delete/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+
+
+          //SETORES
+          { route: '/setores/all', hasAccess: true}, //Pública
+          { route: '/setores/find/:id', hasAccess: true}, //Pública
+          { route: '/setores/create', hasAccess: user.tipoUsuario === 'Administrador' },
+          { route: '/setores/update/:id', hasAccess: user.tipoUsuario === 'Administrador' },
+          { route: '/setores/delete/:id', hasAccess: user.tipoUsuario === 'Administrador' },
+
+          //CARGOS
+          { route: '/cargos/all', hasAccess: user.tipoUsuario === 'Administrador' },
+          { route: '/cargos/find/:id', hasAccess: user.tipoUsuario === 'Administrador' },
+          { route: '/cargos/create', hasAccess: user.tipoUsuario === 'Administrador' },
+          { route: '/cargos/update/:id', hasAccess: user.tipoUsuario === 'Administrador' },
+          { route: '/cargos/delete/:id', hasAccess: user.tipoUsuario === 'Administrador' },
+
+          //VAGA TAGS
+          { route: '/tags/all', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' }, //Pública
+          { route: '/tags/find/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' }, //Pública
+          { route: '/tags/create', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+          { route: '/tags/update/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+          { route: '/tags/delete/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+
+          //CANDIDATURA TAGS
+          { route: '/candidaturatags/all', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+          { route: '/candidaturatags/find/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+          { route: '/candidaturatags/create', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+          { route: '/candidaturatags/update/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+          { route: '/candidaturatags/delete/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+
+
+          //BANCO DE TALENTOS
+          { route: '/bancotalentos/all', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' || user.tipoUsuario === 'Líder' },
+          { route: '/bancotalentos/find/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' || user.tipoUsuario === 'Líder' },
+          { route: '/bancotalentos/create', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' || user.tipoUsuario === 'Líder' },
+          // { route: '/bancotalentos/update/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' },
+          { route: '/bancotalentos/delete/:id', hasAccess: user.tipoUsuario === 'Administrador' || user.tipoUsuario === 'Recursos Humanos' || user.tipoUsuario === 'Líder' },
+        ];
+
         return {
           success: true,
           access_token: access_token,
@@ -111,6 +170,7 @@ export class AuthService {
             email: user.email,
             cargo: user.cargo ? user.cargo.nome : 'Cargo não atribuído ou cadastrado',
             setor: user.setor ? user.setor.nome : 'Setor não atribuído ou cadastrado',
+            routes: routes
           }
         };
       }
@@ -126,8 +186,8 @@ export class AuthService {
       throw new UnauthorizedException('Usuário não encontrado');
     }
 
-    if (updateUsuarioDto.senhaHash) {
-      updateUsuarioDto.senhaHash = await this.hashPassword(updateUsuarioDto.senhaHash);
+    if (updateUsuarioDto.senha) {
+      updateUsuarioDto.senha = await this.hashPassword(updateUsuarioDto.senha);
     }
 
     if (updateUsuarioDto.cargoId) {

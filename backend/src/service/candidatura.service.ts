@@ -68,7 +68,7 @@ export class CandidaturaService {
         if (createCandidaturaDto.vagaId) {
             const vaga = await this.vagaService.findOneVaga(parseInt(createCandidaturaDto.vagaId));
             if (!vaga) {
-                throw new CustomHttpException('Vaga não encontrada', HttpStatus.BAD_REQUEST);
+                throw new CustomHttpException('Vaga não encontrada', HttpStatus.NOT_FOUND);
             }
             newCandidatura.vaga = { id: vaga.id, titulo: vaga.titulo } as any;
         }
@@ -79,14 +79,14 @@ export class CandidaturaService {
     async update(id: number, updateCandidaturaDto: UpdateCandidaturaDto): Promise<Candidatura> {
         const candidatura = await this.candidaturaRepository.findOneBy({ id });
         if (!candidatura) {
-            throw new CustomHttpException(`Candidatura com id ${id} não encontrada!`, HttpStatus.BAD_REQUEST);
+            throw new CustomHttpException(`Candidatura com id ${id} não encontrada!`, HttpStatus.NOT_FOUND);
         }
 
         if (updateCandidaturaDto.candidaturaTagId) {
             const candidaturaTag = await this.candidaturaTagService.findOne(updateCandidaturaDto.candidaturaTagId);
 
             if (!candidaturaTag) {
-                throw new CustomHttpException(`Status com id ${updateCandidaturaDto.candidaturaTagId} não encontrado!`, HttpStatus.BAD_REQUEST);
+                throw new CustomHttpException(`Status com id ${updateCandidaturaDto.candidaturaTagId} não encontrado!`, HttpStatus.NOT_FOUND);
             } else {
                 candidatura.candidaturaTagId = candidaturaTag
             }

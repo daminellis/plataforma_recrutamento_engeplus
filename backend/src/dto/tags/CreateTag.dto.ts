@@ -6,6 +6,7 @@ export class CreateTagDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
+  @MaxLength(50)
   nome: string;
 
   @ApiProperty()
@@ -13,9 +14,4 @@ export class CreateTagDto {
   @MaxLength(7)
   @IsString()
   corTag: string;
-
-  @ApiProperty({ type: [Number] })
-  @IsOptional()
-  @IsArray()
-  vagaIds: number[];
 }

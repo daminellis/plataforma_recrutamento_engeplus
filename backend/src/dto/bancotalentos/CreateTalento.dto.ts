@@ -31,6 +31,9 @@ export class CreateTalentoDto {
     cvData: Buffer;
 
     @ApiProperty()
+    cvType: string;
+
+    @ApiProperty()
     @IsNotEmpty()
     @IsString()
     vagaId: string;
