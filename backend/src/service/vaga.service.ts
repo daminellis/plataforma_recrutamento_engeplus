@@ -89,6 +89,7 @@ export class VagaService {
       .leftJoinAndSelect('vaga.tags', 'tags')
       .leftJoinAndSelect('vaga.recrutador', 'recrutador')
       .loadRelationCountAndMap('vaga.candidaturaCount', 'vaga.candidatura')
+      .orderBy('vaga.dataPostagem', 'DESC')
       .getMany() as VagaWithCount[];
 
     const candidateCounter: ResponseCountCandidatureDto[] = [];
@@ -127,6 +128,7 @@ export class VagaService {
       .leftJoinAndSelect('vaga.recrutador', 'recrutador')
       .leftJoinAndSelect('recrutador.cargo', 'cargo')
       .where('cargo.nome = :cargoNome', { cargoNome: 'Líder' })
+      .orderBy('vaga.dataPostagem', 'DESC')
       .getMany() as VagaWithCount[];
 
     const candidateCounter: ResponseCountCandidatureDto[] = [];
@@ -149,6 +151,8 @@ export class VagaService {
         console.error('Propriedades indefinidas em vaga:', vaga);
       }
     });
+
+
 
     return candidateCounter;
   }
