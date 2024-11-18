@@ -25,7 +25,7 @@ export class CreateUsuarioDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @Length(6, 60)
+  @Length(4, 12)
   senha: string;
 
   @ApiProperty()

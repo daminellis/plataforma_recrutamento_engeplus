@@ -6,6 +6,9 @@ import Usuario from 'src/model/usuario.entity';
 import { UpdateUsuarioDto } from 'src/dto/usuarios/UpdateUsuario.dto';
 import { Public } from './decorators/public.decorator';
 import { AllowUserTypes } from './decorators/AllowedUserTypes.decorator';
+import { ResponseLoginDto } from 'src/dto/autenticacao/ResponseLogin.dto';
+import { SuccessResponseDto } from 'src/dto/responses/SuccessResponse.dto';
+import { ErrorResponseDto } from 'src/errors/dto/ErrorResponse.dto';
 
 @Controller('/auth')
 export class AuthController {
@@ -13,19 +16,19 @@ export class AuthController {
 
   @Post('/register')
   @AllowUserTypes('Administrador')
-  async register(@Body() createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
+  async register(@Body() createUsuarioDto: CreateUsuarioDto): Promise<SuccessResponseDto> {
     return await this.authService.register(createUsuarioDto);
   }
 
   @Post('/login')
   @Public()
-  async login(@Body() loginDto: LoginDto): Promise<{ success: any, access_token: string }> {
+  async login(@Body() loginDto: LoginDto): Promise<ResponseLoginDto> {
     return await this.authService.login(loginDto);
   }
 
   @Put('/update-usuario/:id')
   @AllowUserTypes('Administrador')
-  async update(@Param("id") id: number, @Body() updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
+  async update(@Param("id") id: number, @Body() updateUsuarioDto: UpdateUsuarioDto): Promise<SuccessResponseDto> {
     return await this.authService.updateUsuario(id, updateUsuarioDto);
   }
 

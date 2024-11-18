@@ -13,7 +13,9 @@ import { VagaService } from 'src/service/vaga.service';
 import { ResponseLoginDto } from 'src/dto/autenticacao/ResponseLogin.dto';
 import { CargoService } from 'src/service/cargo.service';
 import { CustomHttpException } from '../errors/exceptions/custom-exceptions';
-import { ErrorResponseDto } from 'src/errors/dto/ErroResponse.dto';
+import { SuccessResponseDto } from 'src/dto/responses/SuccessResponse.dto';
+import { R } from '@faker-js/faker/dist/airline-BLb3y-7w';
+import { ErrorResponseDto } from 'src/errors/dto/ErrorResponse.dto';
 
 @Injectable()
 export class AuthService {
@@ -51,32 +53,38 @@ export class AuthService {
     return this.usuarioService.findOneByUsername(username);
   }
 
-  async register(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
-    const newUser = this.usuariosRepository.create(createUsuarioDto);
-    newUser.senha = await this.hashPassword(newUser.senha);
+  async register(createUsuarioDto: CreateUsuarioDto): Promise<SuccessResponseDto> {
+    try {
+      const newUser = this.usuariosRepository.create(createUsuarioDto);
+      newUser.senha = await this.hashPassword(newUser.senha);
 
-    if (createUsuarioDto.cargoId) {
-      const cargo = await this.cargoService.findOne(createUsuarioDto.cargoId);
-      if (cargo) {
-        newUser.cargo = { id: cargo.id, nome: cargo.nome, descricao: cargo.descricao } as any;
-      } else {
-        throw new CustomHttpException(`Cargo ${createUsuarioDto.cargoId} não encontrado. Favor atribuir um cargo válido.`, HttpStatus.BAD_REQUEST);
+      if (createUsuarioDto.cargoId) {
+        const cargo = await this.cargoService.findOne(createUsuarioDto.cargoId);
+        if (cargo) {
+          newUser.cargo = { id: cargo.id, nome: cargo.nome, descricao: cargo.descricao } as any;
+        } else {
+          throw new CustomHttpException(`Cargo ${createUsuarioDto.cargoId} não encontrado. Favor atribuir um cargo válido.`, HttpStatus.BAD_REQUEST);
+        }
       }
-    }
 
-    if (createUsuarioDto.setorId) {
-      const setor = await this.setorService.findOneSetor(createUsuarioDto.setorId);
-      if (setor) {
-        newUser.setor = setor;
-      } else {
-        throw new CustomHttpException(`Setor ${createUsuarioDto.setorId} não encontrado. Favor atribuir um setor válido.`, HttpStatus.BAD_REQUEST);
+      if (createUsuarioDto.setorId) {
+        const setor = await this.setorService.findOneSetor(createUsuarioDto.setorId);
+        if (setor) {
+          newUser.setor = setor;
+        } else {
+          throw new CustomHttpException(`Setor ${createUsuarioDto.setorId} não encontrado. Favor atribuir um setor válido.`, HttpStatus.BAD_REQUEST);
+        }
       }
-    }
 
-    return this.usuariosRepository.save(newUser);
+      await this.usuariosRepository.save(newUser);
+      return { success: true, code: HttpStatus.CREATED, message: 'Usuário criado com sucesso' } as SuccessResponseDto;
+
+    } catch (err) {
+      throw new CustomHttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  async login(loginDto: LoginDto): Promise<{ success: any, access_token: string, user?: ResponseLoginDto }> {
+  async login(loginDto: LoginDto): Promise<ResponseLoginDto> {
 
     try {
       const user = await this.fetchUserFromDb(loginDto.username);
@@ -89,7 +97,7 @@ export class AuthService {
       if (match) {
         // login
         const payload = { username: user.username, sub: user.id, email: user.email, nomeCompleto: user.nomeCompleto, tipoUsuario: user.tipoUsuario, iat: Math.floor(Date.now() / 1000) };
-        const access_token = await this.jwtService.signAsync(payload);
+        const token = await this.jwtService.signAsync(payload);
 
         const routes: any[] = [
 
@@ -124,8 +132,8 @@ export class AuthService {
 
 
           //SETORES
-          { route: '/setores/all', hasAccess: true}, //Pública
-          { route: '/setores/find/:id', hasAccess: true}, //Pública
+          { route: '/setores/all', hasAccess: true }, //Pública
+          { route: '/setores/find/:id', hasAccess: true }, //Pública
           { route: '/setores/create', hasAccess: user.tipoUsuario === 'Administrador' },
           { route: '/setores/update/:id', hasAccess: user.tipoUsuario === 'Administrador' },
           { route: '/setores/delete/:id', hasAccess: user.tipoUsuario === 'Administrador' },
@@ -162,65 +170,66 @@ export class AuthService {
 
         return {
           success: true,
-          access_token: access_token,
-          user: {
-            id: user.id,
-            username: user.username,
-            nomeCompleto: user.nomeCompleto,
-            email: user.email,
-            cargo: user.cargo ? user.cargo.nome : 'Cargo não atribuído ou cadastrado',
-            setor: user.setor ? user.setor.nome : 'Setor não atribuído ou cadastrado',
-            routes: routes
-          }
-        };
+          access_token: token,
+          routes: routes
+
+        } as ResponseLoginDto;
       }
-      return { success: false, access_token: '' };
+      return { success: false, access_token: '', routes: [] } as ResponseLoginDto;
     } catch (err) {
       throw new CustomHttpException('Senha ou nome de usuário incorreto, verifique suas credenciais.', HttpStatus.UNAUTHORIZED)
     }
   }
 
-  async updateUsuario(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<Usuario> {
-    const usuario = await this.usuarioService.findOne(id);
-    if (!usuario) {
-      throw new UnauthorizedException('Usuário não encontrado');
-    }
+  async updateUsuario(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<SuccessResponseDto> {
+    try{
 
-    if (updateUsuarioDto.senha) {
-      updateUsuarioDto.senha = await this.hashPassword(updateUsuarioDto.senha);
-    }
-
-    if (updateUsuarioDto.cargoId) {
-      const cargo = await this.cargoService.findOne(updateUsuarioDto.cargoId);
-      if (cargo) {
-        usuario.cargo = cargo;
-      } else {
-        throw new CustomHttpException(`Cargo ${updateUsuarioDto.cargoId} não encontrado. Favor atribuir um cargo válido.`, HttpStatus.BAD_REQUEST);
+      const usuario = await this.usuarioService.findOne(id);
+      if (!usuario) {
+        throw new UnauthorizedException('Usuário não encontrado');
       }
-    }
-
-    if (updateUsuarioDto.setorId) {
-      const setor = await this.setorService.findOneSetor(updateUsuarioDto.setorId);
-      if (setor) {
-        usuario.setor = setor;
-      } else {
-        throw new CustomHttpException(`Setor ${updateUsuarioDto.setorId} não encontrado. Favor atribuir um setor válido.`, HttpStatus.BAD_REQUEST);
+  
+      if (updateUsuarioDto.senha) {
+        updateUsuarioDto.senha = await this.hashPassword(updateUsuarioDto.senha);
       }
-    }
-
-    if (updateUsuarioDto.vagaIds) {
-      usuario.vagas = [];
-      for (let i = 0; i < updateUsuarioDto.vagaIds.length; i++) {
-        const vaga = await this.vagaService.findOneVaga(updateUsuarioDto.vagaIds[i]);
-        if (vaga) {
-          usuario.vagas.push(vaga);
+  
+      if (updateUsuarioDto.cargoId) {
+        const cargo = await this.cargoService.findOne(updateUsuarioDto.cargoId);
+        if (cargo) {
+          usuario.cargo = cargo;
         } else {
-          throw new CustomHttpException(`Vaga ${updateUsuarioDto.vagaIds[i]} não encontrada. Favor atribuir uma vaga válida.`, HttpStatus.BAD_REQUEST);
+          throw new CustomHttpException(`Cargo ${updateUsuarioDto.cargoId} não encontrado. Favor atribuir um cargo válido.`, HttpStatus.BAD_REQUEST);
         }
       }
+  
+      if (updateUsuarioDto.setorId) {
+        const setor = await this.setorService.findOneSetor(updateUsuarioDto.setorId);
+        if (setor) {
+          usuario.setor = setor;
+        } else {
+          throw new CustomHttpException(`Setor ${updateUsuarioDto.setorId} não encontrado. Favor atribuir um setor válido.`, HttpStatus.BAD_REQUEST);
+        }
+      }
+  
+      if (updateUsuarioDto.vagaIds) {
+        usuario.vagas = [];
+        for (let i = 0; i < updateUsuarioDto.vagaIds.length; i++) {
+          const vaga = await this.vagaService.findOneVaga(updateUsuarioDto.vagaIds[i]);
+          if (vaga) {
+            usuario.vagas.push(vaga);
+          } else {
+            throw new CustomHttpException(`Vaga ${updateUsuarioDto.vagaIds[i]} não encontrada. Favor atribuir uma vaga válida.`, HttpStatus.BAD_REQUEST);
+          }
+        }
+      }
+      Object.assign(usuario, updateUsuarioDto);
+      await this.usuariosRepository.save(usuario);
+
+      return {success: true, code: HttpStatus.OK, message: 'Usuário atualizado com sucesso' } as SuccessResponseDto;
+      
+    }catch(err){
+      throw new CustomHttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    Object.assign(usuario, updateUsuarioDto);
-    return this.usuariosRepository.save(usuario);
   }
 
 

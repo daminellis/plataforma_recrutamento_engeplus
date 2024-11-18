@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsNotEmpty, IsString, Length, IsEmail, IsOptional, IsInt, IsArray, ValidateNested } from "class-validator";
+import { IsNotEmpty, IsString, Length, IsEmail, IsOptional, IsInt, IsArray, ValidateNested, IsBoolean } from "class-validator";
 
 class RoutePermission {
     @ApiProperty()
@@ -15,36 +15,12 @@ class RoutePermission {
 export class ResponseLoginDto {
 
     @ApiProperty()
-    @IsNotEmpty()
-    @IsInt()
-    id: number;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
-    username: string;
+    @IsBoolean()
+    success: boolean;
 
     @ApiProperty()
     @IsString()
-    @IsNotEmpty()
-    @Length(4, 100)
-    nomeCompleto: string;
-
-    @ApiProperty()
-    @IsEmail()
-    @Length(8, 50)
-    @IsNotEmpty()
-    email: string;
-
-    @ApiProperty()
-    @IsString()
-    @IsOptional()
-    cargo: string;
-
-    @ApiProperty()
-    @IsString()
-    @IsOptional()
-    setor: string;
+    access_token: string;
 
     @ApiProperty({ type: [RoutePermission] })
     @IsArray()

@@ -18,6 +18,7 @@ import { CustomHttpException } from 'src/errors/exceptions/custom-exceptions';
 import { ResponseCountCandidatureDto } from 'src/dto/vagas/ResponseCountCandidature.dto';
 
 import { TempoDeExperiencia, NivelDeEducacao, NivelDeExperiencia, Modalidade } from '../model/vaga.entity';
+import { SuccessResponseDto } from 'src/dto/responses/SuccessResponse.dto';
 @Injectable()
 export class VagaService {
   constructor(
@@ -30,7 +31,7 @@ export class VagaService {
   ) {
   }
 
-  async getEnums(): Promise<{tempoDeExperiencia: typeof TempoDeExperiencia, nivelDeEducacao: typeof NivelDeEducacao, nivelDeExperiencia: typeof NivelDeExperiencia, modalidade: typeof Modalidade}>{
+  async getEnums(): Promise<{ tempoDeExperiencia: typeof TempoDeExperiencia, nivelDeEducacao: typeof NivelDeEducacao, nivelDeExperiencia: typeof NivelDeExperiencia, modalidade: typeof Modalidade }> {
     const enums = {
       tempoDeExperiencia: TempoDeExperiencia,
       nivelDeEducacao: NivelDeEducacao,
@@ -56,12 +57,12 @@ export class VagaService {
 
   async findAllVagasByLiderCargo(): Promise<Vaga[]> {
     const vagas = await this.vagasRepository.createQueryBuilder('vaga')
-    .leftJoinAndSelect('vaga.setor', 'setor')
-    .leftJoinAndSelect('vaga.tags', 'tags')
-    .leftJoinAndSelect('vaga.recrutador', 'recrutador')
-    .leftJoinAndSelect('recrutador.cargo', 'cargo')
-    .where('cargo.nome = :cargoNome', { cargoNome: 'Líder' })
-    .getMany();
+      .leftJoinAndSelect('vaga.setor', 'setor')
+      .leftJoinAndSelect('vaga.tags', 'tags')
+      .leftJoinAndSelect('vaga.recrutador', 'recrutador')
+      .leftJoinAndSelect('recrutador.cargo', 'cargo')
+      .where('cargo.nome = :cargoNome', { cargoNome: 'Líder' })
+      .getMany();
 
     return vagas;
   }
@@ -151,117 +152,136 @@ export class VagaService {
   }
 
   //Cria uma vaga
-  async createVaga(createVagaDto: CreateVagaDto): Promise<Vaga> {
-    const newVaga = this.vagasRepository.create(createVagaDto);
-    if (createVagaDto.dataExpiracao) {
-      const formattedDate = new Date(dateFormater(createVagaDto.dataExpiracao));
-      if (!isValid(formattedDate)) {
-        throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
-      }
-      newVaga.dataExpiracao = formattedDate;
-      if (newVaga.dataExpiracao < new Date()) {
-        throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
-      }
-    }
+  async createVaga(createVagaDto: CreateVagaDto): Promise<SuccessResponseDto> {
 
-    if (createVagaDto.recruiterId) {
-      const recruiter = await this.usuarioService.findOne(
-        createVagaDto.recruiterId,
-      );
-      if (recruiter) {
-        newVaga.recrutador = { id: recruiter.id, nomeCompleto: recruiter.nomeCompleto } as any;
-      } else {
-        throw new NotFoundException('Recrutador não encontrado');
-      }
-    }
-    if (createVagaDto.setorId) {
-      const sector = await this.setorService.findOneSetor(createVagaDto.setorId);
-      if (sector) {
-        newVaga.setor = sector;
-      } else {
-        throw new CustomHttpException(`Setor ${createVagaDto.setorId} não encontrado`, HttpStatus.NOT_FOUND);
-      }
-    }
-
-    if (createVagaDto.tagIds) {
-      newVaga.tags = [];
-      for (let i = 0; i < createVagaDto.tagIds.length; i++) {
-        const tags = await this.tagService.findOneTag(createVagaDto.tagIds[i]);
-        if (tags) {
-          newVaga.tags.push({ id: tags.id, nome: tags.nome, cor: tags.corTag } as any);
-        } else {
-          throw new CustomHttpException(`Tag(s) ${createVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`, HttpStatus.NOT_FOUND);
+    try {
+      const newVaga = this.vagasRepository.create(createVagaDto);
+      if (createVagaDto.dataExpiracao) {
+        const formattedDate = new Date(dateFormater(createVagaDto.dataExpiracao));
+        if (!isValid(formattedDate)) {
+          throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
+        }
+        newVaga.dataExpiracao = formattedDate;
+        if (newVaga.dataExpiracao < new Date()) {
+          throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
         }
       }
+
+      if (createVagaDto.recruiterId) {
+        const recruiter = await this.usuarioService.findOne(
+          createVagaDto.recruiterId,
+        );
+        if (recruiter) {
+          newVaga.recrutador = { id: recruiter.id, nomeCompleto: recruiter.nomeCompleto } as any;
+        } else {
+          throw new NotFoundException('Recrutador não encontrado');
+        }
+      }
+      if (createVagaDto.setorId) {
+        const sector = await this.setorService.findOneSetor(createVagaDto.setorId);
+        if (sector) {
+          newVaga.setor = sector;
+        } else {
+          throw new CustomHttpException(`Setor ${createVagaDto.setorId} não encontrado`, HttpStatus.NOT_FOUND);
+        }
+      }
+
+      if (createVagaDto.tagIds) {
+        newVaga.tags = [];
+        for (let i = 0; i < createVagaDto.tagIds.length; i++) {
+          const tags = await this.tagService.findOneTag(createVagaDto.tagIds[i]);
+          if (tags) {
+            newVaga.tags.push({ id: tags.id, nome: tags.nome, cor: tags.corTag } as any);
+          } else {
+            throw new CustomHttpException(`Tag(s) ${createVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`, HttpStatus.NOT_FOUND);
+          }
+        }
+      }
+      await this.vagasRepository.save(newVaga); // INSERT INTO vagas
+
+      return {
+        success: true,
+        code: HttpStatus.CREATED,
+        message: 'Vaga criada com sucesso',
+      } as SuccessResponseDto;
+
+    } catch (err) {
+      throw new CustomHttpException('Erro ao criar vaga', HttpStatus.BAD_REQUEST);
     }
-    return this.vagasRepository.save(newVaga); // INSERT INTO vagas
+
   }
 
 
   // Atualiza uma vaga
-  async updateVaga(id: number, updateVagaDto: UpdateVagaDto): Promise<Vaga> {
-    const vaga = await this.vagasRepository.findOneBy({ id });
-    if (!vaga) {
-      throw new NotFoundException('Vaga não encontrada');
-    }
-
-    if (updateVagaDto.dataExpiracao) {
-      const formattedDate = dateFormater(updateVagaDto.dataExpiracao);
-      if (!isValid(formattedDate)) {
-        throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
+  async updateVaga(id: number, updateVagaDto: UpdateVagaDto): Promise<SuccessResponseDto> {
+    try {
+      const vaga = await this.vagasRepository.findOneBy({ id });
+      if (!vaga) {
+        throw new NotFoundException('Vaga não encontrada');
       }
-      vaga.dataExpiracao = new Date(formattedDate);
-      if (vaga.dataExpiracao < new Date()) {
-        throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
-      }
-    }
 
-    if (updateVagaDto.candidaturaIds) {
-      vaga.candidatura = [];
-      for (let i = 0; i < updateVagaDto.candidaturaIds.length; i++) {
-        const candidaturas = await this.candidaturaService.findOneCandidatura(updateVagaDto.candidaturaIds[i]);
-        if (candidaturas) {
-          vaga.candidatura.push({ id: candidaturas.id, nomeCompleto: candidaturas.nomeCompleto, email: candidaturas.email, telefone: candidaturas.telefone } as any);
-        } else {
-          throw new CustomHttpException(`Candidato ${updateVagaDto.candidaturaIds[i]} não encontrado. Favor atribuir um candidato válido.`, HttpStatus.NOT_FOUND);
+      if (updateVagaDto.dataExpiracao) {
+        const formattedDate = dateFormater(updateVagaDto.dataExpiracao);
+        if (!isValid(formattedDate)) {
+          throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
+        }
+        vaga.dataExpiracao = new Date(formattedDate);
+        if (vaga.dataExpiracao < new Date()) {
+          throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
         }
       }
-    }
 
-    if (updateVagaDto.recruiterId) {
-      const recruiter = await this.usuarioService.findOne(
-        updateVagaDto.recruiterId,
-      );
-
-      if (recruiter) {
-        vaga.recrutador = recruiter;
-      } else {
-        throw new NotFoundException('Recrutador não encontrado');
-      }
-    }
-    if (updateVagaDto.setorId) {
-      const sector = await this.setorService.findOneSetor(updateVagaDto.setorId);
-      if (sector) {
-        vaga.setor = sector;
-      } else {
-        throw new NotFoundException('Setor não encontrado');
-      }
-    }
-
-    if (updateVagaDto.tagIds) {
-      vaga.tags = [];
-      for (let i = 0; i < updateVagaDto.tagIds.length; i++) {
-        const tags = await this.tagService.findOneTag(updateVagaDto.tagIds[i]);
-        if (tags) {
-          vaga.tags.push(tags);
-        } else {
-          throw new CustomHttpException(`Tag(s) ${updateVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`, HttpStatus.NOT_FOUND);
+      if (updateVagaDto.candidaturaIds) {
+        vaga.candidatura = [];
+        for (let i = 0; i < updateVagaDto.candidaturaIds.length; i++) {
+          const candidaturas = await this.candidaturaService.findOneCandidatura(updateVagaDto.candidaturaIds[i]);
+          if (candidaturas) {
+            vaga.candidatura.push({ id: candidaturas.id, nomeCompleto: candidaturas.nomeCompleto, email: candidaturas.email, telefone: candidaturas.telefone } as any);
+          } else {
+            throw new CustomHttpException(`Candidato ${updateVagaDto.candidaturaIds[i]} não encontrado. Favor atribuir um candidato válido.`, HttpStatus.NOT_FOUND);
+          }
         }
       }
-    }
 
-    Object.assign(vaga, updateVagaDto);
-    return this.vagasRepository.save(vaga); // UPDATE vagas SET ...
+      if (updateVagaDto.recruiterId) {
+        const recruiter = await this.usuarioService.findOne(
+          updateVagaDto.recruiterId,
+        );
+
+        if (recruiter) {
+          vaga.recrutador = recruiter;
+        } else {
+          throw new NotFoundException('Recrutador não encontrado');
+        }
+      }
+      if (updateVagaDto.setorId) {
+        const sector = await this.setorService.findOneSetor(updateVagaDto.setorId);
+        if (sector) {
+          vaga.setor = sector;
+        } else {
+          throw new NotFoundException('Setor não encontrado');
+        }
+      }
+
+      if (updateVagaDto.tagIds) {
+        vaga.tags = [];
+        for (let i = 0; i < updateVagaDto.tagIds.length; i++) {
+          const tags = await this.tagService.findOneTag(updateVagaDto.tagIds[i]);
+          if (tags) {
+            vaga.tags.push(tags);
+          } else {
+            throw new CustomHttpException(`Tag(s) ${updateVagaDto.tagIds[i]} não encontrada(s). Favor atribuir uma tag válida.`, HttpStatus.NOT_FOUND);
+          }
+        }
+      }
+
+      Object.assign(vaga, updateVagaDto);
+      await this.vagasRepository.save(vaga); // UPDATE vagas SET ...
+
+      return {success: true, code: HttpStatus.OK, message: 'Vaga atualizada com sucesso!'} as SuccessResponseDto;
+    } catch (err) {
+      throw new CustomHttpException(err.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   async deleteVaga(id: number): Promise<void> {

@@ -8,6 +8,7 @@ import { Public } from "src/auth/decorators/public.decorator";
 import { GetUserType } from "src/auth/decorators/auth.decorator";
 import { TipoUsuarioEnum } from "src/model/usuario.entity";
 import { ResponseCountCandidatureDto } from "src/dto/vagas/ResponseCountCandidature.dto";
+import { SuccessResponseDto } from "src/dto/responses/SuccessResponse.dto";
 
 @Controller('vagas')
 export class VagaController {
@@ -46,13 +47,13 @@ export class VagaController {
 
     @Post('/create')
     @AllowUserTypes('Administrador', 'Recursos Humanos')
-    async createVaga(@Body() createVagaDto: CreateVagaDto): Promise<Vaga> {
+    async createVaga(@Body() createVagaDto: CreateVagaDto): Promise<SuccessResponseDto> {
         return this.vagaService.createVaga(createVagaDto);
     }
 
     @Put('/update/:id')
     @AllowUserTypes('Administrador', 'Recursos Humanos')
-    async updateVaga(@Param('id') id: number, @Body() updateVagaDto: UpdateVagaDto): Promise<Vaga> {
+    async updateVaga(@Param('id') id: number, @Body() updateVagaDto: UpdateVagaDto): Promise<SuccessResponseDto> {
         return this.vagaService.updateVaga(id, updateVagaDto);
     }
 
