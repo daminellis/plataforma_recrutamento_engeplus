@@ -22,9 +22,52 @@ export class ResponseLoginDto {
     @IsString()
     access_token: string;
 
-    @ApiProperty({ type: [RoutePermission] })
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => RoutePermission)
-    routes: RoutePermission[];
+    @ApiProperty()
+    @IsNotEmpty()
+    user: {
+        id: number,
+        username: string,
+        nomeCompleto: string,
+        email: string,
+        cargo: string,
+        setor: string,
+        routes: RoutePermission[]
+    };
+    // @ApiProperty()
+    // @IsNotEmpty()
+    // @IsInt()
+    // id: number;
+
+    // @ApiProperty()
+    // @IsNotEmpty()
+    // @IsString()
+    // username: string;
+
+    // @ApiProperty()
+    // @IsString()
+    // @IsNotEmpty()
+    // @Length(4, 100)
+    // nomeCompleto: string;
+
+    // @ApiProperty()
+    // @IsEmail()
+    // @Length(8, 50)
+    // @IsNotEmpty()
+    // email: string;
+
+    // @ApiProperty()
+    // @IsString()
+    // @IsOptional()
+    // cargo: string;
+
+    // @ApiProperty()
+    // @IsString()
+    // @IsOptional()
+    // setor: string;
+
+    // @ApiProperty({ type: [RoutePermission] })
+    // @IsArray()
+    // @ValidateNested({ each: true })
+    // @Type(() => RoutePermission)
+    // routes: RoutePermission[];
 }

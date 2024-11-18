@@ -171,28 +171,35 @@ export class AuthService {
         return {
           success: true,
           access_token: token,
-          routes: routes
-
+          user: {
+            id: user.id,
+            username: user.username,
+            nomeCompleto: user.nomeCompleto,
+            email: user.email,
+            cargo: user.cargo.nome || 'Cargo não cadastrado ou não atribuído',
+            setor: user.setor.nome || 'Setor não cadastrado ou não atribuído',
+            routes: routes
+          }
         } as ResponseLoginDto;
       }
-      return { success: false, access_token: '', routes: [] } as ResponseLoginDto;
+      return { success: false, access_token: '', routes: [] } as unknown as ResponseLoginDto;
     } catch (err) {
       throw new CustomHttpException('Senha ou nome de usuário incorreto, verifique suas credenciais.', HttpStatus.UNAUTHORIZED)
     }
   }
 
   async updateUsuario(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<SuccessResponseDto> {
-    try{
+    try {
 
       const usuario = await this.usuarioService.findOne(id);
       if (!usuario) {
         throw new UnauthorizedException('Usuário não encontrado');
       }
-  
+
       if (updateUsuarioDto.senha) {
         updateUsuarioDto.senha = await this.hashPassword(updateUsuarioDto.senha);
       }
-  
+
       if (updateUsuarioDto.cargoId) {
         const cargo = await this.cargoService.findOne(updateUsuarioDto.cargoId);
         if (cargo) {
@@ -201,7 +208,7 @@ export class AuthService {
           throw new CustomHttpException(`Cargo ${updateUsuarioDto.cargoId} não encontrado. Favor atribuir um cargo válido.`, HttpStatus.BAD_REQUEST);
         }
       }
-  
+
       if (updateUsuarioDto.setorId) {
         const setor = await this.setorService.findOneSetor(updateUsuarioDto.setorId);
         if (setor) {
@@ -210,7 +217,7 @@ export class AuthService {
           throw new CustomHttpException(`Setor ${updateUsuarioDto.setorId} não encontrado. Favor atribuir um setor válido.`, HttpStatus.BAD_REQUEST);
         }
       }
-  
+
       if (updateUsuarioDto.vagaIds) {
         usuario.vagas = [];
         for (let i = 0; i < updateUsuarioDto.vagaIds.length; i++) {
@@ -225,9 +232,9 @@ export class AuthService {
       Object.assign(usuario, updateUsuarioDto);
       await this.usuariosRepository.save(usuario);
 
-      return {success: true, code: HttpStatus.OK, message: 'Usuário atualizado com sucesso' } as SuccessResponseDto;
-      
-    }catch(err){
+      return { success: true, code: HttpStatus.OK, message: 'Usuário atualizado com sucesso' } as SuccessResponseDto;
+
+    } catch (err) {
       throw new CustomHttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
