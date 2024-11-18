@@ -5,38 +5,52 @@ import { Repository } from "typeorm";
 import { CreateCandidaturaTagDto } from "src/dto/candidaturas/candidatura-tag/CreateCandidaturaTag.dto";
 import { UpdateCandidaturaTagDto } from "src/dto/candidaturas/candidatura-tag/UpdateCandidaturatag.dto";
 import { CustomHttpException } from "src/errors/exceptions/custom-exceptions";
+import { SuccessResponseDto } from "src/dto/responses/SuccessResponse.dto";
 
 @Injectable()
 export class CandidaturaTagService {
   constructor(
     @InjectRepository(CandidaturaTag)
     private candidaturaTagRepository: Repository<CandidaturaTag>
-  ) {  
+  ) {
   }
   async findAll(): Promise<CandidaturaTag[]> {
     return this.candidaturaTagRepository.find();
   }
 
   async findOne(id: number): Promise<CandidaturaTag | null> {
-    return this.candidaturaTagRepository.findOneBy({id});
+    return this.candidaturaTagRepository.findOneBy({ id });
   }
 
-  async create(CreateCandidaturaTagDto: CreateCandidaturaTagDto): Promise<CandidaturaTag> {
-    const newCandidaturaTag = this.candidaturaTagRepository.create(CreateCandidaturaTagDto);
-    return this.candidaturaTagRepository.save(newCandidaturaTag);
-  }
+  async create(CreateCandidaturaTagDto: CreateCandidaturaTagDto): Promise<SuccessResponseDto> {
+    try {
+      const newCandidaturaTag = this.candidaturaTagRepository.create(CreateCandidaturaTagDto);
+      await this.candidaturaTagRepository.save(newCandidaturaTag);
 
-  async update(id: number, updateCandidaturaTagDto: UpdateCandidaturaTagDto): Promise<CandidaturaTag> {
-    const candidaturaTagToUpdate = await this.candidaturaTagRepository.findOneBy({id});
-    if (!candidaturaTagToUpdate) {
-      throw new CustomHttpException('CandidaturaTag não encontrada', HttpStatus.NOT_FOUND);
+      return { success: true, code: HttpStatus.CREATED, message: 'Tag para candidatura criada com sucesso' } as SuccessResponseDto;
+
+    } catch (err) {
+      throw new CustomHttpException(err.message, HttpStatus.BAD_REQUEST);
     }
-    Object.assign(candidaturaTagToUpdate, updateCandidaturaTagDto);
-    return this.candidaturaTagRepository.save(candidaturaTagToUpdate);
+  }
+
+  async update(id: number, updateCandidaturaTagDto: UpdateCandidaturaTagDto): Promise<SuccessResponseDto> {
+    try {
+      const candidaturaTagToUpdate = await this.candidaturaTagRepository.findOneBy({ id });
+      if (!candidaturaTagToUpdate) {
+        throw new CustomHttpException('CandidaturaTag não encontrada', HttpStatus.NOT_FOUND);
+      }
+      Object.assign(candidaturaTagToUpdate, updateCandidaturaTagDto);
+      await this.candidaturaTagRepository.save(candidaturaTagToUpdate);
+
+      return { success: true, code: HttpStatus.OK, message: 'Tag para candidatura atualizada com sucesso' } as SuccessResponseDto;
+    } catch (err) {
+      throw new CustomHttpException(err.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   async delete(id: number): Promise<void> {
-    const candidaturaTag = await this.candidaturaTagRepository.findOneBy({id});
+    const candidaturaTag = await this.candidaturaTagRepository.findOneBy({ id });
     if (!candidaturaTag) {
       throw new CustomHttpException('CandidaturaTag não encontrada', HttpStatus.NOT_FOUND);
     }

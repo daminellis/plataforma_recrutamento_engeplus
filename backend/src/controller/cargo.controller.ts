@@ -4,6 +4,7 @@ import { CreateCargoDto } from "src/dto/cargos/CreateCargo.dto";
 import { UpdateCargoDto } from "src/dto/cargos/UpdateCargo.dto";
 import Cargo from "src/model/cargo.entity";
 import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
+import { SuccessResponseDto } from "src/dto/responses/SuccessResponse.dto";
 
 @Controller('cargos')
 @AllowUserTypes('Administrador')
@@ -21,12 +22,12 @@ export class CargoController{
     }
 
     @Post('/create')
-    async create(@Body() createCargoDto: CreateCargoDto): Promise<Cargo>{
+    async create(@Body() createCargoDto: CreateCargoDto): Promise<SuccessResponseDto>{
         return this.cargoService.create(createCargoDto);
     }
 
     @Put('/update/:id')
-    async update(@Param('id') id: number, @Body() updateCargoDto: UpdateCargoDto): Promise<Cargo>{
+    async update(@Param('id') id: number, @Body() updateCargoDto: UpdateCargoDto): Promise<SuccessResponseDto>{
         return this.cargoService.update(id, updateCargoDto);
     }
 

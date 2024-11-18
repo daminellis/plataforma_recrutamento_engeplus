@@ -4,6 +4,7 @@ import { CreateTagDto } from "src/dto/tags/CreateTag.dto";
 import { UpdateTagDto } from "src/dto/tags/UpdateTag.dto";
 import Tag from "src/model/tag.entity";
 import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
+import { SuccessResponseDto } from "src/dto/responses/SuccessResponse.dto";
 
 @Controller('tags')
 @AllowUserTypes('Admininstrador', 'Recursos Humanos')
@@ -21,12 +22,12 @@ export class TagController {
     }
 
     @Post('/create')
-    async create(@Body() createTagDto: CreateTagDto): Promise<Tag> {
+    async create(@Body() createTagDto: CreateTagDto): Promise<SuccessResponseDto> {
         return this.tagService.create(createTagDto);
     }
 
     @Put('/update/:id')
-    async update(@Param('id') id: number, @Body() updateTagDto: UpdateTagDto): Promise<Tag> {
+    async update(@Param('id') id: number, @Body() updateTagDto: UpdateTagDto): Promise<SuccessResponseDto> {
         return this.tagService.update(id, updateTagDto);
     }
 

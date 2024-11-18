@@ -4,6 +4,7 @@ import { CreateCandidaturaTagDto } from "src/dto/candidaturas/candidatura-tag/Cr
 import { UpdateCandidaturaTagDto } from "src/dto/candidaturas/candidatura-tag/UpdateCandidaturatag.dto";
 import { CandidaturaTagService } from "src/service/candidaturatag.service";
 import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
+import { SuccessResponseDto } from "src/dto/responses/SuccessResponse.dto";
 @Controller('candidaturatags')
 @AllowUserTypes('Administrador', 'Recursos Humanos')
 export class CandidaturaTagController {
@@ -20,12 +21,12 @@ export class CandidaturaTagController {
     }
 
     @Post('/create')
-    async create(@Body() createCandidaturaTagDto: CreateCandidaturaTagDto): Promise<CandidaturaTag>{
+    async create(@Body() createCandidaturaTagDto: CreateCandidaturaTagDto): Promise<SuccessResponseDto>{
         return this.candidaturaTagService.create(createCandidaturaTagDto)
     }
 
     @Put('/update')
-    async update(@Param("id") id: number,@Body() updateCandidaturaTagDto:UpdateCandidaturaTagDto): Promise<CandidaturaTag>{
+    async update(@Param("id") id: number,@Body() updateCandidaturaTagDto:UpdateCandidaturaTagDto): Promise<SuccessResponseDto>{
         return this.candidaturaTagService.update(id, updateCandidaturaTagDto)
     }
 

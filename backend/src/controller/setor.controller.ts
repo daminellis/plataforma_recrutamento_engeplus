@@ -5,6 +5,7 @@ import { UpdateSetorDto } from "src/dto/setores/UpdateSetor.dto";
 import Setor from "src/model/setor.entity";
 import { AllowUserTypes } from "src/auth/decorators/AllowedUserTypes.decorator";
 import { Public } from "src/auth/decorators/public.decorator";
+import { SuccessResponseDto } from "src/dto/responses/SuccessResponse.dto";
 
 @Controller('setores')
 export class SetorController{
@@ -24,20 +25,20 @@ export class SetorController{
 
     @Post('/create')
     @AllowUserTypes('Administrador')
-    async createSetor(@Body() createSetorDto: CreateSetorDto): Promise<Setor>{
-        return await this.setorService.createSetor(createSetorDto);
+    async create(@Body() createSetorDto: CreateSetorDto): Promise<SuccessResponseDto>{
+        return await this.setorService.create(createSetorDto);
     }
 
     @Put('/update/:id')
     @AllowUserTypes('Administrador')
-    async updateSetor(@Param('id') id: number, @Body() updateSetorDto: UpdateSetorDto): Promise<Setor>{
-        return await this.setorService.updateSetor(id, updateSetorDto);
+    async update(@Param('id') id: number, @Body() updateSetorDto: UpdateSetorDto): Promise<SuccessResponseDto>{
+        return await this.setorService.update(id, updateSetorDto);
     }
 
     @Delete('/delete/:id')
     @AllowUserTypes('Administrador')
-    async deleteSetor(@Param('id') id: number): Promise<void>{
-        return await this.setorService.deleteSetor(id);
+    async delete(@Param('id') id: number): Promise<void>{
+        return await this.setorService.delete(id);
     }
 
 };
