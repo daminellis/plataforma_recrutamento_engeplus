@@ -206,7 +206,7 @@ export class VagaService {
       } as SuccessResponseDto;
 
     } catch (err) {
-      throw new CustomHttpException('Erro ao criar vaga', HttpStatus.BAD_REQUEST);
+      throw new CustomHttpException(err.message, HttpStatus.BAD_REQUEST);
     }
 
   }
