@@ -43,6 +43,11 @@ export class ResponseCountCandidatureDto {
     dataPostagem: Timestamp;
 
     @ApiProperty()
+    @IsNotEmpty()
+    @Type(() => Date)
+    dataExpiracao: Date;
+
+    @ApiProperty()
     @IsBoolean()
     disponivel: boolean;
 
