@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+ol {
+  margin-left: 50px;
+}
+
+ul {
+  margin-left: 50px;
+}
+
+ol li {
+  list-style: decimal;
+}
+
+ul li {
+  list-style: disc;
+}
+
 .rsw-ce ul {
   list-style: disc;
   padding-left: 2em;

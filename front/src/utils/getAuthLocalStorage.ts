@@ -17,7 +17,6 @@ export const getUserInfos = (): UserType | null => {
 
 const getData = (key: string) => {
   if (typeof window === "undefined") {
-    // Estamos no lado do servidor
     return null;
   }
 

@@ -31,9 +31,10 @@ export const SelectLabel = ({
         className={`outline-indigo-500 w-full border border-gray-300 rounded-md p-2.5 mt-1 text-gray-600 ${
           inputClassName ? inputClassName : ""
         }`}
+        defaultValue={""}
         {...props}
       >
-        <option value="" disabled selected>
+        <option value="" disabled>
           Selecione...
         </option>
 

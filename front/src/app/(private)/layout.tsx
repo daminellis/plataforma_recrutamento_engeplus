@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import Link from "next/link";
 import Image from "next/image";
+import { cookies } from "next/headers";
 import { AppButton } from "@/components/ui/button/AppButton";
 import { Profile } from "./components/Profile";
 import { NavLinkPrivate } from "./components/nav/NavLinkPrivate";
@@ -13,6 +14,7 @@ import {
   PlusIcon,
 } from "@radix-ui/react-icons";
 import { NavLoggout } from "./components/nav/NavLoggout";
+import { UserType } from "@/types/Auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,12 +24,18 @@ export const metadata: Metadata = {
   robots: "noindex, nofollow",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const iconClass = "size-5";
+
+  const cookieStore = await cookies();
+  const userData = JSON.parse(
+    cookieStore.get("user")?.value || "{}"
+  ) as UserType;
+
   return (
     <html lang="pt-br">
       <body className={inter.className + " h-screen w-screen flex flex-col"}>
@@ -43,9 +51,12 @@ export default function RootLayout({
             </Link>
 
             <div className="flex items-center gap-5">
-              <AppButton color="outline" href="/admin/add-vaga">
-                Adicionar vaga
-              </AppButton>
+              {userData.routes.find((route) => route.route === "/auth/register")
+                ?.hasAccess && (
+                <AppButton color="outline" href="/admin/add-vaga">
+                  Criar usuário
+                </AppButton>
+              )}
               <Profile />
             </div>
           </div>
@@ -69,11 +80,14 @@ export default function RootLayout({
                 Conta
               </NavLinkPrivate>
 
-              <NavLinkPrivate href="add-vaga">
-                {" "}
-                <PlusIcon className={iconClass} />
-                Adicionar vaga
-              </NavLinkPrivate>
+              {userData.routes.find((route) => route.route === "/vagas/create")
+                ?.hasAccess && (
+                <NavLinkPrivate href="add-vaga">
+                  {" "}
+                  <PlusIcon className={iconClass} />
+                  Adicionar vaga
+                </NavLinkPrivate>
+              )}
 
               <NavLinkPrivate href="vagas">
                 {" "}

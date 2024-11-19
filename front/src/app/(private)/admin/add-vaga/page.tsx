@@ -21,16 +21,15 @@ type EnumType = {
 
 export default async function AddVagaPage() {
   const apiInstance = await apiAuth();
-  const dataTags = (await apiInstance.get<TagType[]>("candidaturatags/all"))
-    .data;
+  const dataTags = (await apiInstance.get<TagType[]>("tags/all")).data;
 
   const dataSectors = (await apiInstance.get<SectorType[]>("setores/all")).data;
   const dataEnums = (await apiInstance.get<EnumType>("vagas/enums")).data;
 
   function formatEnums(dataEnums: Record<string, any>) {
-    const enums = Object.keys(dataEnums).map((key) => {
+    const enums = Object.keys(dataEnums).map((key, i) => {
       return {
-        id: Object.keys(dataEnums).length + 1,
+        id: i,
         nome: dataEnums[key],
       };
     });
@@ -140,6 +139,7 @@ export default async function AddVagaPage() {
             idAndName="numeroVagas"
             label="Número de vagas"
             type="number"
+            min={1}
             defaultValue={1}
             className="flex-1"
             required

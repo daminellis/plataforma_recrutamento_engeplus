@@ -60,10 +60,13 @@ export default async function JobPage({ params }: JobPageProps) {
       <section className="flex mt-5 gap-10 max-md:flex-col-reverse">
         <article className="md:flex-1 md:min-w-80 max-md:min-h-80">
           <h2 className="font-medium text-lg">Descrição da vaga</h2>
-          <p className="text-base text-gray-500">{jobData.descricao}</p>
+          <div
+            className="text-base text-gray-500"
+            dangerouslySetInnerHTML={{ __html: jobData.descricao }}
+          ></div>
 
           <h2 className="font-medium text-lg mt-8">Responsabilidades</h2>
-          <ul className="list-disc list-inside ml-2">
+          <ul>
             {jobData.responsabilidades.map((responsability, i) => (
               <li key={i}>{responsability}</li>
             ))}
