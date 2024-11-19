@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import Vaga from "src/model/vaga.entity";
 import { VagaController } from "../controller/vaga.controller";
@@ -8,7 +8,7 @@ import { SetorModule } from "./setor.module";
 import { CandidaturaModule } from "./candidatura.module";
 import { TagModule } from "./tag.module";
 @Module({
-    imports: [TypeOrmModule.forFeature([Vaga]), UsuarioModule, SetorModule, CandidaturaModule,TagModule],
+    imports: [TypeOrmModule.forFeature([Vaga]), UsuarioModule, SetorModule, forwardRef(()=>CandidaturaModule), TagModule],
     providers: [VagaService],
     controllers: [VagaController],
     exports: [VagaService]

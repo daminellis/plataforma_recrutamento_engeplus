@@ -15,7 +15,7 @@ import { UserTypeGuard } from './guards/UserTypeGuard.guard';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Usuario]), UsuarioModule, SetorModule, VagaModule, CargoModule, CandidaturaModule,
+  imports: [TypeOrmModule.forFeature([Usuario]), UsuarioModule, SetorModule, CargoModule,
   JwtModule.register({
     global: true,
     secret: jwtConstants.secret,

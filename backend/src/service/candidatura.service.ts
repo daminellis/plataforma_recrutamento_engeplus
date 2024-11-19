@@ -20,7 +20,7 @@ export class CandidaturaService {
         private candidaturaRepository: Repository<Candidatura>,
         private candidaturaTagService: CandidaturaTagService,
         private emailService: EmailService,
-        @Inject(forwardRef(() => VagaService)) private readonly vagaService: VagaService
+        private vagaService: VagaService
     ) { }
 
     async getEnum(): Promise<{ statusCandidatura: typeof StatusCandidatura }> {

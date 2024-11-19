@@ -14,8 +14,6 @@ import { ResponseLoginDto } from 'src/dto/autenticacao/ResponseLogin.dto';
 import { CargoService } from 'src/service/cargo.service';
 import { CustomHttpException } from '../errors/exceptions/custom-exceptions';
 import { SuccessResponseDto } from 'src/dto/responses/SuccessResponse.dto';
-import { R } from '@faker-js/faker/dist/airline-BLb3y-7w';
-import { ErrorResponseDto } from 'src/errors/dto/ErrorResponse.dto';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +24,6 @@ export class AuthService {
     private usuariosRepository: Repository<Usuario>,
     private usuarioService: UsuarioService,
     private setorService: SetorService,
-    private vagaService: VagaService,
     private cargoService: CargoService,
     private jwtService: JwtService
   ) { }
@@ -218,17 +215,6 @@ export class AuthService {
         }
       }
 
-      if (updateUsuarioDto.vagaIds) {
-        usuario.vagas = [];
-        for (let i = 0; i < updateUsuarioDto.vagaIds.length; i++) {
-          const vaga = await this.vagaService.findOneVaga(updateUsuarioDto.vagaIds[i]);
-          if (vaga) {
-            usuario.vagas.push(vaga);
-          } else {
-            throw new CustomHttpException(`Vaga ${updateUsuarioDto.vagaIds[i]} não encontrada. Favor atribuir uma vaga válida.`, HttpStatus.BAD_REQUEST);
-          }
-        }
-      }
       Object.assign(usuario, updateUsuarioDto);
       await this.usuariosRepository.save(usuario);
 

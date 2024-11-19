@@ -9,7 +9,7 @@ import { CandidaturaTagModule } from "./candidaturatag.module";
 import { EmailModule } from "src/email/email.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Candidatura]), FastifyMulterModule, forwardRef(()=>VagaModule), CandidaturaTagModule, EmailModule],
+    imports: [TypeOrmModule.forFeature([Candidatura]), FastifyMulterModule,VagaModule, CandidaturaTagModule, EmailModule],
     controllers: [CandidaturaController],
     providers: [CandidaturaService],
     exports: [CandidaturaService]

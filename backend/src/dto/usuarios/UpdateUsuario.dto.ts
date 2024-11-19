@@ -41,11 +41,6 @@ export class UpdateUsuarioDto {
   @IsNumber()
   setorId?: number;
 
-  @ApiProperty({ type: [Number] })
-  @IsOptional()
-  @IsArray()
-  vagaIds?: number[];
-
   @ApiProperty()
   @IsOptional()
   @IsEnum(TipoUsuarioEnum)
