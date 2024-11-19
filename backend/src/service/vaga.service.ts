@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { isValid } from 'date-fns';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThanOrEqual, Repository } from 'typeorm';
 import { CreateVagaDto } from '../dto/vagas/CreateVaga.dto';
 import { UpdateVagaDto } from '../dto/vagas/UpdateVaga.dto';
 import Vaga from '../model/vaga.entity';
@@ -18,6 +18,7 @@ import { UsuarioService } from './usuario.service';
 import { TagService } from './tag.service';
 import { CustomHttpException } from 'src/errors/exceptions/custom-exceptions';
 import { ResponseCountCandidatureDto } from 'src/dto/vagas/ResponseCountCandidature.dto';
+import { Cron } from '@nestjs/schedule';
 
 import { TempoDeExperiencia, NivelDeEducacao, NivelDeExperiencia, Modalidade } from '../model/vaga.entity';
 import { SuccessResponseDto } from 'src/dto/responses/SuccessResponse.dto';
@@ -163,18 +164,39 @@ export class VagaService {
       if (!vaga) {
         throw new NotFoundException('Vaga não encontrada');
       }
-  
+
       vaga.disponivel = false;
       await this.vagasRepository.save(vaga);
-  
+
       return {
         success: true,
         code: HttpStatus.OK,
         message: 'Marcada como expirada com sucesso',
       } as SuccessResponseDto;
-  
+
     } catch (err) {
       throw new CustomHttpException(err.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Cron('0 0 3 * * *', {
+    name: 'Verificador de expiração das vagas',
+    timeZone: 'Greenwich',
+  })
+  async verifyExpirationDate(): Promise<void> {
+    const currentDate= new Date()
+    const vagasExpiradas= await this.vagasRepository.find({
+      where: {
+        dataExpiracao: LessThanOrEqual(currentDate),
+        disponivel: true,
+      },
+    })
+
+    if ( vagasExpiradas.length > 0) {
+      for (const vaga of vagasExpiradas) {
+        vaga.disponivel = false;
+        await this.vagasRepository.save(vaga);
+      }
     }
   }
 
@@ -305,7 +327,7 @@ export class VagaService {
       Object.assign(vaga, updateVagaDto);
       await this.vagasRepository.save(vaga); // UPDATE vagas SET ...
 
-      return {success: true, code: HttpStatus.OK, message: 'Vaga atualizada com sucesso!'} as SuccessResponseDto;
+      return { success: true, code: HttpStatus.OK, message: 'Vaga atualizada com sucesso!' } as SuccessResponseDto;
     } catch (err) {
       throw new CustomHttpException(err.message, HttpStatus.BAD_REQUEST);
     }

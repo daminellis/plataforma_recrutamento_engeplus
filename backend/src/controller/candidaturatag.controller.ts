@@ -25,12 +25,12 @@ export class CandidaturaTagController {
         return this.candidaturaTagService.create(createCandidaturaTagDto)
     }
 
-    @Put('/update')
+    @Put('/update/:id')
     async update(@Param("id") id: number,@Body() updateCandidaturaTagDto:UpdateCandidaturaTagDto): Promise<SuccessResponseDto>{
         return this.candidaturaTagService.update(id, updateCandidaturaTagDto)
     }
 
-    @Delete('/delete')
+    @Delete('/delete/:id')
     async delete(@Param('id') id: number): Promise<void>{
         return this.candidaturaTagService.delete(id)
     }
