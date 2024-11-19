@@ -4,6 +4,9 @@ import { CardDash } from "./components/CardDash";
 import { Badge, WorkRounded } from "@mui/icons-material";
 import { apiAuth } from "@/service/axiosAuth";
 import { JobPrivateType } from "@/types/Job";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { AppButton } from "@/components/ui/button/AppButton";
+import { JobTable } from "../../components/ui/JobTable";
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
@@ -12,8 +15,9 @@ export default async function DashboardPage() {
   ) as UserType;
 
   const axiosInstance = await apiAuth();
-  const dashData = (await axiosInstance.get("vagas/all-private"))
-    .data as JobPrivateType[];
+  const dashData = (
+    await axiosInstance.get<JobPrivateType[]>("vagas/all-private")
+  ).data;
 
   let numberOfCandidates = 0;
 
@@ -45,6 +49,17 @@ export default async function DashboardPage() {
           subText="Candidatos salvos"
         />
       </div>
+
+      <div className="flex items-center justify-between mt-16">
+        <h1 className="font-bold">Vagas postadas recentemente</h1>
+
+        <AppButton color="transparent" href="vagas">
+          Ver tudo
+          <ArrowRightIcon />
+        </AppButton>
+      </div>
+
+      <JobTable data={dashData.slice(0, 5)} />
     </>
   );
 }

@@ -13,7 +13,7 @@ export const formatUrlToText = (text: string, textLower?: boolean): string => {
       : words.join(" ");
   }
 
-  return itemLink;
+  return decodeURIComponent(itemLink);
 };
 
 export const formatTextToUrl = (text: string): string => {

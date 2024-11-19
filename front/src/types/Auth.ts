@@ -10,6 +10,12 @@ export type UserType = {
   email: string;
   setor: string;
   cargo: string;
+  routes: Permissions[];
+};
+
+type Permissions = {
+  hasAccess: boolean;
+  route: string;
 };
 
 export type LocalStorageToken = {

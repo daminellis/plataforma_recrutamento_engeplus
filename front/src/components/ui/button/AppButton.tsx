@@ -13,6 +13,7 @@ const buttonClass = tv({
         "bg-blue-500/20 hover:bg-blue-600 text-blue-500 hover:text-white",
       outline: "border border-blue-500 text-blue-500 hover:bg-blue-500/20",
       grayOutline: "border border-gray-400 text-gray-400 hover:bg-gray-400/20",
+      transparent: "text-gray-500 hover:bg-black/5",
     },
     size: {
       sm: "py-2 px-4",

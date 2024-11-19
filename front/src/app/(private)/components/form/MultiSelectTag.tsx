@@ -39,7 +39,7 @@ const MenuProps = {
 export const MultiSelectTag = (props: MultiSelectTagProps) => {
   const [data, setData] = useState(props.data);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<number[]>([]);
   const [viewAddModal, setViewAddModal] = useState<boolean>(false);
   const [newTag, setNewTag] = useState({
     id: data.length + 1,
@@ -51,11 +51,12 @@ export const MultiSelectTag = (props: MultiSelectTagProps) => {
     const {
       target: { value },
     } = event;
-    setSelected(typeof value === "string" ? value.split(", ") : value);
+    setSelected(
+      typeof value === "string" ? value.split(", ").map(Number) : value
+    );
   };
 
   const handleAddTag = async () => {
-    debugger;
     setIsLoading(true);
     await apiClientInstace()
       .post(props.routeAdd, newTag)
@@ -90,7 +91,12 @@ export const MultiSelectTag = (props: MultiSelectTagProps) => {
               return <span className="text-gray-400">{props.placeholder}</span>;
             }
 
-            return selected.join(", ");
+            return selected
+              .map((tag) => {
+                const item = data.find((item) => item.id === tag);
+                return item?.nome;
+              })
+              .join(", ");
           }}
           className="h-10 mt-1"
           MenuProps={MenuProps}
@@ -101,14 +107,14 @@ export const MultiSelectTag = (props: MultiSelectTagProps) => {
           {data.map((item) => (
             <MenuItem
               key={item.id}
-              value={item.nome}
+              value={item.id}
               style={{
                 backgroundColor: `${item.corTag}33`,
                 color: item.corTag,
               }}
             >
               <Checkbox
-                checked={selected.includes(item.nome)}
+                checked={selected.includes(item.id)}
                 sx={{
                   color: item.corTag,
                   "&.Mui-checked": {
