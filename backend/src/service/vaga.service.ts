@@ -210,7 +210,7 @@ export class VagaService {
         if (!isValid(formattedDate)) {
           throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
         }
-        newVaga.dataExpiracao = formattedDate;
+        newVaga.dataExpiracao = new Date(formattedDate.toISOString());
         if (newVaga.dataExpiracao < new Date()) {
           throw new CustomHttpException('Data de expiração inválida', HttpStatus.BAD_REQUEST);
         }
