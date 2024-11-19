@@ -12,11 +12,11 @@ import { SuccessResponseDto } from "src/dto/responses/SuccessResponse.dto";
 
 @Controller('vagas')
 export class VagaController {
-    constructor(private vagaService: VagaService) {}
+    constructor(private vagaService: VagaService) { }
 
     @Get('/enums')
     @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
-    async findVagaEnums(): Promise<{tempoDeExperiencia: typeof TempoDeExperiencia, nivelDeEducacao: typeof NivelDeEducacao, nivelDeExperiencia: typeof NivelDeExperiencia, modalidade: typeof Modalidade}>{
+    async findVagaEnums(): Promise<{ tempoDeExperiencia: typeof TempoDeExperiencia, nivelDeEducacao: typeof NivelDeEducacao, nivelDeExperiencia: typeof NivelDeExperiencia, modalidade: typeof Modalidade }> {
         return this.vagaService.getEnums()
     }
 
@@ -29,10 +29,10 @@ export class VagaController {
     @Get('/all-private')
     @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
     async findAllPrivate(@GetUserType('Líder') userType: TipoUsuarioEnum): Promise<ResponseCountCandidatureDto[]> {
-        const allVagas= await this.vagaService.findAllPrivateVagas()
-    
-        if (userType === 'Líder') {	
-            const candidaturaPorLiderVagas= await this.vagaService.findAllPrivateVagasByLider()
+        const allVagas = await this.vagaService.findAllPrivateVagas()
+
+        if (userType === 'Líder') {
+            const candidaturaPorLiderVagas = await this.vagaService.findAllPrivateVagasByLider()
             return candidaturaPorLiderVagas;
         }
 
@@ -43,6 +43,12 @@ export class VagaController {
     @Public()
     async findOne(@Param('id') id: number): Promise<Vaga | null> {
         return this.vagaService.findOneVaga(id);
+    }
+
+    @Post(':id/expirar')
+    @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
+    async markAsExpired(@Param('id') id: number): Promise<SuccessResponseDto> {
+        return this.vagaService.markAsExpired(id);
     }
 
     @Post('/create')

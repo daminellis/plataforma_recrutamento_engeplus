@@ -152,9 +152,28 @@ export class VagaService {
       }
     });
 
-
-
     return candidateCounter;
+  }
+
+  async markAsExpired(id: number): Promise<SuccessResponseDto> {
+    try {
+      const vaga = await this.vagasRepository.findOneBy({ id });
+      if (!vaga) {
+        throw new NotFoundException('Vaga não encontrada');
+      }
+  
+      vaga.disponivel = false;
+      await this.vagasRepository.save(vaga);
+  
+      return {
+        success: true,
+        code: HttpStatus.OK,
+        message: 'Marcada como expirada com sucesso',
+      } as SuccessResponseDto;
+  
+    } catch (err) {
+      throw new CustomHttpException(err.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   //Cria uma vaga
