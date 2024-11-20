@@ -5,13 +5,16 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { EmailModule } from './email/email.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    DatabaseModule, AuthModule, EmailModule],
+    ScheduleModule.forRoot(),
+    DatabaseModule, AuthModule, EmailModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
