@@ -69,7 +69,7 @@ export class CreateVagaDto {
   @ApiProperty()
   @IsNotEmpty()
   @Type(() => Date)
-  dataExpiracao: Date;
+  dataExpiracao: string;
 
   @ApiProperty()
   @IsNotEmpty()
