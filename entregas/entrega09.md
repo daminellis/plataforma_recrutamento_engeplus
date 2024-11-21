@@ -48,11 +48,12 @@ O projeto foi aprovado pelos gestores e desenvolvedores.
 ## Desafios e Dificuldades
 
 Descrever os principais desafios e dificuldades encontrados durante o desenvolvimento e implantação do projeto. Isso deve incluir também possíveis conflitos com a equipe e/ou com a entidade em relação à parte técnica.
+
 1. Falta de entendimento na hora que começamos a gerar o projeto, tivemos uma certa dificuldade em alinhar as ideias.
 
 2. Algumas ideias ainda assim tivemos dificuldade, o front solicitava alguma função e acabava recebendo algo que não queria, o que gerava um desgaste nos dois lados que precisavam modificar os dados por conta do conflito.
 
-3. A funcionalidade de authenticação por cookies foi algo que precisou ser estudado e não era dominado por ninguém do grupo, o que foi uma grande dificuldade para fazer.
+3. A funcionalidade de authenticação por cookies foi algo que precisou ser estudado e não era dominado por ninguém do grupo, o que foi uma grande dificuldade para fazer e ocupou grande tempo do trabalho.
 
 
 ## Evidências do desenvolvimento e implantação

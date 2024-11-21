@@ -4,20 +4,32 @@ O Registro de Entidade e Projeto é um documento que deve descrever de maneira s
 
 ## Descrição completa da entidade selecionada
 
-- Empresa Engeplus Telecom & Data Center 
+- entidade Engeplus Telecom & Data Center 
 - R. Urussanga, 417 - Centro, Criciúma - SC, 88810-216
 - Numero total de beneficiários (Levando em base que quem irá se beneficiar são pessoas procurando emprego e o RH em ter todos os dados e requisições em um local, e as pessoas que procuram vagas dentro do portal do RH Engeplus ( RH:2 pessoas Pessoas procurando emprego: média por mes de 10 currículos enviados) ) 
 - As principais atividades são em proveção de internet e notícias 
 
 ## Objetivo do projeto com a entidade
 
-O maior problema que a empresa estava passando era sobre não conseguir mostrar claramente as vagas que estavam sendo abertas dentro da empresa, a divulgação era feita juntamente com o site de notícias da própria empresa, o que acabava tirando o foco das vagas, com um site somente para gerenciamento de vagas e solicitações de emprego. 
+O maior problema que a entidade estava passando era sobre não conseguir mostrar claramente as vagas que estavam sendo abertas dentro da entidade, a divulgação era feita juntamente com o site de notícias da própria entidade, o que acabava tirando o foco das vagas, com um site somente para gerenciamento de vagas e solicitações de emprego. 
 
 ## Registro de reuniões
-
-- nota: um de nossos integrantes trabalha na empresa, então muitas vezes ele entrava em contato diretamente com a empresa presencialmente para tirar dúvidas.
-- 1 Primeira reunião dia()
 Lista completa de reuniões realizadas com a entidade. Isso pode incluir conversas de whatsapp ou contatos por email que evidenciem a interação com a entidade. Para cada reunião, incluir data, os objetivos e as definições obtidas.
+
+- nota: um de nossos integrantes trabalha na entidade, então muitas vezes ele entrava em contato diretamente com a entidade presencialmente para tirar dúvidas.
+
+- 1 Primeira reunião dia(16/08/24)
+Reunião com a entidade para solicitar a permissão da entidade para utilizar a mesma para realizar o projeto e também, verificar as dores da entidade e como 
+poderíamos ajudar esta dor. (solicitaram duas semanas para enviar a resposta)
+
+- 2 Segunda reunião dia(30/08/24)
+Reunião para verificar se poderíamos estar colocando o projeto em prática.(Recebemos permissão.)
+
+- 3 Terceira reunião dia(07/09/24)
+Reunião feita para alinhar todas as dores e meios de fazer o que o cliente necessitava, retirar duvidas de frameworks que gostariam que fosse utilizado e linguagens que gostariam que fosse utilizada(Decidimos utilizar typescript por conta da facilidade de entendimento por outros desenvolvedores e nest para backend para facilitar a migração dos dados)
+
+- 4 Quarta reunião dia(19/11/24)
+Reunião feita para mostar como ficou o projeto e para realizar a entrega do software. Reunião com dois dos alunos presentes e um no meio online, um dos alunos não pode comparecer por motivos pessoais. (o projeto foi aprovado pela entidade e será enviado aos densenvolvedores o código bruto para poderem modificar a gosto modo)
 
 ## Relatório de Entrega
 
