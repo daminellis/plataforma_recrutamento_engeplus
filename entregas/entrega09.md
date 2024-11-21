@@ -37,7 +37,13 @@ Banco de dados
 
 ## Instalação do Sofware
 
-Detalhar todo processo técnico de instalação do software e como foi realizado na entidade.
+A implantação do projeto funcionou da seguinte maneira:
+Primeiramente marcamos uma data com nosso beneficiado(19/11/24), combinamos de fazer uma entrega do projeto e tutorial de como utilizar o mesmo.
+Após chegarmos na empresa, nos direcionamos a uma sala de reuniões com alguns dos colaboradores (Analista de sistemas da empresa, Gerente de produção e RH)
+Primeiramente, mostramos todas as funcionalidades do projeto na íntegra, funcionando em frente aos colaboradores da empresa.
+Após isto, partimos para um meio mais técnico, mostramos quais as tecnologias utilizadas e métodos utilizados, segurança e banco de dados.
+A instalação em ambiente funcional para público não será feita pelo grupo, por conta de ser um produto de alto risco, porém, irá ser entregue o mais polido possível para que a integração seja a mais simples possível para o órgão colaborado.
+O projeto foi aprovado pelos gestores e desenvolvedores.
 
 ## Desafios e Dificuldades
 
@@ -48,7 +54,7 @@ Descrever os principais desafios e dificuldades encontrados durante o desenvolvi
 
 3. A funcionalidade de authenticação por cookies foi algo que precisou ser estudado e não era dominado por ninguém do grupo, o que foi uma grande dificuldade para fazer.
 
-4. 
+
 ## Evidências do desenvolvimento e implantação
 
 Capturas de tela do sistema desenvolvido e do ambiente de desenvolvimento. Testes realizados e feedback da entidade durante o processo de implantação.
