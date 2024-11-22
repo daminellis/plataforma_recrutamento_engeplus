@@ -11,8 +11,5 @@ export class Tag {
 
     @Column({type: 'varchar', name: 'cor_tag', length: 7})
     corTag: string
-
-    // @ManyToMany(() => Vaga, vaga => vaga.tags)
-    // vagas: Vaga[];
 }
 export default Tag;

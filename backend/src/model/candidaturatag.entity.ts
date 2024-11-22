@@ -11,8 +11,5 @@ export class CandidaturaTag {
 
     @Column({type: 'varchar', name: 'cor_tag', length: 7})
     corTag: string
-
-    @OneToMany(() => Candidatura, candidatura => candidatura.id)
-    candidaturas: Candidatura[];
 }
 export default CandidaturaTag;

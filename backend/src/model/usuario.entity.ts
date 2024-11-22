@@ -1,7 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Cargo } from './cargo.entity';
 import { Setor } from './setor.entity';
-// import { Vaga } from './vaga.entity';
 
 export enum TipoUsuarioEnum {
   ADMIN = 'Administrador',
@@ -34,8 +33,5 @@ export class Usuario {
 
   @ManyToOne(() => Setor, setor => setor.id)
   setor: Setor;
-
-  // @OneToMany(() => Vaga, vaga => vaga.recrutador)
-  // vagas: Vaga[];
 }
 export default Usuario;

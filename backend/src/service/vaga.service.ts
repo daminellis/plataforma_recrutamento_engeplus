@@ -2,6 +2,8 @@ import {
   Injectable,
   NotFoundException,
   HttpStatus,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { isValid } from 'date-fns';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -26,7 +28,7 @@ export class VagaService {
     private usuarioService: UsuarioService,
     private setorService: SetorService,
     private tagService: TagService,
-    private candidaturaService: CandidaturaService,
+    @Inject(forwardRef(() => CandidaturaService)) private candidaturaService: CandidaturaService,
   ) {
   }
 

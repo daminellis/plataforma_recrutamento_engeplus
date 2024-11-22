@@ -9,11 +9,5 @@ export class Setor {
 
     @Column({type: 'varchar', length: 50, name: 'nome', unique: true, nullable: false})
     nome: string;
-
-    // @OneToMany(() => Usuario, usuario => usuario.setor)
-    // usuarios: Usuario[];
-
-    // @OneToMany(() => Vaga, vaga => vaga.setor)
-    // vagas: Vaga[];
 }
 export default Setor;
