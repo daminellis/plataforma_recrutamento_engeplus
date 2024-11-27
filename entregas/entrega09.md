@@ -73,6 +73,7 @@ Os modelos de dados são organizados para otimizar consultas e escalabilidade, c
 
 ## Diagrama de Arquitetura
 
+```plaintext
 +-------------+         +----------------+         +-----------------+
 |             |         |                |         |                 |
 |  Front-End  |<------->|   Back-End     |<------->|   Banco de Dados|
@@ -86,6 +87,7 @@ Os modelos de dados são organizados para otimizar consultas e escalabilidade, c
        |                          |                           |
        +-------------------------------------------------------+
                             Interação do Sistema
+
 
 ## Instalação do Sofware
 
