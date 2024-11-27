@@ -12,7 +12,6 @@ import { Setor } from './setor.entity';
 import { Usuario } from './usuario.entity';
 import { Candidatura } from './candidatura.entity';
 import { Tag } from './tag.entity';
-import BancoTalentos from './bancotalentos.entity';
 
 export enum NivelDeEducacao {
   ENSINO_MEDIO = 'Ensino Médio',
@@ -99,9 +98,6 @@ export class Vaga {
 
   @OneToMany(() => Candidatura, (candidatura) => candidatura.vaga)
   candidatura: Candidatura[];
-
-  @OneToMany(() => BancoTalentos, (bancoTalentos) => bancoTalentos.vaga)
-  bancoTalentos: BancoTalentos[];
 
   @ManyToMany(() => Tag, (tag) => tag.vagas)
   @JoinTable({

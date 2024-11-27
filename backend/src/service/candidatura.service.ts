@@ -1,4 +1,4 @@
-import {HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
+import { HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Candidatura } from "../model/candidatura.entity";
@@ -11,6 +11,8 @@ import { EmailService } from "src/email/email.service";
 import { SendEmailDto } from "src/dto/emails/SendEmail.dto";
 import { StatusCandidatura } from "../model/candidatura.entity";
 import { SuccessResponseDto } from "src/dto/responses/SuccessResponse.dto";
+import { CreateTalentoDto } from "src/dto/bancotalentos/CreateTalento.dto";
+import { BancoTalentosService } from "./bancotalentos.service";
 
 @Injectable()
 export class CandidaturaService {
@@ -19,6 +21,7 @@ export class CandidaturaService {
         @InjectRepository(Candidatura)
         private candidaturaRepository: Repository<Candidatura>,
         private candidaturaTagService: CandidaturaTagService,
+        private bancoTalentosService: BancoTalentosService,
         private emailService: EmailService,
         private vagaService: VagaService
     ) { }
@@ -101,13 +104,13 @@ export class CandidaturaService {
             }
 
             if (updateCandidaturaDto.status) {
-                if (updateCandidaturaDto.status === 'Aprovado') {
+                if (updateCandidaturaDto.status === StatusCandidatura.APROVADO) {
                     this.sendEmailDto = {
                         email: candidatura.email,
                         nomeCompleto: candidatura.nomeCompleto
                     }
                     this.emailService.sendApprovedEmail(this.sendEmailDto);
-                } else if (updateCandidaturaDto.status === 'Reprovado') {
+                } else if (updateCandidaturaDto.status === StatusCandidatura.REPROVADO) {
                     this.sendEmailDto = {
                         email: candidatura.email,
                         nomeCompleto: candidatura.nomeCompleto
@@ -120,7 +123,7 @@ export class CandidaturaService {
             await this.candidaturaRepository.save(candidatura);
 
             return { success: true, code: HttpStatus.OK, message: "Candidatura atualizada com sucesso!" } as SuccessResponseDto;
-            
+
         } catch (err) {
             throw new CustomHttpException(err.message, HttpStatus.BAD_REQUEST);
         }
@@ -132,5 +135,88 @@ export class CandidaturaService {
             throw new NotFoundException('Candidatura não encontrada');
         }
         await this.candidaturaRepository.delete(id);
+    }
+
+
+    //Aprovação e reprovação de candidaturas
+
+    async approveCandidatura(id: number): Promise<SuccessResponseDto> {
+        try {
+            // Vereificar se a candidatura existe
+            const candidatura = await this.findOneCandidatura(id);
+
+            if (!candidatura) {
+                throw new CustomHttpException(`Candidatura com id ${id} não encontrada!`, HttpStatus.NOT_FOUND);
+            }
+
+            // Atualizar o status da candidatura e envia o email de aprovação
+            await this.update(id, { status: StatusCandidatura.APROVADO });
+
+            //Seleciona a vaga da candidatura
+            const vaga = candidatura.vaga;
+
+            if (!vaga) {
+                throw new CustomHttpException('Vaga não encontrada', HttpStatus.NOT_FOUND);
+            }
+            //Atualiza a vaga para indisponível
+            await this.vagaService.updateVaga(vaga.id, { disponivel: false });
+
+            //Remove o candidato da lista da vaga
+            await this.vagaService.removeCandidatura(vaga.id, id);
+
+            //Remover a candidatura da lista de candidaturas 
+            await this.delete(id);
+
+            return { success: true, code: HttpStatus.OK, message: "Candidato aprovado!" } as SuccessResponseDto;
+        } catch (err) {
+            throw new CustomHttpException(err.message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    async disapproveCandidatura(id: number): Promise<SuccessResponseDto> {
+        try {
+            // Verificar se a candidatura existe
+            const candidatura = await this.findOneCandidatura(id);
+
+            if (!candidatura) {
+                throw new CustomHttpException(`Candidatura com id ${id} não encontrada!`, HttpStatus.NOT_FOUND);
+            }
+
+            // Atualizar o status da candidatura e envia o email de aprovação
+            await this.update(id, { status: StatusCandidatura.REPROVADO });
+
+            // Seleciona a vaga associada à candidatura
+            const vaga = candidatura.vaga;
+
+            if (!vaga) {
+                throw new CustomHttpException('Vaga não encontrada', HttpStatus.NOT_FOUND);
+            }
+
+            //Atualiza a vaga para indisponível
+            await this.vagaService.updateVaga(vaga.id, { disponivel: false });
+
+            //Mapeia os dados do candidato para o banco de talentos
+            const createTalentoDto: CreateTalentoDto = {
+                nomeCompleto: candidatura.nomeCompleto,
+                email: candidatura.email,
+                telefone: candidatura.telefone,
+                descricao: candidatura.descricao,
+                cvData: candidatura.cvData,
+                cvType: candidatura.cvType,
+                vagaId: vaga.id,
+                vagaTitulo: vaga.titulo,
+                descricaoVaga: vaga.descricao
+            };
+
+            // Salvar o candidato no banco de talentos
+            await this.bancoTalentosService.create(createTalentoDto);
+
+            // Remover a candidatura do sistema
+            await this.delete(id);
+            
+            return { success: true, code: HttpStatus.OK, message: "Candidato reprovado!" } as SuccessResponseDto;
+        } catch (err) {
+            throw new CustomHttpException(err.message, HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
 } from 'typeorm';
-import { Vaga } from './vaga.entity';
 
 @Entity()
 export class BancoTalentos {
@@ -29,7 +28,13 @@ export class BancoTalentos {
   @Column({ type: 'varchar', length: 50, name: 'cv_type' })
   cvType: string;
 
-  @ManyToOne(() => Vaga, (vaga) => vaga.bancoTalentos)
-  vaga: Vaga;
+  @Column({ type: 'int', name: 'vaga_id' })
+  vagaId: number;
+
+  @Column({type: 'varchar', length: 100, name: 'titulo_vaga'})
+  vagaTitulo: string;
+
+  @Column({ type: 'text', name: 'descricao_vaga' })
+  descricaoVaga: string;
 }
 export default BancoTalentos;

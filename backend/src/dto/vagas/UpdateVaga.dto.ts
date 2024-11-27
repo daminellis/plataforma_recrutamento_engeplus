@@ -71,19 +71,19 @@ export class UpdateVagaDto {
   @IsString()
   @Matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+ - [A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
   @MaxLength(50)
-  regiao: string;
+  regiao?: string;
 
-  @ApiProperty({ required: false, type: Boolean })
+  @ApiProperty()
   @IsOptional()
   @IsBoolean()
   disponivel?: boolean;
 
-  @ApiProperty({ required: false, type: Number })
+  @ApiProperty()
   @IsOptional()
   @IsInt()
   recruiterId?: number;
 
-  @ApiProperty({ required: false, type: Number })
+  @ApiProperty()
   @IsOptional()
   @IsInt()
   setorId?: number;

@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNotEmpty, Length, IsEmail } from "class-validator";
+import { IsString, IsNotEmpty, Length, IsEmail, IsInt } from "class-validator";
 
 export class CreateTalentoDto {
 
@@ -34,7 +34,18 @@ export class CreateTalentoDto {
     cvType: string;
 
     @ApiProperty()
+    @IsInt()
+    vagaId: number;
+
+    @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    vagaId: string;
+    @Length(3, 100)
+    vagaTitulo: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    @Length(10, 3000)
+    descricaoVaga: string;
 }

@@ -184,15 +184,15 @@ export class VagaService {
     timeZone: 'Greenwich',
   })
   async verifyExpirationDate(): Promise<void> {
-    const currentDate= new Date()
-    const vagasExpiradas= await this.vagasRepository.find({
+    const currentDate = new Date()
+    const vagasExpiradas = await this.vagasRepository.find({
       where: {
         dataExpiracao: LessThanOrEqual(currentDate),
         disponivel: true,
       },
     })
 
-    if ( vagasExpiradas.length > 0) {
+    if (vagasExpiradas.length > 0) {
       for (const vaga of vagasExpiradas) {
         vaga.disponivel = false;
         await this.vagasRepository.save(vaga);
@@ -323,7 +323,6 @@ export class VagaService {
           }
         }
       }
-
       Object.assign(vaga, updateVagaDto);
       await this.vagasRepository.save(vaga); // UPDATE vagas SET ...
 
@@ -350,5 +349,23 @@ export class VagaService {
     for (let i = 0; i < vagasNull.length; i++) {
       await this.vagasRepository.delete(vagasNull[i].id);
     }
+  }
+
+  async removeCandidatura(vagaId: number, candidaturaId: number): Promise<void> {
+    const vaga = await this.vagasRepository.findOne({
+      where: { id: vagaId },
+      relations: ['candidatura'],
+    });
+
+    if (!vaga) {
+      throw new NotFoundException('Vaga não encontrada');
+    }
+
+    const candidaturaExiste = vaga.candidatura.some(c => c.id === candidaturaId);
+    if (!candidaturaExiste) {
+      throw new NotFoundException('Candidatura não encontrada na vaga');
+    }
+
+    await this.vagasRepository.save(vaga);
   }
 }
