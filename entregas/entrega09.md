@@ -26,14 +26,66 @@ Back-End
 
 ## Arquitetura
 
-Descrição da arquitetura do projeto, incluindo a integração com banco de dados, frontend e backend. Se possível, inserir um diagrama para ilustrar a arquitetura.
+### Front-End
 
-Front-End
----
-Back-end
----
-Banco de dados
----
+O front-end é desenvolvido utilizando a biblioteca React e o framework Next.js para fornecer uma aplicação com SSR (Server-Side Rendering) e SSG (Static Site Generation), otimizando o SEO e o tempo de carregamento.
+O Tailwind CSS é usado para estilização, fornecendo um design moderno e responsivo, enquanto a biblioteca Material-UI oferece componentes prontos e reutilizáveis. As requisições da API são gerenciadas pelo Axios.
+
+#### Fluxo de execução:
+
+    O usuário interage com a interface (React + Material-UI).
+    As requisições de dados são feitas ao backend via Axios.
+    O Next.js cuida do gerenciamento de páginas, roteamento e renderização.
+
+### Back-End
+
+O back-end utiliza Node.js em conjunto com o framework NestJS, implementando o padrão MVC (Model-View-Controller) para organização do código. O Fastify é usado como servidor HTTP pela sua performance superior.
+
+#### Principais Funcionalidades:
+
+    Autenticação: JWT para autenticação segura, permitindo o envio de tokens protegidos.
+    Segurança: Bcrypt para hash de senhas e proteção contra ataques de força bruta.
+    Envio de Emails: Node Mailer integrado para envio de emails transacionais.
+    Documentação: Swagger é usado para gerar documentação interativa da API.
+    Banco de Dados: TypeORM para ORM, gerenciando as operações com o banco de dados relacional.
+
+#### Fluxo de execução:
+
+    Recebe as requisições do front-end.
+    Processa a lógica de negócio, como autenticação, operações CRUD, etc.
+    Responde ao front-end com os dados requisitados ou mensagens de erro.
+
+### Banco de Dados
+
+O banco de dados utilizado é relacional (como PostgreSQL ou MySQL), mapeado através do TypeORM.
+Os modelos de dados são organizados para otimizar consultas e escalabilidade, com suporte a migrações de esquema.
+
+#### Principais Funcionalidades:
+
+    Gerenciamento de tabelas e relacionamentos.
+    Consulta, criação, atualização e exclusão de dados.
+    Suporte a índices para melhorar o desempenho de queries.
+
+#### Fluxo de execução:
+
+    O back-end realiza consultas ao banco usando TypeORM.
+    Os dados são mapeados para objetos, que são utilizados pela lógica de negócio.
+
+## Diagrama de Arquitetura
+
++-------------+         +----------------+         +-----------------+
+|             |         |                |         |                 |
+|  Front-End  |<------->|   Back-End     |<------->|   Banco de Dados|
+| (Next.js,   |         | (Nest.js,      |         | (TypeORM,       |
+|  React)     |         |  Fastify)      |         |  PostgreSQL)    |
+|             |         |                |         |                 |
++-------------+         +----------------+         +-----------------+
+       ▲                          ▲                           ▲
+       |                          |                           |
+       |         Axios (HTTP)     |    TypeORM (SQL)          |
+       |                          |                           |
+       +-------------------------------------------------------+
+                            Interação do Sistema
 
 ## Instalação do Sofware
 

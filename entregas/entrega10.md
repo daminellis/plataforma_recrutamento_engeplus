@@ -47,7 +47,7 @@ Além disso, a equipe deve pedir que um responsável pelo beneficiário responda
 
 Os anexos devem conter pelo menos os seguintes documentos:
  * Uma foto com todos os integrantes da equipe juntos;
- * Uma foto com todos os integrantes da equipe + o responsável da entidade beneficiada;
+* ![Foto da equipe](assets/foto-equipe.jpg);
  * Um vídeo demonstrativo do sistema funcionando (*screen record*);
  * Um vídeo com um breve relato (1-2min) do beneficiário sobre a entrega do sistema, contendo pelo menos:
    * Nome completo e nome da entidade;
