@@ -22,7 +22,7 @@ Back-End
 - Node Mailer (Biblioteca para enviar email)
 - Swagger (Documentação para a API)
 - TypeORM (Sistema para mapeamento do banco de dados)
-- JWT (Criptografia para pyaload do JSON)
+- JWT (Criptografia para payload do JSON)
 
 ## Arquitetura
 

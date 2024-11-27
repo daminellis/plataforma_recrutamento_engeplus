@@ -37,6 +37,8 @@ Feedback da entidade sobre o resultado final da implantação e da utilização 
 
 ## Avaliação e Conclusão
 
+O projeto foi desenvolvido a ponto de resolver a maioria das dores da entidade, gerar a facilidade para o gerenciamento dos cargos abertos e possíveis pessoas para entrarem nos mesmos. A continuidade da solução seria algo que não seria de nossa responsabilidade, pois a entidade possuí seu time de desenvolvedores próprios, mas o código feito seria 90% reutilizado por conta da equipe ter seguido os requisitos que a entidade solicitou.
+
 Avaliação final da equipe sobre a adequação do projeto às necessidades da entidade. Reflexões sobre o impacto do projeto. Considerações finais sobre a continuidade da solução (se a entidade pretende continuar e quais avaliações sobre futuros desenvolvimentos). Incluir também um breve relato da entidade sobre o resultado do projeto.
 
 Além disso, a equipe deve pedir que um responsável pelo beneficiário responda o questionário de entidade repassado pelo professor. Cada estudante também deve responder o questionário de avaliação individual após as apresentações.
