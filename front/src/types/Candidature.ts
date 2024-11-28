@@ -8,5 +8,7 @@ export type CandidatureType = {
   cvData: {
     data: Buffer;
   };
-  dataCandidatura: Date;
+  dataCandidatura: string;
+  favorito: boolean;
+  status: "Ativo" | "Inativo" | "Aprovado" | "Reprovado";
 };

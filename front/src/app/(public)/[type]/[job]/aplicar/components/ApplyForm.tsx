@@ -55,6 +55,11 @@ export const ApplyForm = ({ jobId }: { jobId: number }) => {
         name="telefone"
         variant="outlined"
         type="tel"
+        onChange={(e) =>
+          e.target.value.length > 11
+            ? (e.target.value = e.target.value.slice(0, 11))
+            : e.target.value
+        }
         required
       />
 

@@ -53,7 +53,7 @@ export default async function RootLayout({
             <div className="flex items-center gap-5">
               {userData.routes.find((route) => route.route === "/auth/register")
                 ?.hasAccess && (
-                <AppButton color="outline" href="/admin/add-vaga">
+                <AppButton color="outline" href="/register">
                   Criar usuário
                 </AppButton>
               )}

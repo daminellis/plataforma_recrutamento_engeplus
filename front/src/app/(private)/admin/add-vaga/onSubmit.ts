@@ -18,11 +18,11 @@ export const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     nivelExperiencia: formData.get("nivelExperiencia") as string,
     modalidade: formData.get("modalidade") as string,
     quantidadeVagas: parseInt(formData.get("numeroVagas") as string),
-    dataExpiracao: new Date(
-      formData.get("dataExpiracao") as string
-    ).toLocaleDateString("pt-BR"),
+    dataExpiracao: new Date(formData.get("dataExpiracao") as string)
+      .toISOString()
+      .split("T")[0],
     descricao: formData.get("descricao") as string,
-    responsabilidades: (formData.get("responsabilidades") as string).split(","),
+    responsabilidades: (formData.get("responsabilidades") as string).split("/"),
     regiao: formData.get("regiao") as string,
     recruiterId: userInfos?.id,
     setorId: parseInt(formData.get("setor") as string),

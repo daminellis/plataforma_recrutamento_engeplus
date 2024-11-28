@@ -13,20 +13,26 @@ import { useState } from "react";
 
 type PasswordFieldProps = OutlinedInputProps & {
   label: string;
+  name?: string;
 };
 
-export const PasswordField = ({ label, ...props }: PasswordFieldProps) => {
+export const PasswordField = ({
+  label,
+  name = "password",
+  size,
+  ...props
+}: PasswordFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const classIcons = "size-6 text-gray-500";
   return (
-    <FormControl variant="outlined">
+    <FormControl variant="outlined" size={size}>
       <InputLabel htmlFor="outlined-adornment-password" required>
         {label}
       </InputLabel>
       <OutlinedInput
         type={showPassword ? "text" : "password"}
-        name="password"
+        name={name}
         endAdornment={
           <InputAdornment position="end">
             <IconButton

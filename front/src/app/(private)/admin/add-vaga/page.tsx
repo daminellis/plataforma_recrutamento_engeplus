@@ -170,7 +170,7 @@ export default async function AddVagaPage() {
         <InputLabel
           idAndName="responsabilidades"
           label="Responsabilidades"
-          placeholder="Separe as responsabilidades por (,) sem espaços"
+          placeholder="Separe as responsabilidades por (/) sem espaços"
           required
         />
 

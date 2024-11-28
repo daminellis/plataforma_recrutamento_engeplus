@@ -2,12 +2,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { AxiosError, AxiosResponse } from "axios";
 import { api } from "@/service/axios";
-import { LocalStorageToken } from "@/types/Auth";
-import { useRouter } from "next/navigation";
 import { getToken } from "@/utils/getAuthLocalStorage";
 
 export const usePrivateApi = <T,>(
-  method: "post" | "get" | "put" | "delete",
   route: string,
   onTry?: (response: AxiosResponse<T>) => void,
   onCatch?: (error: AxiosError) => void
@@ -15,12 +12,10 @@ export const usePrivateApi = <T,>(
   isLoading: boolean;
   error: AxiosError | null;
   data: T | null;
-  fetchData: () => void;
 } => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<AxiosError | null>(null);
   const [data, setData] = useState<T | null>(null);
-  const router = useRouter();
 
   const tokenString = getToken();
   const token = tokenString ? tokenString : null;
@@ -33,7 +28,8 @@ export const usePrivateApi = <T,>(
     setIsLoading(true);
     setError(null);
 
-    api[method]<T>(route)
+    api
+      .get<T>(route)
       .then((response: AxiosResponse<T>) => {
         setData(response.data);
         if (onTry) onTry(response);
@@ -56,5 +52,9 @@ export const usePrivateApi = <T,>(
       });
   }, []);
 
-  return { isLoading, error, data, fetchData };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return { isLoading, error, data };
 };

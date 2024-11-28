@@ -7,6 +7,7 @@ export default async function VagasPage() {
   const { data } = await axiosInstance.get<JobPrivateType[]>(
     "vagas/all-private"
   );
+
   return (
     <>
       <div className="flex justify-between items-center">
