@@ -4,7 +4,7 @@ O Registro de Entidade e Projeto é um documento que deve descrever de maneira s
 
 ## Descrição completa da entidade selecionada
 
-- entidade Engeplus Telecom & Data Center 
+- entidade Engeplus Telecom & Data Center/ cnpj:05.106.324/0001-22
 - R. Urussanga, 417 - Centro, Criciúma - SC, 88810-216
 - Numero total de beneficiários (Levando em base que quem irá se beneficiar são pessoas procurando emprego e o RH em ter todos os dados e requisições em um local, e as pessoas que procuram vagas dentro do portal do RH Engeplus ( RH:2 pessoas Pessoas procurando emprego: média por mes de 10 currículos enviados) ) 
 - As principais atividades são em proveção de internet e notícias 
