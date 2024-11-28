@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, BadRequestException, Inject } from '@nes
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import Usuario, { TipoUsuarioEnum } from '../model/usuario.entity';
+import { UpdateUsuarioDto } from '../dto/usuarios/UpdateUsuario.dto';
 
 @Injectable()
 export class UsuarioService {
@@ -10,9 +11,9 @@ export class UsuarioService {
     private usuariosRepository: Repository<Usuario>,
   ) { }
 
-  async getEnum(): Promise<{tupoUsuario: typeof TipoUsuarioEnum}>{
-    return {tupoUsuario: TipoUsuarioEnum};
-  } 
+  async getEnum(): Promise<{tipoUsuario: typeof TipoUsuarioEnum}>{
+    return {tipoUsuario: TipoUsuarioEnum};
+  }
 
   // FUNÇÕES PARA O CRUD DE USUÁRIOS
   //Econtra todos os usuários
@@ -38,6 +39,23 @@ export class UsuarioService {
       relations: ['cargo', 'setor', 'vagas']
     });
   }
+
+    //Atualiza um usuário
+    async update(id: number, usuario: UpdateUsuarioDto): Promise<Usuario> {
+        const usuarioExistente = await this.usuariosRepository.findOneBy({ id });
+        if (!usuarioExistente) {
+            throw new NotFoundException('Usuário não encontrado');
+        }
+        if (usuario.username) {
+            const usuarioComMesmoUsername = await this.usuariosRepository.findOneBy({ username: usuario.username });
+            if (usuarioComMesmoUsername && usuarioComMesmoUsername.id !== id) {
+            throw new BadRequestException('Username já está em uso');
+            }
+        }
+        await this.usuariosRepository.update(id, usuario);
+        return { ...usuarioExistente, ...usuario };
+        }
+
   async delete(id: number): Promise<void> {
     const usuario = await this.usuariosRepository.findOneBy({ id });
     if (!usuario) {
