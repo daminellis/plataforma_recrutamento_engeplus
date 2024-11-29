@@ -7,8 +7,10 @@ import { UsuarioModule } from "./usuario.module";
 import { SetorModule } from "./setor.module";
 import { CandidaturaModule } from "./candidatura.module";
 import { TagModule } from "./tag.module";
+import { BancoTalentosModule } from "./bancotalentos.module";
+
 @Module({
-    imports: [TypeOrmModule.forFeature([Vaga]), UsuarioModule, SetorModule, forwardRef(()=>CandidaturaModule), TagModule],
+    imports: [TypeOrmModule.forFeature([Vaga]), UsuarioModule, SetorModule, forwardRef(()=>CandidaturaModule), TagModule, BancoTalentosModule],
     providers: [VagaService],
     controllers: [VagaController],
     exports: [VagaService]

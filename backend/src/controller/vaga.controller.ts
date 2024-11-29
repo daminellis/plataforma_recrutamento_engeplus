@@ -51,6 +51,12 @@ export class VagaController {
         return this.vagaService.markAsExpired(id);
     }
 
+    @Post(':id/ativar')
+    @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
+    async markAsAvailable(@Param('id') id: number): Promise<SuccessResponseDto> {
+        return this.vagaService.markAsAvailable(id);
+    }
+
     @Post('/create')
     @AllowUserTypes('Administrador', 'Recursos Humanos')
     async createVaga(@Body() createVagaDto: CreateVagaDto): Promise<SuccessResponseDto> {

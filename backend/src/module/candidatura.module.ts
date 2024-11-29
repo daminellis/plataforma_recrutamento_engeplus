@@ -7,10 +7,9 @@ import { FastifyMulterModule } from '@nest-lab/fastify-multer'
 import { VagaModule } from "./vaga.module";
 import { CandidaturaTagModule } from "./candidaturatag.module";
 import { EmailModule } from "src/email/email.module";
-import { BancoTalentosModule } from "./bancotalentos.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Candidatura]), FastifyMulterModule,VagaModule, CandidaturaTagModule, EmailModule, BancoTalentosModule],
+    imports: [TypeOrmModule.forFeature([Candidatura]), FastifyMulterModule,VagaModule, CandidaturaTagModule, EmailModule],
     controllers: [CandidaturaController],
     providers: [CandidaturaService],
     exports: [CandidaturaService]

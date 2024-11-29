@@ -11,8 +11,6 @@ import { EmailService } from "src/email/email.service";
 import { SendEmailDto } from "src/dto/emails/SendEmail.dto";
 import { StatusCandidatura } from "../model/candidatura.entity";
 import { SuccessResponseDto } from "src/dto/responses/SuccessResponse.dto";
-import { CreateTalentoDto } from "src/dto/bancotalentos/CreateTalento.dto";
-import { BancoTalentosService } from "./bancotalentos.service";
 
 @Injectable()
 export class CandidaturaService {
@@ -21,7 +19,7 @@ export class CandidaturaService {
         @InjectRepository(Candidatura)
         private candidaturaRepository: Repository<Candidatura>,
         private candidaturaTagService: CandidaturaTagService,
-        private bancoTalentosService: BancoTalentosService,
+        // private bancoTalentosService: BancoTalentosService,
         private emailService: EmailService,
         private vagaService: VagaService
     ) { }
@@ -162,7 +160,7 @@ export class CandidaturaService {
             await this.vagaService.updateVaga(vaga.id, { disponivel: false });
 
             //Remove o candidato da lista da vaga
-            await this.vagaService.removeCandidatura(vaga.id, id);
+            await this.vagaService.removeCandidatura(vaga.id, candidatura.id);
 
             //Remover a candidatura da lista de candidaturas 
             await this.delete(id);
@@ -195,21 +193,21 @@ export class CandidaturaService {
             //Atualiza a vaga para indisponível
             await this.vagaService.updateVaga(vaga.id, { disponivel: false });
 
-            //Mapeia os dados do candidato para o banco de talentos
-            const createTalentoDto: CreateTalentoDto = {
-                nomeCompleto: candidatura.nomeCompleto,
-                email: candidatura.email,
-                telefone: candidatura.telefone,
-                descricao: candidatura.descricao,
-                cvData: candidatura.cvData,
-                cvType: candidatura.cvType,
-                vagaId: vaga.id,
-                vagaTitulo: vaga.titulo,
-                descricaoVaga: vaga.descricao
-            };
+            // //Mapeia os dados do candidato para o banco de talentos
+            // const createTalentoDto: CreateTalentoDto = {
+            //     nomeCompleto: candidatura.nomeCompleto,
+            //     email: candidatura.email,
+            //     telefone: candidatura.telefone,
+            //     descricao: candidatura.descricao,
+            //     cvData: candidatura.cvData,
+            //     cvType: candidatura.cvType,
+            //     vagaId: vaga.id,
+            //     vagaTitulo: vaga.titulo,
+            //     descricaoVaga: vaga.descricao
+            // };
 
-            // Salvar o candidato no banco de talentos
-            await this.bancoTalentosService.create(createTalentoDto);
+            // // Salvar o candidato no banco de talentos
+            // await this.bancoTalentosService.create(createTalentoDto);
 
             // Remover a candidatura do sistema
             await this.delete(id);

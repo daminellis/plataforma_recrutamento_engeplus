@@ -19,6 +19,9 @@ import { TagService } from './tag.service';
 import { CustomHttpException } from 'src/errors/exceptions/custom-exceptions';
 import { ResponseCountCandidatureDto } from 'src/dto/vagas/ResponseCountCandidature.dto';
 import { Cron } from '@nestjs/schedule';
+import { CreateTalentoDto } from "src/dto/bancotalentos/CreateTalento.dto";
+import { BancoTalentosService } from "./bancotalentos.service";
+import { StatusCandidatura } from '../model/candidatura.entity';
 
 import { TempoDeExperiencia, NivelDeEducacao, NivelDeExperiencia, Modalidade } from '../model/vaga.entity';
 import { SuccessResponseDto } from 'src/dto/responses/SuccessResponse.dto';
@@ -30,6 +33,7 @@ export class VagaService {
     private usuarioService: UsuarioService,
     private setorService: SetorService,
     private tagService: TagService,
+    private bancoTalentosService: BancoTalentosService,
     @Inject(forwardRef(() => CandidaturaService)) private candidaturaService: CandidaturaService,
   ) {
   }
@@ -172,6 +176,27 @@ export class VagaService {
         success: true,
         code: HttpStatus.OK,
         message: 'Marcada como expirada com sucesso',
+      } as SuccessResponseDto;
+
+    } catch (err) {
+      throw new CustomHttpException(err.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async markAsAvailable(id: number): Promise<SuccessResponseDto> {
+    try {
+      const vaga = await this.vagasRepository.findOneBy({ id });
+      if (!vaga) {
+        throw new NotFoundException('Vaga não encontrada');
+      }
+
+      vaga.disponivel = true;
+      await this.vagasRepository.save(vaga);
+
+      return {
+        success: true,
+        code: HttpStatus.OK,
+        message: 'Marcada como disponível com sucesso',
       } as SuccessResponseDto;
 
     } catch (err) {
@@ -361,11 +386,18 @@ export class VagaService {
       throw new NotFoundException('Vaga não encontrada');
     }
 
-    const candidaturaExiste = vaga.candidatura.some(c => c.id === candidaturaId);
-    if (!candidaturaExiste) {
+    const candidaturaAprovada = vaga.candidatura.some(c => c.id === candidaturaId);
+    if (!candidaturaAprovada) {
       throw new NotFoundException('Candidatura não encontrada na vaga');
     }
+    console.log(vaga.candidatura.filter(c => c.id !== candidaturaId))
+     // Atualiza o status de todas as candidaturas restantes para "reprovado"
+    const candidaturasRestantes = vaga.candidatura.filter(c => c.id !== candidaturaId);
+    for (const candidatura of candidaturasRestantes) {
+      await this.candidaturaService.update(candidatura.id, { status: StatusCandidatura.REPROVADO });
+    }
 
+    vaga.candidatura = vaga.candidatura.filter(c => c.id !== candidaturaId);
     await this.vagasRepository.save(vaga);
   }
 }
