@@ -391,13 +391,14 @@ export class VagaService {
       throw new NotFoundException('Candidatura não encontrada na vaga');
     }
 
-    const outrasCandidaturas = vaga.candidatura.filter(c => c.id !== candidaturaId);
+    const candidaturaReprovada = vaga.candidatura.filter(c => c.id !== candidaturaId);
+    
     // Atualizar o status das candidaturas como reprovadas e salvar no banco de talentos
-    for (const candidatura of outrasCandidaturas) {
-      // Atualizar status para reprovado
+    for (const candidatura of candidaturaReprovada) {
+      // Atualizar status do candidato para reprovado e dispara o email de reprovação
       await this.candidaturaService.update(candidatura.id, { status: StatusCandidatura.REPROVADO });
 
-      // Mapear para CreateTalentoDto
+      // Mapeia para o candidato reprovado para o banco de talentos
       const talentoDto: CreateTalentoDto = {
         nomeCompleto: candidatura.nomeCompleto,
         email: candidatura.email,
@@ -410,7 +411,7 @@ export class VagaService {
         descricaoVaga: vaga.descricao
       };
 
-      // Salvar no banco de talentos
+      // Salva no banco de talentos
       await this.bancoTalentosService.create(talentoDto);
     }
     await this.vagasRepository.save(vaga);
