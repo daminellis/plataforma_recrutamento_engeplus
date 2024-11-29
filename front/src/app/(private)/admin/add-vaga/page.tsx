@@ -71,7 +71,7 @@ export default async function AddVagaPage() {
             placeholder="Palavra-chave do trabalho, tags e etc..."
             className="flex-1"
             textAdd="Nova tag"
-            routeAdd="candidaturatags/create"
+            routeAdd="tags/create"
           />
 
           <SelectLabel
