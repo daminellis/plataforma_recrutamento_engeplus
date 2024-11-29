@@ -42,14 +42,14 @@ export class CandidaturaController {
         return this.candidaturaService.findAllByVaga(vagaId)
     }
 
-    @Get('/aprovar/:id')
+    @Get('/:id/aprovar')
     @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
     async aprovarCandidatura(@Param('id') id: string): Promise<SuccessResponseDto> {
         const idsArray = id.split(',').map(id => parseInt(id, 10));
         return this.candidaturaService.approveCandidatura(idsArray);
     }
 
-    @Get('/reprovar/:id')
+    @Get('/:id/reprovar')
     @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
     async reprovarCandidatura(@Param('id') id: number): Promise<SuccessResponseDto> {
         return this.candidaturaService.disapproveCandidatura(id);

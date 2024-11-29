@@ -160,7 +160,9 @@ export class CandidaturaService {
                 throw new CustomHttpException('Vaga não encontrada', HttpStatus.NOT_FOUND);
             }
             //Atualiza a vaga para indisponível
-            await this.vagaService.updateVaga(vaga.id, { disponivel: false });
+            // await this.vagaService.updateVaga(vaga.id, { disponivel: false });
+
+            await this.vagaService.markAsExpired(vaga.id);
 
             //Remove o candidato aprovado da lista da vaga e automaticamente os reprovados recebem o email de reprovação
             // e são mapeados para o banco de talentos

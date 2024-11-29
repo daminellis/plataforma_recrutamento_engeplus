@@ -377,10 +377,7 @@ export class VagaService {
   }
 
   async removeCandidatura(vagaId: number, candidaturaId: number[]): Promise<void> {
-    const vaga = await this.vagasRepository.findOne({
-      where: { id: vagaId },
-      relations: ['candidatura'],
-    });
+    const vaga = await this.findOneVaga(vagaId);
 
     if (!vaga) {
       throw new NotFoundException('Vaga não encontrada');
