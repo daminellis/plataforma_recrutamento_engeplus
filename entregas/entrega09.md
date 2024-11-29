@@ -112,4 +112,14 @@ Descrever os principais desafios e dificuldades encontrados durante o desenvolvi
 
 ## Evidências do desenvolvimento e implantação
 
-Capturas de tela do sistema desenvolvido e do ambiente de desenvolvimento. Testes realizados e feedback da entidade durante o processo de implantação.
+## Requisições feitas no backend
+* ![req-criar-vagas](assets/req-criar-vagas.jpg)
+
+### Telas feitas do front end
+* ![login](assets/login.png);
+* ![minhas-vagas](assets/minhas-vagas.png)
+* ![nova-vaga](assets/nova-vaga.png)
+* ![vaga-info](assets/vaga-info.png)
+* ![vagas-lista](assets/vagas-lista.png)
+* ![vagas-relacionadas](assets/vagas-relacionadas.png)
+* ![vagas](assets/vagas.png)
