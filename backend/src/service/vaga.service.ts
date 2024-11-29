@@ -386,18 +386,33 @@ export class VagaService {
       throw new NotFoundException('Vaga não encontrada');
     }
 
-    const candidaturaAprovada = vaga.candidatura.some(c => c.id === candidaturaId);
+    const candidaturaAprovada = vaga.candidatura.find(c => c.id === candidaturaId);
     if (!candidaturaAprovada) {
       throw new NotFoundException('Candidatura não encontrada na vaga');
     }
-    console.log(vaga.candidatura.filter(c => c.id !== candidaturaId))
-     // Atualiza o status de todas as candidaturas restantes para "reprovado"
-    const candidaturasRestantes = vaga.candidatura.filter(c => c.id !== candidaturaId);
-    for (const candidatura of candidaturasRestantes) {
-      await this.candidaturaService.update(candidatura.id, { status: StatusCandidatura.REPROVADO });
-    }
 
-    vaga.candidatura = vaga.candidatura.filter(c => c.id !== candidaturaId);
+    const outrasCandidaturas = vaga.candidatura.filter(c => c.id !== candidaturaId);
+    // Atualizar o status das candidaturas como reprovadas e salvar no banco de talentos
+    for (const candidatura of outrasCandidaturas) {
+      // Atualizar status para reprovado
+      await this.candidaturaService.update(candidatura.id, { status: StatusCandidatura.REPROVADO });
+
+      // Mapear para CreateTalentoDto
+      const talentoDto: CreateTalentoDto = {
+        nomeCompleto: candidatura.nomeCompleto,
+        email: candidatura.email,
+        telefone: candidatura.telefone,
+        descricao: candidatura.descricao,
+        cvData: candidatura.cvData,
+        cvType: candidatura.cvType,
+        vagaId: vaga.id,
+        vagaTitulo: vaga.titulo,
+        descricaoVaga: vaga.descricao
+      };
+
+      // Salvar no banco de talentos
+      await this.bancoTalentosService.create(talentoDto);
+    }
     await this.vagasRepository.save(vaga);
   }
 }
