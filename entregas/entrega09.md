@@ -114,6 +114,9 @@ Descrever os principais desafios e dificuldades encontrados durante o desenvolvi
 
 ## Requisições feitas no backend
 * ![req-criar-vagas](assets/req-criar-vagas.jpg)
+* ![req-criar-lider](assets/req-criar-lider.jpg)
+* ![req-criar-candidaturas](assets/req-criar-candidaturas.jpg)
+* ![req-criar](assets/req-receber-vagas.jpg)
 
 ### Telas feitas do front end
 * ![login](assets/login.png);

@@ -39,20 +39,13 @@ Feedback da entidade sobre o resultado final da implantação e da utilização 
 
 O projeto foi desenvolvido a ponto de resolver a maioria das dores da entidade, gerar a facilidade para o gerenciamento dos cargos abertos e possíveis pessoas para entrarem nos mesmos. A continuidade da solução seria algo que não seria de nossa responsabilidade, pois a entidade possuí seu time de desenvolvedores próprios, mas o código feito seria 90% reutilizado por conta da equipe ter seguido os requisitos que a entidade solicitou.
 
-Avaliação final da equipe sobre a adequação do projeto às necessidades da entidade. Reflexões sobre o impacto do projeto. Considerações finais sobre a continuidade da solução (se a entidade pretende continuar e quais avaliações sobre futuros desenvolvimentos). Incluir também um breve relato da entidade sobre o resultado do projeto.
-
-Além disso, a equipe deve pedir que um responsável pelo beneficiário responda o questionário de entidade repassado pelo professor. Cada estudante também deve responder o questionário de avaliação individual após as apresentações.
-
 ## Anexos
 
 Os anexos devem conter pelo menos os seguintes documentos:
- * Uma foto com todos os integrantes da equipe juntos;
-* ![Foto da equipe](assets/fotoequipe.jpg);
- * Um vídeo demonstrativo do sistema funcionando (*screen record*);
- * Um vídeo com um breve relato (1-2min) do beneficiário sobre a entrega do sistema, contendo pelo menos:
-   * Nome completo e nome da entidade;
-   * Descrição da atividade;
-   * Como era feito o processo antes da entrega do sistema;
-   * Como o sistema web pode ajudar a melhorar o processo;
+* ![Foto da equipe](assets/fotoequipe.jpg)
+* ![Video da empresa](assets/breverelato.mp4)
+
+* Um vídeo demonstrativo do sistema funcionando (*screen record*);
+ 
 
 Qualquer outro anexo relacionado à entidade, como fotos e atas de reuniões.
