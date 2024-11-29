@@ -44,8 +44,9 @@ export class CandidaturaController {
 
     @Get('/aprovar/:id')
     @AllowUserTypes('Administrador', 'Recursos Humanos', 'Líder')
-    async aprovarCandidatura(@Param('id') id: number): Promise<SuccessResponseDto> {
-        return this.candidaturaService.approveCandidatura(id);
+    async aprovarCandidatura(@Param('id') id: string): Promise<SuccessResponseDto> {
+        const idsArray = id.split(',').map(id => parseInt(id, 10));
+        return this.candidaturaService.approveCandidatura(idsArray);
     }
 
     @Get('/reprovar/:id')

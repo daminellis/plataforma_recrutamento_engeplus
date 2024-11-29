@@ -376,7 +376,7 @@ export class VagaService {
     }
   }
 
-  async removeCandidatura(vagaId: number, candidaturaId: number): Promise<void> {
+  async removeCandidatura(vagaId: number, candidaturaId: number[]): Promise<void> {
     const vaga = await this.vagasRepository.findOne({
       where: { id: vagaId },
       relations: ['candidatura'],
@@ -386,15 +386,17 @@ export class VagaService {
       throw new NotFoundException('Vaga não encontrada');
     }
 
-    const candidaturaAprovada = vaga.candidatura.find(c => c.id === candidaturaId);
-    if (!candidaturaAprovada) {
-      throw new NotFoundException('Candidatura não encontrada na vaga');
+    // Filtrar candidaturas aprovadas com base nos IDs fornecidos
+    const candidaturasAprovadas = vaga.candidatura.filter(c => candidaturaId.includes(c.id));
+
+    if (candidaturasAprovadas.length === 0) {
+      throw new NotFoundException('Nenhuma candidatura aprovada encontrada');
     }
 
-    const candidaturaReprovada = vaga.candidatura.filter(c => c.id !== candidaturaId);
-    
-    // Atualizar o status das candidaturas como reprovadas e salvar no banco de talentos
-    for (const candidatura of candidaturaReprovada) {
+    // Identificar as candidaturas que não foram aprovadas
+    const candidaturasReprovadas = vaga.candidatura.filter(c => !candidaturaId.includes(c.id));
+
+    for (const candidatura of candidaturasReprovadas) {
       // Atualizar status do candidato para reprovado e dispara o email de reprovação
       await this.candidaturaService.update(candidatura.id, { status: StatusCandidatura.REPROVADO });
 

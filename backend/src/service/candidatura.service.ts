@@ -138,17 +138,20 @@ export class CandidaturaService {
 
     //Aprovação e reprovação de candidaturas
 
-    async approveCandidatura(id: number): Promise<SuccessResponseDto> {
+    async approveCandidatura(id: number[]): Promise<SuccessResponseDto> {
         try {
             // Vereificar se a candidatura existe
-            const candidatura = await this.findOneCandidatura(id);
+            const candidaturas = await Promise.all(id.map(async (candidaturaId) => await this.findOneCandidatura(candidaturaId)));
+            const candidatura = candidaturas.find(c => c !== null);
 
             if (!candidatura) {
-                throw new CustomHttpException(`Candidatura com id ${id} não encontrada!`, HttpStatus.NOT_FOUND);
+                throw new CustomHttpException(`Candidatura(s) com id ${id} não encontrada!`, HttpStatus.NOT_FOUND);
             }
 
             // Atualizar o status da candidatura e envia o email de aprovação
-            await this.update(id, { status: StatusCandidatura.APROVADO });
+            for (const candidaturaId of id) {
+                await this.update(candidaturaId, { status: StatusCandidatura.APROVADO });
+            }
 
             //Seleciona a vaga da candidatura
             const vaga = candidatura.vaga;
@@ -161,10 +164,12 @@ export class CandidaturaService {
 
             //Remove o candidato aprovado da lista da vaga e automaticamente os reprovados recebem o email de reprovação
             // e são mapeados para o banco de talentos
-            await this.vagaService.removeCandidatura(vaga.id, candidatura.id);
+            await this.vagaService.removeCandidatura(vaga.id, [candidatura.id]);
 
             //Remover a candidatura da lista de candidaturas 
-            await this.delete(id);
+            for (const candidaturaId of id) {
+                await this.delete(candidaturaId);
+            }
 
             return { success: true, code: HttpStatus.OK, message: "Candidato aprovado!" } as SuccessResponseDto;
         } catch (err) {
