@@ -105,7 +105,7 @@ Descrever os principais desafios e dificuldades encontrados durante o desenvolvi
 
 1. Falta de entendimento na hora que começamos a gerar o projeto, tivemos uma certa dificuldade em alinhar as ideias.
 
-2. Algumas ideias ainda assim tivemos dificuldade, o front solicitava alguma função e acabava recebendo algo que não queria, o que gerava um desgaste nos dois lados que precisavam modificar os dados por conta do conflito.
+2. Algumas ideias ainda assim tivemos dificuldade, o front solicitava alguma função e acabava recebendo algo que não queria ou o back projetava algo e o front nao conseguia utilizar, provavelmente por falta de explicar exatamente o que era esperado ou tambem por falta de leitura e interpretação de ambas as partes, o que gerava um desgaste nos dois lados que precisavam modificar os codigos para fazer com que funcionasse.
 
 3. A funcionalidade de authenticação por cookies foi algo que precisou ser estudado e não era dominado por ninguém do grupo, o que foi uma grande dificuldade para fazer e ocupou grande tempo do trabalho.
 
