@@ -4,7 +4,7 @@ O Registro de Entidade e Projeto é um documento que deve descrever de maneira s
 
 ## Descrição completa da entidade selecionada
 
-- entidade Engeplus Telecom & Data Center 
+- entidade Engeplus Telecom & Data Center/ cnpj:05.106.324/0001-22
 - R. Urussanga, 417 - Centro, Criciúma - SC, 88810-216
 - Numero total de beneficiários (Levando em base que quem irá se beneficiar são pessoas procurando emprego e o RH em ter todos os dados e requisições em um local, e as pessoas que procuram vagas dentro do portal do RH Engeplus ( RH:2 pessoas Pessoas procurando emprego: média por mes de 10 currículos enviados) ) 
 - As principais atividades são em proveção de internet e notícias 
@@ -47,7 +47,7 @@ Além disso, a equipe deve pedir que um responsável pelo beneficiário responda
 
 Os anexos devem conter pelo menos os seguintes documentos:
  * Uma foto com todos os integrantes da equipe juntos;
-* ![Foto da equipe](assets/foto-equipe.jpg);
+* ![Foto da equipe](assets/fotoequipe.jpg);
  * Um vídeo demonstrativo do sistema funcionando (*screen record*);
  * Um vídeo com um breve relato (1-2min) do beneficiário sobre a entrega do sistema, contendo pelo menos:
    * Nome completo e nome da entidade;
