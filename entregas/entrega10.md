@@ -42,7 +42,8 @@ O projeto foi desenvolvido a ponto de resolver a maioria das dores da entidade, 
 ## Anexos
 
 Os anexos devem conter pelo menos os seguintes documentos:
-* ![Foto da equipe](assets/fotoequipe.jpg)
+* ![Foto somente da equipe](assets/fotosomentedaequipe.png)
+* ![Foto da equipe com a empresa](assets/fotoequipe.jpg)
 * ![Video da empresa](assets/breverelato.mp4)
 
 * Um vídeo demonstrativo do sistema funcionando (*screen record*);
