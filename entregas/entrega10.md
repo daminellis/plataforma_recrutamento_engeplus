@@ -45,8 +45,7 @@ Os anexos devem conter pelo menos os seguintes documentos:
 * ![Foto somente da equipe](assets/fotosomentedaequipe.png)
 * ![Foto da equipe com a empresa](assets/fotoequipe.jpg)
 * ![Video da empresa](assets/breverelato.mp4)
-
-* Um vídeo demonstrativo do sistema funcionando (*screen record*);
- 
+* ![Screen Record pt1](assets/screenrecordpt1.mp4)
+* ![Screen Record pt2](assets/screenrecordpt2.mp4)
 
 Qualquer outro anexo relacionado à entidade, como fotos e atas de reuniões.
